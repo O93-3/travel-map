@@ -56,8 +56,8 @@
     "countryCode": "DE",
     "name": "Berlin",
     "name_jp": "ベルリン",
-    "lat": 52.52,
-    "lon": 13.405
+    "lat": 52.5200,
+    "lon": 13.4050
   },
   {
     "region": "North America",
@@ -67,7 +67,7 @@
     "name": "New York",
     "name_jp": "ニューヨーク",
     "lat": 40.7128,
-    "lon": -74.006
+    "lon": -74.0060
   },
   {
     "region": "North America",
@@ -138,125 +138,5 @@
     "name_jp": "リオデジャネイロ",
     "lat": -22.9068,
     "lon": -43.1729
-  },
-  {
-    "region": "Europe",
-    "country": "UK",
-    "country_jp": "イギリス",
-    "countryCode": "GB",
-    "name": "Aberdeen",
-    "name_jp": "アバディーン",
-    "lat": 57.1497,
-    "lon": -2.0943
-  },
-  {
-    "region": "Europe",
-    "country": "UK",
-    "country_jp": "イギリス",
-    "countryCode": "GB",
-    "name": "Birmingham",
-    "name_jp": "バーミンガム",
-    "lat": 52.4862,
-    "lon": -1.8904
-  },
-  {
-    "region": "Europe",
-    "country": "UK",
-    "country_jp": "イギリス",
-    "countryCode": "GB",
-    "name": "Cambridge",
-    "name_jp": "ケンブリッジ",
-    "lat": 52.2053,
-    "lon": 0.1218
-  },
-  {
-    "region": "Europe",
-    "country": "UK",
-    "country_jp": "イギリス",
-    "countryCode": "GB",
-    "name": "Cardiff",
-    "name_jp": "カーディフ",
-    "lat": 51.4816,
-    "lon": -3.1791
-  },
-  {
-    "region": "Europe",
-    "country": "UK",
-    "country_jp": "イギリス",
-    "countryCode": "GB",
-    "name": "Carlisle",
-    "name_jp": "カーライル",
-    "lat": 54.8925,
-    "lon": -2.9329
-  },
-  {
-    "region": "Europe",
-    "country": "UK",
-    "country_jp": "イギリス",
-    "countryCode": "GB",
-    "name": "Dover",
-    "name_jp": "ドーバー",
-    "lat": 51.129,
-    "lon": 1.308
-  },
-  {
-    "region": "Europe",
-    "country": "UK",
-    "country_jp": "イギリス",
-    "countryCode": "GB",
-    "name": "Edinburgh",
-    "name_jp": "エディンバラ",
-    "lat": 55.9533,
-    "lon": -3.1883
-  },
-  {
-    "region": "Europe",
-    "country": "UK",
-    "country_jp": "イギリス",
-    "countryCode": "GB",
-    "name": "Felixstowe",
-    "name_jp": "フェリクストウ",
-    "lat": 51.963,
-    "lon": 1.3511
-  },
-  {
-    "region": "Europe",
-    "country": "UK",
-    "country_jp": "イギリス",
-    "countryCode": "GB",
-    "name": "Glasgow",
-    "name_jp": "グラスゴー",
-    "lat": 55.8642,
-    "lon": -4.2518
-  },
-  {
-    "region": "Europe",
-    "country": "UK",
-    "country_jp": "イギリス",
-    "countryCode": "GB",
-    "name": "Grimsby",
-    "name_jp": "グリムズビー",
-    "lat": 53.5654,
-    "lon": -0.0755
-  },
-  {
-    "region": "Europe",
-    "country": "UK",
-    "country_jp": "イギリス",
-    "countryCode": "GB",
-    "name": "Liverpool",
-    "name_jp": "リヴァプール",
-    "lat": 53.4084,
-    "lon": -2.9916
-  },
-  {
-    "region": "Europe",
-    "country": "UK",
-    "country_jp": "イギリス",
-    "countryCode": "GB",
-    "name": "Manchester",
-    "name_jp": "マンチェスター",
-    "lat": 53.4808,
-    "lon": -2.2426
   }
 ]
