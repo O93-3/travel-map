@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Travel Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./vendor/leaflet/leaflet.css"/><!-- Leaflet (local) -->
+<link rel="stylesheet" href="./style.css"/>
+
+
+</head>
+
+<body>
+
+
+<div id="ui">
+
+  <!-- ===== 基本 ===== -->
+  <div class="ui-group">
+    <div class="ui-title">基本</div>
+    <button id="langBtn">日本語</button>
+    <button id="streamBtn">配信モード</button>
+  </div>
+
+  <!-- ===== ルート（訪問履歴） ===== -->
+  <div class="ui-group">
+    <div class="ui-title">ルート</div>
+
+    <select id="regionSelect"><option value="">地域</option></select>
+    <select id="countrySelect"><option value="">国</option></select>
+    <select id="citySelect"><option value="">都市</option></select>
+
+    <button id="addBtn">追加</button>
+    <button id="undoBtn">ひとつ戻す</button>
+  </div>
+
+  <!-- ===== 地図表示 ===== -->
+  <div class="ui-group">
+    <div class="ui-title">地図</div>
+
+    <select id="mapStyleSelect">
+      <option value="osm">標準</option>
+      <option value="bw">白黒</option>
+      <option value="sat">衛星</option>
+      <option value="topo">地形</option>
+    </select>
+
+    <button id="toggleBorders">国境色分け ON/OFF</button>
+  </div>
+
+  <!-- ===== 現在地（ここを“寄せる”） ===== -->
+  <div class="ui-group" id="group-current">
+    <div class="ui-title">現在地</div>
+
+    <label class="row">
+      <input type="checkbox" id="showLocation" checked>
+      <span>現在地表示</span>
+    </label>
+
+    <label class="col">
+      <span>現在地サイズ</span>
+      <input type="range" id="currentMarkerSize" min="8" max="40">
+    </label>
+
+    <label class="col">
+      <span>現在地テキストサイズ</span>
+      <input type="range" id="locFontSize" min="12" max="60" value="18">
+    </label>
+
+    <label class="col">
+      <span>旗サイズ</span>
+      <input type="range" id="locFlagSize" min="12" max="80" value="24">
+    </label>
+
+    <label class="col">
+      <span>現在地パディング</span>
+      <input type="range" id="locPadding" min="0" max="40" value="10">
+    </label>
+  </div>
+
+  <!-- ===== 見た目 ===== -->
+  <div class="ui-group">
+    <div class="ui-title">見た目</div>
+
+    <label class="col">
+      <span>過去マーカー色</span>
+      <input type="color" id="pastMarkerColor">
+    </label>
+  </div>
+
+</div>
+
+<div id="currentLocation">
+<img id="flag">
+
+<span id="currentText">
+  <span id="currentCountry">Now Traveling</span>
+  <span id="currentCity"></span>
+</span>
+
+</div>
+
+<div id="map"></div>
+
+<script src="./vendor/leaflet/leaflet.js"></script><!-- Leaflet (local) -->"></script>
+<script src="./app.js" defer></script>
+</body>
+</html>

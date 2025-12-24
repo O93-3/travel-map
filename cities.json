@@ -1,0 +1,142 @@
+[
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Tokyo",
+    "name_jp": "東京",
+    "lat": 35.6895,
+    "lon": 139.6917
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Osaka",
+    "name_jp": "大阪",
+    "lat": 34.6937,
+    "lon": 135.5023
+  },
+  {
+    "region": "Asia",
+    "country": "China",
+    "country_jp": "中国",
+    "countryCode": "CN",
+    "name": "Beijing",
+    "name_jp": "北京",
+    "lat": 39.9042,
+    "lon": 116.4074
+  },
+  {
+    "region": "Asia",
+    "country": "China",
+    "country_jp": "中国",
+    "countryCode": "CN",
+    "name": "Shanghai",
+    "name_jp": "上海",
+    "lat": 31.2304,
+    "lon": 121.4737
+  },
+  {
+    "region": "Europe",
+    "country": "France",
+    "country_jp": "フランス",
+    "countryCode": "FR",
+    "name": "Paris",
+    "name_jp": "パリ",
+    "lat": 48.8566,
+    "lon": 2.3522
+  },
+  {
+    "region": "Europe",
+    "country": "Germany",
+    "country_jp": "ドイツ",
+    "countryCode": "DE",
+    "name": "Berlin",
+    "name_jp": "ベルリン",
+    "lat": 52.5200,
+    "lon": 13.4050
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "name": "New York",
+    "name_jp": "ニューヨーク",
+    "lat": 40.7128,
+    "lon": -74.0060
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "name": "Los Angeles",
+    "name_jp": "ロサンゼルス",
+    "lat": 34.0522,
+    "lon": -118.2437
+  },
+  {
+    "region": "Oceania",
+    "country": "Australia",
+    "country_jp": "オーストラリア",
+    "countryCode": "AU",
+    "name": "Sydney",
+    "name_jp": "シドニー",
+    "lat": -33.8688,
+    "lon": 151.2093
+  },
+  {
+    "region": "Oceania",
+    "country": "Australia",
+    "country_jp": "オーストラリア",
+    "countryCode": "AU",
+    "name": "Melbourne",
+    "name_jp": "メルボルン",
+    "lat": -37.8136,
+    "lon": 144.9631
+  },
+  {
+    "region": "Europe",
+    "country": "UK",
+    "country_jp": "イギリス",
+    "countryCode": "GB",
+    "name": "London",
+    "name_jp": "ロンドン",
+    "lat": 51.5074,
+    "lon": -0.1278
+  },
+  {
+    "region": "Europe",
+    "country": "Italy",
+    "country_jp": "イタリア",
+    "countryCode": "IT",
+    "name": "Rome",
+    "name_jp": "ローマ",
+    "lat": 41.9028,
+    "lon": 12.4964
+  },
+  {
+    "region": "Africa",
+    "country": "Egypt",
+    "country_jp": "エジプト",
+    "countryCode": "EG",
+    "name": "Cairo",
+    "name_jp": "カイロ",
+    "lat": 30.0444,
+    "lon": 31.2357
+  },
+  {
+    "region": "South America",
+    "country": "Brazil",
+    "country_jp": "ブラジル",
+    "countryCode": "BR",
+    "name": "Rio de Janeiro",
+    "name_jp": "リオデジャネイロ",
+    "lat": -22.9068,
+    "lon": -43.1729
+  }
+]
