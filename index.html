@@ -16,15 +16,18 @@
 <div id="ui">
 
   <!-- ===== 基本 ===== -->
-  <div class="ui-group">
-    <div class="ui-title">基本</div>
+  <details class="ui-group" open>
+    <summary class="ui-title">基本</summary>
     <button id="langBtn">日本語</button>
     <button id="streamBtn">配信モード</button>
-  </div>
+    <button id="shotMapBtn">地図スクショ保存</button>
+    <div class="ui-note">※押すとUIを隠して保存します。許可（画面共有）はブラウザ仕様で必須です。</div>
+
+  </details>
 
   <!-- ===== ルート（訪問履歴） ===== -->
-  <div class="ui-group">
-    <div class="ui-title">ルート</div>
+  <details class="ui-group" open>
+    <summary class="ui-title">ルート</summary>
 
     <div class="searchWrap">
       <input id="citySearch" type="text" placeholder="都市 / 国を検索…" autocomplete="off">
@@ -37,11 +40,11 @@
 
     <button id="addBtn">追加</button>
     <button id="undoBtn">ひとつ戻す</button>
-  </div>
+  </details>
 
   <!-- ===== 地図表示 ===== -->
-  <div class="ui-group">
-    <div class="ui-title">地図</div>
+  <details class="ui-group" open>
+    <summary class="ui-title">地図</summary>
 
     <select id="mapStyleSelect">
       <option value="osm">標準</option>
@@ -51,11 +54,11 @@
     </select>
 
     <button id="toggleBorders">国境色分け ON/OFF</button>
-  </div>
+  </details>
 
   <!-- ===== 現在地（ここを“寄せる”） ===== -->
-  <div class="ui-group" id="group-current">
-    <div class="ui-title">現在地</div>
+  <details class="ui-group" id="group-current" open>
+    <summary class="ui-title">現在地</summary>
 
     <label class="row">
       <input type="checkbox" id="showLocation" checked>
@@ -81,17 +84,27 @@
       <span>現在地パディング</span>
       <input type="range" id="locPadding" min="0" max="40" value="10">
     </label>
-  </div>
+  </details>
 
   <!-- ===== 見た目 ===== -->
-  <div class="ui-group">
-    <div class="ui-title">見た目</div>
+  <details class="ui-group" open>
+    <summary class="ui-title">見た目</summary>    <label class="col">
+      <span>ルート線の色</span>
+      <input type="color" id="lineColor">
+    </label>
+
+    <label class="col">
+      <span>現在地マーカー色</span>
+      <input type="color" id="currentMarkerColor">
+    </label>
+
+
 
     <label class="col">
       <span>過去マーカー色</span>
       <input type="color" id="pastMarkerColor">
     </label>
-  </div>
+  </details>
 
 </div>
 

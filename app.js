@@ -15,10 +15,13 @@
   const undoBtn        = $('undoBtn');
   const langBtn        = $('langBtn');
   const streamBtn      = $('streamBtn');
+  const shotMapBtn   = $('shotMapBtn');
 
   const showLocation      = $('showLocation');
   const currentMarkerSize = $('currentMarkerSize');
   const pastMarkerColor = $('pastMarkerColor');
+  const lineColorInput = $('lineColor');
+  const currentMarkerColorInput = $('currentMarkerColor');
   const locFontSize       = $('locFontSize');
   const locFlagSize       = $('locFlagSize');
   const locPadding        = $('locPadding');
@@ -109,8 +112,9 @@
   let cities=[]
   let history=JSON.parse(localStorage.getItem("travelHistory"))||[]
   let markers=[],points=[]
-  let line=L.polyline([],{
-   color:"#ff3333",weight:4
+  let lineColor=localStorage.getItem("lineColor")||"#ff3333"
+  let line=L.polyline([], {
+   color:lineColor, weight:4
   }).addTo(map)
   
   let lang="jp"
@@ -382,15 +386,18 @@ function buildRegion(){
   let currentMarker
   let curSize=localStorage.getItem("curSize")||20
   let pastColor=localStorage.getItem("pastColor")||"#ff3333"
+  let currentColor=localStorage.getItem("currentColor")||"#00ffff"
   currentMarkerSize.value=curSize
   if (pastMarkerColor) pastMarkerColor.value=pastColor
+  if (lineColorInput) lineColorInput.value=lineColor
+  if (currentMarkerColorInput) currentMarkerColorInput.value=currentColor
   
   function addCurrent(city){
    if(currentMarker)map.removeLayer(currentMarker)
    const icon=L.divIcon({
     className:"pulsate",
     html:`<div style="width:${curSize}px;height:${curSize}px;
-    background:#00ffff;border:2px solid #fff;border-radius:50%"></div>`
+    background:${currentColor};border:2px solid #fff;border-radius:50%"></div>`
    })
    currentMarker=L.marker([city.lat,city.lon],{icon}).addTo(map)
    updateCurrent(city)
@@ -470,7 +477,7 @@ function buildRegion(){
    if(history.length && history.at(-1)?.name===city.name) return
    if(markers.length)markers.at(-1).setStyle({fillColor:pastColor})
    const m=L.circleMarker([city.lat,city.lon],{
-    radius:8,color:"#fff",fillColor:"#00ffff",fillOpacity:1
+    radius:8,color:"#fff",fillColor:currentColor,fillOpacity:1
    }).addTo(map)
    markers.push(m)
    points.push([city.lat,city.lon])
@@ -495,7 +502,7 @@ function buildRegion(){
    history.forEach((c,i)=>{
     const m=L.circleMarker([c.lat,c.lon],{
      radius:8,color:"#fff",
-     fillColor:i===history.length-1?"#00ffff":pastColor,
+     fillColor:i===history.length-1?currentColor:pastColor,
      fillOpacity:1
     }).addTo(map)
     markers.push(m)
@@ -519,7 +526,23 @@ function buildRegion(){
   }
   
   
-  showLocation.onchange=e=>{
+  
+
+  if (lineColorInput) lineColorInput.oninput=e=>{
+   lineColor=e.target.value
+   localStorage.setItem("lineColor",lineColor)
+   try{ line.setStyle({color:lineColor}) }catch(_){}
+  }
+
+  if (currentMarkerColorInput) currentMarkerColorInput.oninput=e=>{
+   currentColor=e.target.value
+   localStorage.setItem("currentColor",currentColor)
+   // 最新マーカーの色を更新
+   if(markers.length) markers.at(-1).setStyle({fillColor:currentColor})
+   // 現在地マーカー（脈動）も更新
+   if(history.length) addCurrent(history.at(-1))
+  }
+showLocation.onchange=e=>{
    currentLocation.style.display=e.target.checked?"flex":"none"
   }
   
@@ -629,6 +652,98 @@ function buildRegion(){
     if (history.length) addCurrent(history.at(-1));
   });
 
+
+
+/* ===== 地図スクショ（UI自動非表示→即保存） ===== */
+  function tsFile(){
+    const d = new Date();
+    const pad = (n) => String(n).padStart(2,'0');
+    return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'_'+pad(d.getHours())+pad(d.getMinutes())+pad(d.getSeconds());
+  }
+
+  async function captureMapShot(){
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia){
+      alert('このブラウザではスクショ機能が使えません（getDisplayMedia非対応）。');
+      return;
+    }
+    const mapEl = document.getElementById('map');
+    if (!mapEl){
+      alert('地図要素(#map)が見つかりません。');
+      return;
+    }
+    let stream;
+    // UIを消してから撮影（終了後に戻す）
+    try{ document.body.classList.add('shot-hide'); }catch(_){}
+    await new Promise(r => setTimeout(r, 80));
+    try{
+      stream = await navigator.mediaDevices.getDisplayMedia({
+        video: { frameRate: 30 },
+        audio: false,
+        preferCurrentTab: true,
+        selfBrowserSurface: 'include',
+        surfaceSwitching: 'exclude'
+      });
+    }catch(e){
+      // キャンセルなど
+      return;
+    }
+    try{
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      video.muted = true;
+      await video.play();
+      await new Promise(r => requestAnimationFrame(r));
+      const vw = video.videoWidth || 0;
+      const vh = video.videoHeight || 0;
+      if (!vw || !vh){
+        alert('スクショ取得に失敗しました（映像サイズ取得不可）。');
+        return;
+      }
+      const fullCanvas = document.createElement('canvas');
+      fullCanvas.width = vw;
+      fullCanvas.height = vh;
+      const ctx = fullCanvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, vw, vh);
+
+      // map領域だけ切り抜く
+      const rect = mapEl.getBoundingClientRect();
+      const scaleX = vw / window.innerWidth;
+      const scaleY = vh / window.innerHeight;
+      const sx = Math.max(0, Math.floor(rect.left * scaleX));
+      const sy = Math.max(0, Math.floor(rect.top * scaleY));
+      const sw = Math.max(1, Math.floor(rect.width * scaleX));
+      const sh = Math.max(1, Math.floor(rect.height * scaleY));
+      const crop = document.createElement('canvas');
+      crop.width = sw;
+      crop.height = sh;
+      const cctx = crop.getContext('2d');
+      cctx.drawImage(fullCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
+
+      const blob = await new Promise(res => crop.toBlob(res, 'image/png'));
+      if (!blob){
+        alert('PNG生成に失敗しました。');
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'travelmap_map_' + tsFile() + '.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }finally{
+      try{ document.body.classList.remove('shot-hide'); }catch(_){}
+      try{
+        const tracks = stream ? stream.getTracks() : [];
+        tracks.forEach(t => t.stop());
+      }catch(_){}
+    }
+  }
+
+  if (shotMapBtn) {
+    shotMapBtn.onclick = () => { captureMapShot(); };
+  }
 // Service Worker（PWA）
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js');

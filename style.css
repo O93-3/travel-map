@@ -143,3 +143,90 @@ select,button,input{width:180px;margin:2px 0}
   background: rgba(0, 140, 255, 0.22);
   outline: 1px solid rgba(0, 140, 255, 0.35);
 }
+
+
+/* ===== 見た目：色設定を1項目ずつ別段（縦並び）にする ===== */
+#ui label.col{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+}
+#ui label.col > span{
+  display: block;
+}
+/* カラーピッカーは左寄せのまま */
+#ui label.col input[type="color"]{
+  align-self: flex-start;
+}
+
+
+/* ===== UI: スクロール＋折り畳み（details/summary） ===== */
+
+/* メニュー（#ui）が画面外に伸びたら、#ui内だけスクロールさせる */
+#ui{
+  max-height: calc(100dvh - 20px); /* top:10px を考慮 */
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* スクロールバー（WebKit系） */
+#ui::-webkit-scrollbar{ width: 10px; }
+#ui::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.18); border-radius: 10px; }
+
+/* 折り畳みセクション：ui-group を <details> 化 */
+#ui details.ui-group{
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 8px 10px;
+  margin: 10px 0;
+  background: rgba(0,0,0,0.18);
+}
+
+#ui details.ui-group > summary.ui-title{
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  list-style: none; /* 既定のマーカーを消す */
+}
+
+/* 既定の三角（Chrome等）を消す */
+#ui details.ui-group > summary.ui-title::-webkit-details-marker{ display:none; }
+
+/* 自前の三角アイコン */
+#ui details.ui-group > summary.ui-title::before{
+  content: "▸";
+  display: inline-block;
+  opacity: .85;
+  transform: translateY(-1px);
+  transition: transform .15s ease;
+}
+#ui details.ui-group[open] > summary.ui-title::before{
+  transform: rotate(90deg) translateX(1px);
+}
+
+/* 開いているときだけ中身に余白 */
+#ui details.ui-group[open] > :not(summary){
+  margin-top: 10px;
+}
+
+
+/* スクショ注意書き */
+#ui .ui-note{
+  font-size: 12px;
+  opacity: 0.8;
+  line-height: 1.25;
+  margin: 6px 0 2px;
+}
+
+
+/* スクショ撮影中はUI/現在地テロップを隠す */
+body.shot-hide #ui,
+body.shot-hide #currentLocation{
+  display: none !important;
+}
