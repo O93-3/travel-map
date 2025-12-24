@@ -18,6 +18,7 @@
 
   const showLocation      = $('showLocation');
   const currentMarkerSize = $('currentMarkerSize');
+  const pastMarkerColor = $('pastMarkerColor');
   const locFontSize       = $('locFontSize');
   const locFlagSize       = $('locFlagSize');
   const locPadding        = $('locPadding');
@@ -118,79 +119,61 @@
    cities=j
    buildRegion()
    restore()
+  setupCitySearch();
   })
-  
-  
-
   /* ===== 都市検索 ===== */
-  const norm = (s) => (s ?? '')
-    .toString()
-    .trim()
-    .toLowerCase()
-    .normalize('NFKC');
+  const norm=(s)=>(s??'').toString().trim().toLowerCase().normalize('NFKC');
 
   function cityLabel(c){
-    return lang === 'jp' ? (c.name_jp || c.name || '') : (c.name || c.name_jp || '');
+    return lang==='jp' ? (c.name_jp||c.name||'') : (c.name||c.name_jp||'');
   }
-
   function countryLabel(c){
-    return lang === 'jp' ? (c.country_jp || c.country || '') : (c.country || c.country_jp || '');
+    return lang==='jp' ? (c.country_jp||c.country||'') : (c.country||c.country_jp||'');
   }
 
   function buildSearchResults(q){
-    const nq = norm(q);
+    const nq=norm(q);
     if(!nq) return [];
-
     const scored=[];
     for(let i=0;i<cities.length;i++){
       const c=cities[i];
-      const hay=[norm(c.name_jp), norm(c.name), norm(c.country_jp), norm(c.country), norm(c.countryCode)].filter(Boolean);
+      const hay=[norm(c.name_jp),norm(c.name),norm(c.country_jp),norm(c.country),norm(c.countryCode)].filter(Boolean);
       let best=Infinity;
       for(const h of hay){
         if(h.startsWith(nq)) best=Math.min(best,0);
         else if(h.includes(nq)) best=Math.min(best,1);
       }
       if(best!==Infinity){
-        const len=(norm(c.name_jp)||norm(c.name)||'').length;
-        scored.push({i,best,len});
+        const ln=(norm(c.name_jp)||norm(c.name)||'').length;
+        scored.push({i,best,ln});
       }
     }
-    scored.sort((a,b)=>a.best-b.best || a.len-b.len || a.i-b.i);
+    scored.sort((a,b)=>a.best-b.best || a.ln-b.ln || a.i-b.i);
     return scored.slice(0,30).map(x=>x.i);
   }
 
-  function openResults(){
-    cityResults?.classList.add('open');
-  }
-  function closeResults(){
-    cityResults?.classList.remove('open');
-  }
+  function closeResults(){ cityResults?.classList.remove('open'); }
 
   function applyCitySelection(idx){
     const c=cities[idx];
     if(!c) return;
-
-    // region -> country -> city の順に反映（既存ロジックに合わせる）
-    regionSelect.value = c.region;
+    // 既存の連動ロジックに合わせる（region/countryを更新して citySelect を再構築）
+    regionSelect.value=c.region;
     regionSelect.onchange?.();
 
-    countrySelect.value = c.country;
+    countrySelect.value=c.country;
     countrySelect.onchange?.();
 
-    // 現行実装では citySelect.value は city.name
-    citySelect.value = c.name;
+    // 現行実装：citySelect の value は city.name
+    citySelect.value=c.name;
 
-    if(citySearch) citySearch.value = cityLabel(c);
+    if(citySearch) citySearch.value=cityLabel(c);
   }
 
-  function renderResults(indices){
+  function renderResults(indices, activePos = -1){
     if(!cityResults) return;
     cityResults.innerHTML='';
-
-    if(!indices.length){
-      closeResults();
-      return;
-    }
+    if(!indices.length){ closeResults(); return; }
 
     const frag=document.createDocumentFragment();
     for(const idx of indices){
@@ -199,68 +182,141 @@
       item.className='city-item';
       item.dataset.idx=String(idx);
 
+      const activeIdx = (activePos >= 0 && activePos < indices.length) ? indices[activePos] : -1;
+      if (idx === activeIdx) item.classList.add('active');
+
       const main=document.createElement('div');
       main.className='main';
       main.textContent=cityLabel(c);
 
       const sub=document.createElement('div');
       sub.className='sub';
-      sub.textContent=`${countryLabel(c)} / ${c.region || ''}${c.countryCode ? ' / ' + c.countryCode : ''}`;
+      sub.textContent=`${countryLabel(c)} / ${c.region||''}${c.countryCode?(' / '+c.countryCode):''}`;
 
       item.appendChild(main);
       item.appendChild(sub);
 
-      item.addEventListener('click',()=>{
+      // 候補クリック＝即『追加＋移動』。blurより先に確実に拾うため mousedown で処理
+      item.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         applyCitySelection(Number(item.dataset.idx));
-        closeResults();
-      });
-
-      item.addEventListener('dblclick',()=>{
-        applyCitySelection(Number(item.dataset.idx));
+        if (citySearch) citySearch.value = '';
         closeResults();
         addBtn?.click();
       });
 
       frag.appendChild(item);
     }
-
     cityResults.appendChild(frag);
-    openResults();
+    cityResults.classList.add('open');
   }
 
-  function setupCitySearch(){
-    if(!citySearch || !cityResults) return;
+ 
 
-    citySearch.addEventListener('input',()=>{
-      renderResults(buildSearchResults(citySearch.value));
+  // --- City Search: event binding + global exposure（配信向け最適版） ---
+  let __citySearchBound = false;
+
+  function setupCitySearch() {
+    // Console から `typeof setupCitySearch` が function になるように公開
+    window.setupCitySearch = setupCitySearch;
+
+    if (__citySearchBound) return;
+    if (!citySearch || !cityResults) {
+      console.warn('[TravelMap] citySearch / cityResults が見つかりません');
+      return;
+    }
+
+    // blur のタイミングで閉じてクリックが食われる問題を避ける
+    let closeTimer = null;
+    const scheduleClose = () => {
+      if (closeTimer) clearTimeout(closeTimer);
+      closeTimer = setTimeout(() => { closeTimer = null; closeResults(); }, 250);
+    };
+    const cancelClose = () => {
+      if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+    };
+
+    let lastIndices = [];
+    let activePos = -1;
+
+    const runNow = () => {
+      const q = citySearch.value || '';
+      lastIndices = buildSearchResults(q);
+      activePos = lastIndices.length ? 0 : -1;
+      renderResults(lastIndices, activePos);
+    };
+
+    // デバウンス（入力が止まってから検索）
+    let t = null;
+    const run = () => {
+      if (t) clearTimeout(t);
+      t = setTimeout(() => {
+        t = null;
+        runNow();
+      }, 120);
+    };
+
+    citySearch.addEventListener('input', run);
+
+    // 結果リスト上の操作中は close をキャンセル
+    cityResults.addEventListener('mousedown', () => { cancelClose(); });
+
+    // キーボード：↑↓で候補移動 / Enterで確定（追加＋移動） / Escで閉じる
+    citySearch.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeResults();
+        citySearch.blur();
+        return;
+      }
+      if (!lastIndices.length) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        activePos = Math.min(activePos + 1, lastIndices.length - 1);
+        renderResults(lastIndices, activePos);
+        return;
+      }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        activePos = Math.max(activePos - 1, 0);
+        renderResults(lastIndices, activePos);
+        return;
+      }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const cityIdx = lastIndices[activePos];
+        if (cityIdx == null) return;
+        applyCitySelection(cityIdx);
+        if (citySearch) citySearch.value = '';
+        closeResults();
+        addBtn?.click();
+        return;
+      }
     });
 
-    citySearch.addEventListener('focus',()=>{
-      renderResults(buildSearchResults(citySearch.value));
+    // フォーカス離脱で閉じる（クリックを邪魔しないよう遅延）
+    citySearch.addEventListener('blur', scheduleClose);
+
+    // フォーカス時：入力が残っていれば再表示
+    citySearch.addEventListener('focus', () => {
+      cancelClose();
+      if ((citySearch.value || '').trim()) runNow();
     });
 
-    citySearch.addEventListener('keydown',(e)=>{
-      if(e.key==='Escape'){ closeResults(); return; }
-      if(e.key!=='Enter') return;
-
-      const first=cityResults.querySelector('.city-item');
-      if(!first) return;
-
-      const idx=Number(first.dataset.idx);
-      applyCitySelection(idx);
+    // 外側クリックで閉じる
+    document.addEventListener('mousedown', (e) => {
+      const wrap = citySearch.closest('.searchWrap');
+      if (wrap && wrap.contains(e.target)) return;
       closeResults();
-
-      if(e.shiftKey) addBtn?.click();
-      e.preventDefault();
     });
 
-    document.addEventListener('click',(e)=>{
-      if(e.target===citySearch) return;
-      if(cityResults.contains(e.target)) return;
-      closeResults();
-    });
+    __citySearchBound = true;
+    console.log('[setupCitySearch] ready');
   }
 
+  // 先に window へ公開（cities 読み込み前でも typeof で見える）
+  window.setupCitySearch = setupCitySearch;
 function buildRegion(){
    regionSelect.innerHTML=`<option value="">${lang==="jp"?"地域":"Region"}</option>`
    ;[...new Set(cities.map(c=>c.region))].forEach(r=>{
@@ -309,7 +365,7 @@ function buildRegion(){
   let curSize=localStorage.getItem("curSize")||20
   let pastColor=localStorage.getItem("pastColor")||"#ff3333"
   currentMarkerSize.value=curSize
-  pastMarkerColor.value=pastColor
+  if (pastMarkerColor) pastMarkerColor.value=pastColor
   
   function addCurrent(city){
    if(currentMarker)map.removeLayer(currentMarker)
@@ -391,6 +447,9 @@ function buildRegion(){
   addBtn.onclick=()=>{
    const city=cities.find(c=>c.name===citySelect.value)
    if(!city)return
+
+   // 直前と同じ都市なら追加しない（配信中の連打事故防止）
+   if(history.length && history.at(-1)?.name===city.name) return
    if(markers.length)markers.at(-1).setStyle({fillColor:pastColor})
    const m=L.circleMarker([city.lat,city.lon],{
     radius:8,color:"#fff",fillColor:"#00ffff",fillOpacity:1
@@ -435,7 +494,7 @@ function buildRegion(){
    if(history.length)addCurrent(history.at(-1))
   }
   
-  pastMarkerColor.oninput=e=>{
+  if (pastMarkerColor) pastMarkerColor.oninput=e=>{
    pastColor=e.target.value
    localStorage.setItem("pastColor",pastColor)
    markers.slice(0,-1).forEach(m=>m.setStyle({fillColor:pastColor}))
@@ -529,6 +588,8 @@ function buildRegion(){
    }))
   }
   
+  
+
   
   // 他タブ/別プロセス（OBS等）で travelHistory が更新されたら反映する
   window.addEventListener("storage", (e) => {
