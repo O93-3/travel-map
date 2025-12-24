@@ -105,3 +105,44 @@ select,button,input{width:180px;margin:2px 0}
 
 /* 配信モード：UIを消す（JSは body に streaming を付ける） */
 .streaming #ui{display:none;}
+
+
+/* ===== 都市検索 ===== */
+.searchWrap{ position:relative; }
+#citySearch{
+  width:100% !important;
+  box-sizing:border-box;
+  height:34px;
+  padding:6px 10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.35);
+  color:#fff;
+  outline:none;
+}
+#citySearch::placeholder{ color: rgba(255,255,255,0.65); }
+.city-results{
+  position:absolute;
+  left:0; right:0;
+  top:38px;
+  z-index:1300;
+  display:none;
+  max-height:240px;
+  overflow:auto;
+  background: rgba(10,10,10,0.92);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+}
+.city-results.open{ display:block; }
+.city-item{
+  padding:8px 10px;
+  cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.city-item:last-child{ border-bottom:none; }
+.city-item:hover{ background: rgba(255,255,255,0.08); }
+.city-item .main{ font-weight:800; }
+.city-item .sub{ font-size:12px; opacity:0.85; margin-top:2px; }
+.city-results::-webkit-scrollbar{ width:10px; }
+.city-results::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.18); border-radius:10px; }

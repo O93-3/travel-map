@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Travel Map</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="./vendor/leaflet/leaflet.css"/><!-- Leaflet (local) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <link rel="stylesheet" href="./style.css"/>
 
 
@@ -25,6 +25,11 @@
   <!-- ===== ルート（訪問履歴） ===== -->
   <div class="ui-group">
     <div class="ui-title">ルート</div>
+
+    <div class="searchWrap">
+      <input id="citySearch" type="text" placeholder="都市 / 国を検索…" autocomplete="off">
+      <div id="cityResults" class="city-results" aria-label="検索結果"></div>
+    </div>
 
     <select id="regionSelect"><option value="">地域</option></select>
     <select id="countrySelect"><option value="">国</option></select>
@@ -102,7 +107,7 @@
 
 <div id="map"></div>
 
-<script src="./vendor/leaflet/leaflet.js"></script><!-- Leaflet (local) -->"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="./app.js" defer></script>
 </body>
 </html>

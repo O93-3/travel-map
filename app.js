@@ -9,6 +9,8 @@
   const regionSelect   = $('regionSelect');
   const countrySelect  = $('countrySelect');
   const citySelect     = $('citySelect');
+  const citySearch    = $('citySearch');
+  const cityResults   = $('cityResults');
   const addBtn         = $('addBtn');
   const undoBtn        = $('undoBtn');
   const langBtn        = $('langBtn');
@@ -118,7 +120,148 @@
    restore()
   })
   
-  function buildRegion(){
+  
+
+  /* ===== 都市検索 ===== */
+  const norm = (s) => (s ?? '')
+    .toString()
+    .trim()
+    .toLowerCase()
+    .normalize('NFKC');
+
+  function cityLabel(c){
+    return lang === 'jp' ? (c.name_jp || c.name || '') : (c.name || c.name_jp || '');
+  }
+
+  function countryLabel(c){
+    return lang === 'jp' ? (c.country_jp || c.country || '') : (c.country || c.country_jp || '');
+  }
+
+  function buildSearchResults(q){
+    const nq = norm(q);
+    if(!nq) return [];
+
+    const scored=[];
+    for(let i=0;i<cities.length;i++){
+      const c=cities[i];
+      const hay=[norm(c.name_jp), norm(c.name), norm(c.country_jp), norm(c.country), norm(c.countryCode)].filter(Boolean);
+      let best=Infinity;
+      for(const h of hay){
+        if(h.startsWith(nq)) best=Math.min(best,0);
+        else if(h.includes(nq)) best=Math.min(best,1);
+      }
+      if(best!==Infinity){
+        const len=(norm(c.name_jp)||norm(c.name)||'').length;
+        scored.push({i,best,len});
+      }
+    }
+    scored.sort((a,b)=>a.best-b.best || a.len-b.len || a.i-b.i);
+    return scored.slice(0,30).map(x=>x.i);
+  }
+
+  function openResults(){
+    cityResults?.classList.add('open');
+  }
+  function closeResults(){
+    cityResults?.classList.remove('open');
+  }
+
+  function applyCitySelection(idx){
+    const c=cities[idx];
+    if(!c) return;
+
+    // region -> country -> city の順に反映（既存ロジックに合わせる）
+    regionSelect.value = c.region;
+    regionSelect.onchange?.();
+
+    countrySelect.value = c.country;
+    countrySelect.onchange?.();
+
+    // 現行実装では citySelect.value は city.name
+    citySelect.value = c.name;
+
+    if(citySearch) citySearch.value = cityLabel(c);
+  }
+
+  function renderResults(indices){
+    if(!cityResults) return;
+    cityResults.innerHTML='';
+
+    if(!indices.length){
+      closeResults();
+      return;
+    }
+
+    const frag=document.createDocumentFragment();
+    for(const idx of indices){
+      const c=cities[idx];
+      const item=document.createElement('div');
+      item.className='city-item';
+      item.dataset.idx=String(idx);
+
+      const main=document.createElement('div');
+      main.className='main';
+      main.textContent=cityLabel(c);
+
+      const sub=document.createElement('div');
+      sub.className='sub';
+      sub.textContent=`${countryLabel(c)} / ${c.region || ''}${c.countryCode ? ' / ' + c.countryCode : ''}`;
+
+      item.appendChild(main);
+      item.appendChild(sub);
+
+      item.addEventListener('click',()=>{
+        applyCitySelection(Number(item.dataset.idx));
+        closeResults();
+      });
+
+      item.addEventListener('dblclick',()=>{
+        applyCitySelection(Number(item.dataset.idx));
+        closeResults();
+        addBtn?.click();
+      });
+
+      frag.appendChild(item);
+    }
+
+    cityResults.appendChild(frag);
+    openResults();
+  }
+
+  function setupCitySearch(){
+    if(!citySearch || !cityResults) return;
+
+    citySearch.addEventListener('input',()=>{
+      renderResults(buildSearchResults(citySearch.value));
+    });
+
+    citySearch.addEventListener('focus',()=>{
+      renderResults(buildSearchResults(citySearch.value));
+    });
+
+    citySearch.addEventListener('keydown',(e)=>{
+      if(e.key==='Escape'){ closeResults(); return; }
+      if(e.key!=='Enter') return;
+
+      const first=cityResults.querySelector('.city-item');
+      if(!first) return;
+
+      const idx=Number(first.dataset.idx);
+      applyCitySelection(idx);
+      closeResults();
+
+      if(e.shiftKey) addBtn?.click();
+      e.preventDefault();
+    });
+
+    document.addEventListener('click',(e)=>{
+      if(e.target===citySearch) return;
+      if(cityResults.contains(e.target)) return;
+      closeResults();
+    });
+  }
+
+function buildRegion(){
    regionSelect.innerHTML=`<option value="">${lang==="jp"?"地域":"Region"}</option>`
    ;[...new Set(cities.map(c=>c.region))].forEach(r=>{
     const label=lang==="jp"?r:r
