@@ -249,4 +249,14 @@
     "lat": 53.4084,
     "lon": -2.9916
   },
-{ "region": "Europe", "country": "UK", "country_jp": "イギリス", "countryCode": "GB", "name": "Manchester", "name_jp": "マンチェスター", "lat": 53.4808, "lon": -2.2426 }
+  {
+    "region": "Europe",
+    "country": "UK",
+    "country_jp": "イギリス",
+    "countryCode": "GB",
+    "name": "Manchester",
+    "name_jp": "マンチェスター",
+    "lat": 53.4808,
+    "lon": -2.2426
+  }
+]
