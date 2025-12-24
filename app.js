@@ -124,6 +124,26 @@
   /* ===== 都市検索 ===== */
   const norm=(s)=>(s??'').toString().trim().toLowerCase().normalize('NFKC');
 
+  // 現在地（＝最後に追加した都市。なければ地図中心）に近い順で優先するための距離計算
+  function getRefLatLon(){
+    if (history && history.length){
+      const last = history.at(-1);
+      if (last && typeof last.lat === 'number' && typeof last.lon === 'number') return {lat:last.lat, lon:last.lon};
+    }
+    const c = map.getCenter();
+    return {lat:c.lat, lon:c.lng};
+  }
+
+  function haversineKm(lat1, lon1, lat2, lon2){
+    const R = 6371;
+    const toRad = (d) => d * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
+    return 2 * R * Math.asin(Math.sqrt(a));
+  }
+
+
   function cityLabel(c){
     return lang==='jp' ? (c.name_jp||c.name||'') : (c.name||c.name_jp||'');
   }
@@ -133,6 +153,7 @@
 
   function buildSearchResults(q){
     const nq=norm(q);
+    const ref=getRefLatLon();
     if(!nq) return [];
     const scored=[];
     for(let i=0;i<cities.length;i++){
@@ -145,10 +166,11 @@
       }
       if(best!==Infinity){
         const ln=(norm(c.name_jp)||norm(c.name)||'').length;
-        scored.push({i,best,ln});
+        const dist = (ref && typeof c.lat==='number' && typeof c.lon==='number') ? haversineKm(ref.lat, ref.lon, c.lat, c.lon) : Infinity;
+      scored.push({i,best,ln,dist});
       }
     }
-    scored.sort((a,b)=>a.best-b.best || a.ln-b.ln || a.i-b.i);
+    scored.sort((a,b)=> a.best-b.best || a.dist-b.dist || a.ln-b.ln || a.i-b.i);
     return scored.slice(0,30).map(x=>x.i);
   }
 
@@ -218,7 +240,6 @@
   let __citySearchBound = false;
 
   function setupCitySearch() {
-    // Console から `typeof setupCitySearch` が function になるように公開
     window.setupCitySearch = setupCitySearch;
 
     if (__citySearchBound) return;
@@ -295,10 +316,8 @@
       }
     });
 
-    // フォーカス離脱で閉じる（クリックを邪魔しないよう遅延）
     citySearch.addEventListener('blur', scheduleClose);
 
-    // フォーカス時：入力が残っていれば再表示
     citySearch.addEventListener('focus', () => {
       cancelClose();
       if ((citySearch.value || '').trim()) runNow();
@@ -315,7 +334,6 @@
     console.log('[setupCitySearch] ready');
   }
 
-  // 先に window へ公開（cities 読み込み前でも typeof で見える）
   window.setupCitySearch = setupCitySearch;
 function buildRegion(){
    regionSelect.innerHTML=`<option value="">${lang==="jp"?"地域":"Region"}</option>`
