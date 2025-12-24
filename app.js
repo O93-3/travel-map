@@ -15,7 +15,6 @@
   const undoBtn        = $('undoBtn');
   const langBtn        = $('langBtn');
   const streamBtn      = $('streamBtn');
-  const shotMapBtn   = $('shotMapBtn');
 
   const showLocation      = $('showLocation');
   const currentMarkerSize = $('currentMarkerSize');
@@ -652,98 +651,6 @@ showLocation.onchange=e=>{
     if (history.length) addCurrent(history.at(-1));
   });
 
-
-
-/* ===== 地図スクショ（UI自動非表示→即保存） ===== */
-  function tsFile(){
-    const d = new Date();
-    const pad = (n) => String(n).padStart(2,'0');
-    return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'_'+pad(d.getHours())+pad(d.getMinutes())+pad(d.getSeconds());
-  }
-
-  async function captureMapShot(){
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia){
-      alert('このブラウザではスクショ機能が使えません（getDisplayMedia非対応）。');
-      return;
-    }
-    const mapEl = document.getElementById('map');
-    if (!mapEl){
-      alert('地図要素(#map)が見つかりません。');
-      return;
-    }
-    let stream;
-    // UIを消してから撮影（終了後に戻す）
-    try{ document.body.classList.add('shot-hide'); }catch(_){}
-    await new Promise(r => setTimeout(r, 80));
-    try{
-      stream = await navigator.mediaDevices.getDisplayMedia({
-        video: { frameRate: 30 },
-        audio: false,
-        preferCurrentTab: true,
-        selfBrowserSurface: 'include',
-        surfaceSwitching: 'exclude'
-      });
-    }catch(e){
-      // キャンセルなど
-      return;
-    }
-    try{
-      const video = document.createElement('video');
-      video.srcObject = stream;
-      video.muted = true;
-      await video.play();
-      await new Promise(r => requestAnimationFrame(r));
-      const vw = video.videoWidth || 0;
-      const vh = video.videoHeight || 0;
-      if (!vw || !vh){
-        alert('スクショ取得に失敗しました（映像サイズ取得不可）。');
-        return;
-      }
-      const fullCanvas = document.createElement('canvas');
-      fullCanvas.width = vw;
-      fullCanvas.height = vh;
-      const ctx = fullCanvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, vw, vh);
-
-      // map領域だけ切り抜く
-      const rect = mapEl.getBoundingClientRect();
-      const scaleX = vw / window.innerWidth;
-      const scaleY = vh / window.innerHeight;
-      const sx = Math.max(0, Math.floor(rect.left * scaleX));
-      const sy = Math.max(0, Math.floor(rect.top * scaleY));
-      const sw = Math.max(1, Math.floor(rect.width * scaleX));
-      const sh = Math.max(1, Math.floor(rect.height * scaleY));
-      const crop = document.createElement('canvas');
-      crop.width = sw;
-      crop.height = sh;
-      const cctx = crop.getContext('2d');
-      cctx.drawImage(fullCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
-
-      const blob = await new Promise(res => crop.toBlob(res, 'image/png'));
-      if (!blob){
-        alert('PNG生成に失敗しました。');
-        return;
-      }
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'travelmap_map_' + tsFile() + '.png';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    }finally{
-      try{ document.body.classList.remove('shot-hide'); }catch(_){}
-      try{
-        const tracks = stream ? stream.getTracks() : [];
-        tracks.forEach(t => t.stop());
-      }catch(_){}
-    }
-  }
-
-  if (shotMapBtn) {
-    shotMapBtn.onclick = () => { captureMapShot(); };
-  }
 // Service Worker（PWA）
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js');

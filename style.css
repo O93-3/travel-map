@@ -214,19 +214,3 @@ select,button,input{width:180px;margin:2px 0}
 #ui details.ui-group[open] > :not(summary){
   margin-top: 10px;
 }
-
-
-/* スクショ注意書き */
-#ui .ui-note{
-  font-size: 12px;
-  opacity: 0.8;
-  line-height: 1.25;
-  margin: 6px 0 2px;
-}
-
-
-/* スクショ撮影中はUI/現在地テロップを隠す */
-body.shot-hide #ui,
-body.shot-hide #currentLocation{
-  display: none !important;
-}
