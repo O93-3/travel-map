@@ -13,7 +13,6 @@
   const cityResults   = $('cityResults');
   const addBtn         = $('addBtn');
   const undoBtn        = $('undoBtn');
-  const resetHistoryBtn = $('resetHistoryBtn');
   const langBtn        = $('langBtn');
   const streamBtn      = $('streamBtn');
   const exportBtn      = $('exportBtn');
@@ -344,12 +343,25 @@
   function renderRoHistory(){
     if(!roHistory) return;
     roHistory.innerHTML='';
+
+    const s = getOverlaySettings();
     const total = Array.isArray(history)?history.length:0;
-    const pastRaw = total>1 ? history.slice(0,-1).slice(-5).reverse() : [];
+
+    // 過去5件は「FROM(=直前)」を除外して表示：NOW, FROM, HIS(過去5) で被り防止
+    const pastRaw = (total>2) ? history.slice(0,-2).slice(-5).reverse() : [];
     const past = pastRaw.concat(Array(Math.max(0, 5-pastRaw.length)).fill(null));
+
+    // 文字サイズ（overlayFontSizeに追従）
+    const baseFs = Math.max(12, Math.min(40, Number(s.size)||18));
+    const cityFs = Math.max(11, baseFs-5);
+    const countryFs = Math.max(10, baseFs-7);
+
+    // 国旗サイズ（overlayFlagSizeに追従）
+    const flagBase = Math.max(12, Math.min(192, Number(s.flagSize)||22));
 
     const frag=document.createDocumentFragment();
     let lastCC = null;
+
     past.slice(0,5).forEach((c, i)=>{
       const row=document.createElement('div');
       row.className='ro-h-item';
@@ -361,8 +373,15 @@
 
       const img=document.createElement('img');
       if(c && c.countryCode){
-        const f = flagCdnUrl(c.countryCode, 24);
-        if(f){ img.src=f.url; img.style.display='block'; } else { img.style.display='none'; }
+        const f = flagCdnUrl(c.countryCode, flagBase);
+        if(f){
+          img.src=f.url;
+          img.style.width=f.w+'px';
+          img.style.height=f.h+'px';
+          img.style.display='block';
+        }else{
+          img.style.display='none';
+        }
       }else{
         img.style.display='none';
       }
@@ -375,15 +394,17 @@
 
       const city=document.createElement('div');
       city.className='ro-h-city';
+      city.style.fontSize=cityFs+'px';
       city.textContent=c?cityLabel(c):'-';
       wrap.appendChild(city);
 
       const cc = c && c.countryCode ? String(c.countryCode).toUpperCase() : null;
       const showCountry = c && cc && cc !== lastCC;
-      lastCC = cc || lastCC;
+      if(cc) lastCC = cc;
       if(showCountry){
         const country=document.createElement('div');
         country.className='ro-h-country';
+        country.style.fontSize=countryFs+'px';
         country.textContent=countryLabel(c) + (cc?(' ('+cc+')'):'');
         wrap.appendChild(country);
       }
@@ -484,7 +505,10 @@ function updateRouteOverlay(){
   }
   
   // 変更：レイヤーは作るが、「ONのときだけ」addTo(map)する
-  fetch("countries.geojson").then(r=>r.json()).then(j=>{
+  (async()=>{
+      try{ return await fetch('countries.geojson'); }
+      catch(_){ return await fetch('countries.geo.json'); }
+    })().then(r=>r.json()).then(j=>{
     borderLayer = L.geoJSON(j,{
       style:f=>({
         color:"#fff",
