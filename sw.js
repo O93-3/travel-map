@@ -1,7 +1,6 @@
-// TravelMap Service Worker (GitHub Pages stable v8)
-// Notes: external CDN assets (Leaflet) are not cached here; same-origin only.
-
-const CACHE_NAME = 'travel-map-v9';
+// TravelMap Service Worker (stable)
+// Notes: external CDN assets (Leaflet) are not cached; same-origin only.
+const CACHE_NAME = 'travel-map-v21';
 const FILES = [
   './',
   './index.html',
@@ -9,14 +8,20 @@ const FILES = [
   './app.js',
   './cities.json',
   './manifest.json',
- './icon.png',
-  './sw.js',
-  './js/extensions.js'
+  './icon.png',
+  './extensions.js',
+  './sw.js'
 ];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES).catch(() => {})));
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) =>
+      cache.addAll(FILES).catch((err) => {
+        console.warn('[SW] cache addAll failed', err);
+      })
+    )
+  );
 });
 
 self.addEventListener('activate', (event) => {
@@ -32,8 +37,7 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) {
-    event.respondWith(fetch(req));
-    return;
+    return; // let browser handle
   }
 
   event.respondWith((async () => {

@@ -57,7 +57,9 @@
 
     <ol id="routeList" class="route-list" style="margin:10px 0 0;padding-left:18px"></ol>
 
-    <div class="hint" style="margin-top:10px">Ctrl+Enter=追加 / Ctrl+Z=戻す / Delete=削除 / Alt+↑↓=並び替え / I=挿入 / S=配信 / R=オーバーレイ</div>
+    <button type="button" id="resetHistoryBtn" class="danger" style="margin-top:10px;width:100%">ルート履歴をリセット</button>
+
+    <div class="hint" style="margin-top:10px">Ctrl+Z=戻す / S=配信 / R=ルートオーバーレイ</div>
 
   </details>
 
@@ -116,6 +118,11 @@
     <summary class="ui-title">見た目</summary>    <label class="col">
       <span>ルート線の色</span>
       <input type="color" id="lineColor">
+
+    <label class="col">
+      <span>ルート線の太さ</span>
+      <input type="range" id="lineWeight" min="1" max="12" value="4">
+    </label>
     </label>
 
     <label class="col">
@@ -132,9 +139,9 @@
   </details>
 
 
-  <!-- ===== OBS ===== -->
+  <!-- ===== ルートオーバーレイ ===== -->
   <details class="ui-group" id="group-obs" open>
-    <summary class="ui-title">OBS</summary>
+    <summary class="ui-title">ルートオーバーレイ</summary>
 
     <label class="row">
       <input type="checkbox" id="showRouteOverlay" checked>
@@ -205,12 +212,20 @@
       </div>
     </div>
   </div>
+
+    <div class="ro-block" data-ro="hist">
+      <div class="ro-line1">
+        <span class="ro-label">HIS</span>
+        <span class="ro-country" style="font-weight:900">過去5件</span>
+      </div>
+      <div id="roHistory" class="ro-history"></div>
+    </div>
 </div>
 
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="app.js" defer></script>
-  <script src=\"./js/extensions.js\" defer></script>
+  <script src="./extensions.js" defer></script>
 </body>
 </html>

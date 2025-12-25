@@ -13,6 +13,7 @@
   const cityResults   = $('cityResults');
   const addBtn         = $('addBtn');
   const undoBtn        = $('undoBtn');
+  const resetHistoryBtn = $('resetHistoryBtn');
   const langBtn        = $('langBtn');
   const streamBtn      = $('streamBtn');
   const exportBtn      = $('exportBtn');
@@ -23,6 +24,7 @@
   const currentMarkerSize = $('currentMarkerSize');
   const pastMarkerColor = $('pastMarkerColor');
   const lineColorInput = $('lineColor');
+  const lineWeightInput = $('lineWeight');
   const currentMarkerColorInput = $('currentMarkerColor');
   const locFontSize       = $('locFontSize');
   const locFlagSize       = $('locFlagSize');
@@ -49,6 +51,7 @@
   const roFromCity = $('roFromCity');
   const roFromCountry = $('roFromCountry');
   const roFromFlag = $('roFromFlag');
+  const roHistory = $('roHistory');
 
   const showRouteOverlay = $('showRouteOverlay');
   const overlayFontSize = $('overlayFontSize');
@@ -338,7 +341,61 @@
     return {url:`https://flagcdn.com/${w}x${h}/${String(code).toLowerCase()}.png`,w,h};
   }
 
-  function updateRouteOverlay(){
+  function renderRoHistory(){
+    if(!roHistory) return;
+    roHistory.innerHTML='';
+    const total = Array.isArray(history)?history.length:0;
+    const pastRaw = total>1 ? history.slice(0,-1).slice(-5).reverse() : [];
+    const past = pastRaw.concat(Array(Math.max(0, 5-pastRaw.length)).fill(null));
+
+    const frag=document.createDocumentFragment();
+    let lastCC = null;
+    past.slice(0,5).forEach((c, i)=>{
+      const row=document.createElement('div');
+      row.className='ro-h-item';
+
+      const no=document.createElement('div');
+      no.className='ro-h-no';
+      no.textContent=String(i+1);
+      row.appendChild(no);
+
+      const img=document.createElement('img');
+      if(c && c.countryCode){
+        const f = flagCdnUrl(c.countryCode, 24);
+        if(f){ img.src=f.url; img.style.display='block'; } else { img.style.display='none'; }
+      }else{
+        img.style.display='none';
+      }
+      row.appendChild(img);
+
+      const wrap=document.createElement('div');
+      wrap.style.display='flex';
+      wrap.style.flexDirection='column';
+      wrap.style.minWidth='0';
+
+      const city=document.createElement('div');
+      city.className='ro-h-city';
+      city.textContent=c?cityLabel(c):'-';
+      wrap.appendChild(city);
+
+      const cc = c && c.countryCode ? String(c.countryCode).toUpperCase() : null;
+      const showCountry = c && cc && cc !== lastCC;
+      lastCC = cc || lastCC;
+      if(showCountry){
+        const country=document.createElement('div');
+        country.className='ro-h-country';
+        country.textContent=countryLabel(c) + (cc?(' ('+cc+')'):'');
+        wrap.appendChild(country);
+      }
+
+      row.appendChild(wrap);
+      frag.appendChild(row);
+    });
+
+    roHistory.appendChild(frag);
+  }
+
+function updateRouteOverlay(){
     if(!routeOverlay) return;
     const s=getOverlaySettings();
     const shouldShow=s.show && (!s.onlyStream || isStreaming());
@@ -369,6 +426,7 @@
       else { roFromFlag.style.display='none'; }
     }
 
+    renderRoHistory();
     // font sizes
     const p=Math.max(12,Math.min(40,s.size));
     if(roNowCity) roNowCity.style.fontSize=p+'px';
@@ -461,8 +519,10 @@
   let history=JSON.parse(localStorage.getItem("travelHistory"))||[]
   let markers=[],points=[]
   let lineColor=localStorage.getItem("lineColor")||"#ff3333"
+  let lineWeight = Number(localStorage.getItem('lineWeight')||'4');
+  if(!Number.isFinite(lineWeight) || lineWeight<1) lineWeight = 4;
   let line=L.polyline([], {
-   color:lineColor, weight:4
+    color: lineColor, weight: lineWeight
   }).addTo(map)
   
   let lang="jp"
@@ -741,6 +801,7 @@ function buildRegion(){
   currentMarkerSize.value=curSize
   if (pastMarkerColor) pastMarkerColor.value=pastColor
   if (lineColorInput) lineColorInput.value=lineColor
+  if (lineWeightInput) lineWeightInput.value=String(lineWeight)
   if (currentMarkerColorInput) currentMarkerColorInput.value=currentColor
   
   function addCurrent(city){
@@ -900,6 +961,13 @@ function buildRegion(){
    lineColor=e.target.value
    localStorage.setItem("lineColor",lineColor)
    try{ line.setStyle({color:lineColor}) }catch(_){}
+
+  if(lineWeightInput) lineWeightInput.oninput = (e)=>{
+    lineWeight = Number(e.target.value);
+    if(!Number.isFinite(lineWeight) || lineWeight<1) lineWeight = 4;
+    try{ localStorage.setItem('lineWeight', String(lineWeight)); }catch(_){}
+    try{ line.setStyle({weight: lineWeight}); }catch(_){}
+  };
   }
 
   if (currentMarkerColorInput) currentMarkerColorInput.oninput=e=>{
@@ -1058,6 +1126,24 @@ showLocation.onchange = (e) => {
     if (history.length) addCurrent(history.at(-1));
   });
 
+
+
+  // ===== Route history reset =====
+  if(resetHistoryBtn){
+    resetHistoryBtn.onclick = ()=>{
+      const total = Array.isArray(history)?history.length:0;
+      if(!total){
+        alert(lang==='jp'?'履歴は空です。':'History is empty.');
+        return;
+      }
+      const msg = (lang==='jp') ? `ルート履歴をすべて削除しますか？（${total}件）` : `Clear all route history? (${total} items)`;
+      if(!confirm(msg)) return;
+      try{ history = []; localStorage.setItem('travelHistory','[]'); }catch(_){ }
+      try{ setInsertMode(null); }catch(_){ }
+      try{ setSelectedRouteIndex(null); }catch(_){ }
+      try{ rebuildRouteVisual(); }catch(_){ try{ syncRouteUI(); }catch(__){} }
+    };
+  }
 // Service Worker（PWA）
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js');
@@ -1133,12 +1219,7 @@ showLocation.onchange = (e) => {
         }catch(_){ }
         return;
       }
-      if((e.ctrlKey||e.metaKey) && e.key === 'Enter'){
-        e.preventDefault();
-        addBtn?.click();
-        return;
-      }
-      if((e.ctrlKey||e.metaKey) && k === 'z'){
+if((e.ctrlKey||e.metaKey) && k === 'z'){
         e.preventDefault();
         undoBtn?.click();
         return;
