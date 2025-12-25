@@ -12,7 +12,6 @@
 
 <body>
 
-
 <div id="safeFrame" aria-hidden="true">
   <div class="sf" data-sf="title"></div>
   <div class="sf" data-sf="action"></div>
@@ -50,6 +49,16 @@
 
     <button id="addBtn">追加</button>
     <button id="undoBtn">ひとつ戻す</button>
+
+    <div class="routeEditBar" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px">
+      <span style="font-size:12px;opacity:.85">挿入モード: <strong id="insertModeLabel">OFF</strong></span>
+      <button id="cancelInsertBtn" type="button">挿入解除</button>
+    </div>
+
+    <ol id="routeList" class="route-list" style="margin:10px 0 0;padding-left:18px"></ol>
+
+    <div class="hint" style="margin-top:10px">Ctrl+Enter=追加 / Ctrl+Z=戻す / Delete=削除 / Alt+↑↓=並び替え / I=挿入 / S=配信 / R=オーバーレイ</div>
+
   </details>
 
   <!-- ===== 地図表示 ===== -->
@@ -143,7 +152,7 @@
     </label>
 
     <label class="row">
-      <input type="checkbox" id="overlayOnlyInStream" checked>
+      <input type="checkbox" id="overlayOnlyInStream">
       <span>配信モード中のみ表示</span>
     </label>
 
@@ -152,7 +161,7 @@
       <span>セーフフレーム表示（見切れ確認）</span>
     </label>
 
-    <div class="hint">キー: S=配信モード / R=オーバーレイ / ESC=解除</div>
+    <div class="hint">キー: S=配信モード / R=オーバーレイ / ESC=解除（入力中はショートカット無効）</div>
   </details>
 
 </div>

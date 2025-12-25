@@ -32,7 +32,15 @@
   const flag = $('flag');
   const currentText = $('currentText');
 
-  // ===== OBS Route Overlay =====
+  // ===== Route Editor / OBS Overlay refs =====
+  const routeList = $('routeList');
+  const insertModeLabel = $('insertModeLabel');
+  const cancelInsertBtn = $('cancelInsertBtn');
+
+  const streamIndicator = $('streamIndicator');
+  const safeFrame = $('safeFrame');
+  const obsSafeFrame = $('obsSafeFrame');
+
   const routeOverlay = $('routeOverlay');
   const roProgress = $('roProgress');
   const roNowCity = $('roNowCity');
@@ -41,13 +49,12 @@
   const roFromCity = $('roFromCity');
   const roFromCountry = $('roFromCountry');
   const roFromFlag = $('roFromFlag');
+
   const showRouteOverlay = $('showRouteOverlay');
   const overlayFontSize = $('overlayFontSize');
   const overlayFlagSize = $('overlayFlagSize');
   const overlayOnlyInStream = $('overlayOnlyInStream');
-  const obsSafeFrame = $('obsSafeFrame');
-  const safeFrame = $('safeFrame');
-  const streamIndicator = $('streamIndicator');
+
   const lockLocationBtn = $('lockLocationBtn');
 
   // ===== 状態の保存/読み込み（エクスポート/インポート） =====
@@ -125,145 +132,235 @@
   /* ===== 基本 ===== */
   const map=L.map("map",{zoomControl:false}).setView([20,0],2)
 
-  // ===== OBS / Overlay =====
-  function isStreaming(){
-    return document.body.classList.contains('streaming');
-  }
+  // ==============================
+  // OBS / Route Overlay / Route Editor (B)
+  // ==============================
+  function isStreaming(){ return document.body.classList.contains('streaming'); }
 
   function setStreaming(on){
     const streamingOn = !!on;
     document.body.classList.toggle('streaming', streamingOn);
-    if(streamIndicator){
-      streamIndicator.style.display = streamingOn ? 'inline-flex' : 'none';
-    }
-    // 配信中は地図操作をロック
+    if(streamIndicator){ streamIndicator.style.display = streamingOn ? 'inline-flex' : 'none'; }
+    // 配信中は地図操作をロック（誤操作防止）
     try{
       if(streamingOn){
-        map.dragging.disable();
-        map.scrollWheelZoom.disable();
-        map.doubleClickZoom.disable();
-        map.boxZoom.disable();
-        map.keyboard.disable();
-        map.touchZoom.disable();
+        map.dragging.disable(); map.scrollWheelZoom.disable(); map.doubleClickZoom.disable();
+        map.boxZoom.disable(); map.keyboard.disable(); map.touchZoom.disable();
       }else{
-        map.dragging.enable();
-        map.scrollWheelZoom.enable();
-        map.doubleClickZoom.enable();
-        map.boxZoom.enable();
-        map.keyboard.enable();
-        map.touchZoom.enable();
+        map.dragging.enable(); map.scrollWheelZoom.enable(); map.doubleClickZoom.enable();
+        map.boxZoom.enable(); map.keyboard.enable(); map.touchZoom.enable();
       }
     }catch(_){/* ignore */}
-
     updateObsUI();
   }
 
-  // currentLocation lock
-  const LOC_LOCK_KEY = 'locLocked';
-  let locLocked = (localStorage.getItem(LOC_LOCK_KEY) === '1');
-  function updateLocLockBtn(){
-    if(!lockLocationBtn) return;
-    lockLocationBtn.textContent = locLocked ? '位置ロック: ON' : '位置ロック: OFF';
+  // --- current location lock ---
+  const LOC_LOCK_KEY='locLocked';
+  let locLocked=(localStorage.getItem(LOC_LOCK_KEY)==='1');
+  function updateLocLockBtn(){ if(lockLocationBtn) lockLocationBtn.textContent = locLocked ? '位置ロック: ON' : '位置ロック: OFF'; }
+  if(lockLocationBtn){ updateLocLockBtn(); lockLocationBtn.onclick=()=>{ locLocked=!locLocked; localStorage.setItem(LOC_LOCK_KEY, locLocked?'1':'0'); updateLocLockBtn(); }; }
+
+  // --- Route Editor state ---
+  let insertAfterIndex=null;
+  let selectedRouteIndex=null;
+
+  function setInsertMode(afterIndex){
+    insertAfterIndex=(afterIndex===null||afterIndex===undefined)?null:Number(afterIndex);
+    if(insertModeLabel) insertModeLabel.textContent = (insertAfterIndex===null)?'OFF':`ON（${insertAfterIndex+1}番の次）`;
   }
-  if(lockLocationBtn){
-    updateLocLockBtn();
-    lockLocationBtn.onclick = () => {
-      locLocked = !locLocked;
-      localStorage.setItem(LOC_LOCK_KEY, locLocked ? '1' : '0');
-      updateLocLockBtn();
-    };
+  function setSelectedRouteIndex(idx){
+    selectedRouteIndex=(idx===null||idx===undefined)?null:Number(idx);
+    if(routeList){
+      routeList.querySelectorAll('li.route-item').forEach(li=>{
+        const i=Number(li.dataset.index);
+        li.classList.toggle('selected', Number.isFinite(selectedRouteIndex) && i===selectedRouteIndex);
+      });
+    }
   }
 
-  const OVERLAY_SHOW_KEY = 'overlayShow';
-  const OVERLAY_SIZE_KEY = 'overlayFontSize';
-  const OVERLAY_FLAG_KEY = 'overlayFlagSize';
-  const OVERLAY_ONLY_STREAM_KEY = 'overlayOnlyInStream';
-  const SAFE_FRAME_KEY = 'obsSafeFrame';
+  function renderRouteList(){
+    if(!routeList) return;
+    routeList.innerHTML='';
+    if(!history || history.length===0){
+      const li=document.createElement('li');
+      li.style.opacity='0.75'; li.style.fontSize='12px';
+      li.textContent=(lang==='jp')?'まだルートがありません。都市を追加してください。':'No route yet. Add a city.';
+      routeList.appendChild(li);
+      return;
+    }
+    for(let i=0;i<history.length;i++){
+      const c=history[i];
+      const li=document.createElement('li');
+      li.className='route-item';
+      if(Number.isFinite(selectedRouteIndex) && selectedRouteIndex===i) li.classList.add('selected');
+      li.dataset.index=String(i);
+      li.draggable=true;
+      li.innerHTML=`
+        <div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap">
+          <span style="font-weight:700">${i+1}.</span>
+          <span style="font-weight:650">${cityLabel(c)}</span>
+          <span style="opacity:.75;font-size:12px">${countryLabel(c)}${c.countryCode?` (${String(c.countryCode).toUpperCase()})`:''}</span>
+        </div>
+        <div class="route-actions" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+          <button type="button" data-act="goto">移動</button>
+          <button type="button" data-act="insert">挿入</button>
+          <button type="button" data-act="up">↑</button>
+          <button type="button" data-act="down">↓</button>
+          <button type="button" data-act="del">削除</button>
+        </div>`;
+      routeList.appendChild(li);
+    }
+  }
+
+  function rebuildRouteVisual(){
+    try{ markers.forEach(m=>map.removeLayer(m)); }catch(_){ }
+    markers=[]; points=[];
+    try{ line.setLatLngs([]); }catch(_){ }
+    if(currentMarker){ try{ map.removeLayer(currentMarker); }catch(_){ } currentMarker=null; }
+    restore();
+    renderRouteList();
+    updateObsUI();
+  }
+
+  function deleteHistoryAt(idx){
+    if(!history||idx<0||idx>=history.length) return;
+    const c=history[idx];
+    if(!confirm(`${idx+1}番「${cityLabel(c)}」を削除しますか？`)) return;
+    history.splice(idx,1);
+    localStorage.setItem('travelHistory', JSON.stringify(history));
+    setInsertMode(null);
+    rebuildRouteVisual();
+  }
+
+  function moveHistory(from,to){
+    if(!history) return;
+    if(to<0||to>=history.length||from===to) return;
+    const [c]=history.splice(from,1);
+    history.splice(to,0,c);
+    localStorage.setItem('travelHistory', JSON.stringify(history));
+    setInsertMode(null);
+    rebuildRouteVisual();
+    setSelectedRouteIndex(to);
+  }
+
+  function enableRouteDnD(){
+    if(!routeList || enableRouteDnD._bound) return; enableRouteDnD._bound=true;
+    let dragIndex=null;
+    routeList.addEventListener('dragstart',(e)=>{
+      const li=e.target.closest('li.route-item'); if(!li) return;
+      dragIndex=Number(li.dataset.index);
+      e.dataTransfer.effectAllowed='move';
+      e.dataTransfer.setData('text/plain', String(dragIndex));
+      li.style.opacity='0.6';
+    });
+    routeList.addEventListener('dragend',(e)=>{ const li=e.target.closest('li.route-item'); if(li) li.style.opacity=''; });
+    routeList.addEventListener('dragover',(e)=>{ if(dragIndex===null) return; e.preventDefault(); });
+    routeList.addEventListener('drop',(e)=>{
+      e.preventDefault();
+      const li=e.target.closest('li.route-item'); if(!li) return;
+      const dropIndex=Number(li.dataset.index);
+      const from=dragIndex; dragIndex=null;
+      if(!Number.isFinite(from)||!Number.isFinite(dropIndex)||from===dropIndex) return;
+      moveHistory(from, dropIndex);
+    });
+    routeList.addEventListener('mousedown',(e)=>{
+      const li=e.target.closest('li.route-item'); if(!li) return;
+      if(e.target.closest('button')) return;
+      const idx=Number(li.dataset.index);
+      if(Number.isFinite(idx)) setSelectedRouteIndex(idx);
+    });
+    routeList.addEventListener('click',(e)=>{
+      const btn=e.target.closest('button'); if(!btn) return;
+      const li=e.target.closest('li.route-item'); if(!li) return;
+      const idx=Number(li.dataset.index);
+      setSelectedRouteIndex(idx);
+      const act=btn.dataset.act;
+      if(act==='goto'){ const c=history[idx]; if(c) map.setView([c.lat,c.lon],5); }
+      if(act==='insert') setInsertMode(idx);
+      if(act==='up') moveHistory(idx, idx-1);
+      if(act==='down') moveHistory(idx, idx+1);
+      if(act==='del') deleteHistoryAt(idx);
+    });
+  }
+
+  if(cancelInsertBtn) cancelInsertBtn.onclick=()=>setInsertMode(null);
+
+  // --- Overlay settings & renderer ---
+  const OVERLAY_SHOW_KEY='overlayShow';
+  const OVERLAY_SIZE_KEY='overlayFontSize';
+  const OVERLAY_FLAG_KEY='overlayFlagSize';
+  const OVERLAY_ONLY_STREAM_KEY='overlayOnlyInStream';
+  const SAFE_FRAME_KEY='obsSafeFrame';
 
   function getOverlaySettings(){
-    const show = (localStorage.getItem(OVERLAY_SHOW_KEY) ?? '1') === '1';
-    const size = Number(localStorage.getItem(OVERLAY_SIZE_KEY) ?? '18');
-    const flagSize = Number(localStorage.getItem(OVERLAY_FLAG_KEY) ?? '22');
-    const onlyStream = (localStorage.getItem(OVERLAY_ONLY_STREAM_KEY) ?? '1') === '1';
-    const safe = (localStorage.getItem(SAFE_FRAME_KEY) ?? '0') === '1';
-    return { show, size, flagSize, onlyStream, safe };
+    const show=(localStorage.getItem(OVERLAY_SHOW_KEY)??'1')==='1';
+    const size=Number(localStorage.getItem(OVERLAY_SIZE_KEY)??'18');
+    const flagSize=Number(localStorage.getItem(OVERLAY_FLAG_KEY)??'22');
+    const onlyStream=(localStorage.getItem(OVERLAY_ONLY_STREAM_KEY)??'0')==='1';
+    const safe=(localStorage.getItem(SAFE_FRAME_KEY)??'0')==='1';
+    return {show,size,flagSize,onlyStream,safe};
   }
 
   function applyOverlaySettingsToUI(){
-    const s = getOverlaySettings();
-    if(showRouteOverlay) showRouteOverlay.checked = s.show;
-    if(overlayFontSize) overlayFontSize.value = String(s.size);
-    if(overlayFlagSize) overlayFlagSize.value = String(s.flagSize);
-    if(overlayOnlyInStream) overlayOnlyInStream.checked = s.onlyStream;
-    if(obsSafeFrame) obsSafeFrame.checked = s.safe;
-    if(safeFrame) safeFrame.style.display = s.safe ? 'block' : 'none';
+    const s=getOverlaySettings();
+    // 初回はUIデフォルトを採用
+    if(localStorage.getItem(OVERLAY_ONLY_STREAM_KEY)===null && overlayOnlyInStream){
+      localStorage.setItem(OVERLAY_ONLY_STREAM_KEY, overlayOnlyInStream.checked?'1':'0');
+    }
+    if(showRouteOverlay) showRouteOverlay.checked=s.show;
+    if(overlayFontSize) overlayFontSize.value=String(s.size);
+    if(overlayFlagSize) overlayFlagSize.value=String(s.flagSize);
+    if(overlayOnlyInStream) overlayOnlyInStream.checked=s.onlyStream;
+    if(obsSafeFrame) obsSafeFrame.checked=s.safe;
+    if(safeFrame) safeFrame.style.display=s.safe?'block':'none';
   }
 
-  function setOverlayVisible(visible){
-    if(!routeOverlay) return;
-    routeOverlay.style.display = visible ? 'block' : 'none';
-  }
-
-  function setOverlayFontSize(px){
-    const p = Math.max(12, Math.min(40, Number(px) || 18));
-    if(roNowCity) roNowCity.style.fontSize = p + 'px';
-    if(roFromCity) roFromCity.style.fontSize = Math.max(12, p-2) + 'px';
-  }
-
-  function flagCdnUrl(code, height){
-    if(!code) return '';
-    const AVAILABLE_H = [12,15,18,21,24,27,30,36,42,45,48,54,60,63,72,81,84,90,96,108,120,144,168,192];
-    const base = Number(height) || 24;
-    const h = AVAILABLE_H.reduce((best, v) => (Math.abs(v - base) < Math.abs(best - base) ? v : best), AVAILABLE_H[0]);
-    const w = Math.round(h * 4 / 3);
-    return { url: `https://flagcdn.com/${w}x${h}/${String(code).toLowerCase()}.png`, w, h };
+  function flagCdnUrl(code,height){
+    if(!code) return null;
+    const H=[12,15,18,21,24,27,30,36,42,45,48,54,60,63,72,81,84,90,96,108,120,144,168,192];
+    const base=Number(height)||24;
+    const h=H.reduce((best,v)=>(Math.abs(v-base)<Math.abs(best-base)?v:best),H[0]);
+    const w=Math.round(h*4/3);
+    return {url:`https://flagcdn.com/${w}x${h}/${String(code).toLowerCase()}.png`,w,h};
   }
 
   function updateRouteOverlay(){
     if(!routeOverlay) return;
-    const s = getOverlaySettings();
-    const shouldShow = s.show && (!s.onlyStream || isStreaming());
-    setOverlayVisible(shouldShow);
-    setOverlayFontSize(s.size);
+    const s=getOverlaySettings();
+    const shouldShow=s.show && (!s.onlyStream || isStreaming());
+    routeOverlay.style.display=shouldShow?'block':'none';
 
-    const total = Array.isArray(history) ? history.length : 0;
-    const nowIdx = total ? total - 1 : 0;
-    const now = total ? history[nowIdx] : null;
-    const from = (total >= 2) ? history[total - 2] : null;
+    const total=Array.isArray(history)?history.length:0;
+    const nowIdx=total?total-1:0;
+    const now=total?history[nowIdx]:null;
+    const from=(total>=2)?history[total-2]:null;
 
-    if(roProgress) roProgress.textContent = `${total ? (nowIdx+1) : 0}/${total}`;
+    if(roProgress) roProgress.textContent=`${total?(nowIdx+1):0}/${total}`;
 
     // NOW
-    if(roNowCity) roNowCity.textContent = now ? cityLabel(now) : '-';
-    if(roNowCountry) roNowCountry.textContent = now ? countryLabel(now) + ((now.countryCode) ? ` (${String(now.countryCode).toUpperCase()})` : '') : '-';
+    if(roNowCity) roNowCity.textContent=now?cityLabel(now):'-';
+    if(roNowCountry) roNowCountry.textContent=now?countryLabel(now)+(now.countryCode?` (${String(now.countryCode).toUpperCase()})`:''):'-';
     if(roNowFlag){
-      const code = now?.countryCode ? String(now.countryCode).toLowerCase() : '';
-      if(code){
-        const f = flagCdnUrl(code, s.flagSize);
-        roNowFlag.src = f.url;
-        roNowFlag.style.width = f.w + 'px';
-        roNowFlag.style.height = f.h + 'px';
-        roNowFlag.style.display = 'block';
-      }else{
-        roNowFlag.style.display = 'none';
-      }
+      const f=now?.countryCode?flagCdnUrl(now.countryCode,s.flagSize):null;
+      if(f){ roNowFlag.src=f.url; roNowFlag.style.width=f.w+'px'; roNowFlag.style.height=f.h+'px'; roNowFlag.style.display='block'; }
+      else { roNowFlag.style.display='none'; }
     }
 
     // FROM
-    if(roFromCity) roFromCity.textContent = from ? cityLabel(from) : '-';
-    if(roFromCountry) roFromCountry.textContent = from ? countryLabel(from) + ((from.countryCode) ? ` (${String(from.countryCode).toUpperCase()})` : '') : '-';
+    if(roFromCity) roFromCity.textContent=from?cityLabel(from):'-';
+    if(roFromCountry) roFromCountry.textContent=from?countryLabel(from)+(from.countryCode?` (${String(from.countryCode).toUpperCase()})`:''):'-';
     if(roFromFlag){
-      const code = from?.countryCode ? String(from.countryCode).toLowerCase() : '';
-      if(code){
-        const f = flagCdnUrl(code, s.flagSize);
-        roFromFlag.src = f.url;
-        roFromFlag.style.width = f.w + 'px';
-        roFromFlag.style.height = f.h + 'px';
-        roFromFlag.style.display = 'block';
-      }else{
-        roFromFlag.style.display = 'none';
-      }
+      const f=from?.countryCode?flagCdnUrl(from.countryCode,s.flagSize):null;
+      if(f){ roFromFlag.src=f.url; roFromFlag.style.width=f.w+'px'; roFromFlag.style.height=f.h+'px'; roFromFlag.style.display='block'; }
+      else { roFromFlag.style.display='none'; }
     }
+
+    // font sizes
+    const p=Math.max(12,Math.min(40,s.size));
+    if(roNowCity) roNowCity.style.fontSize=p+'px';
+    if(roNowCountry) roNowCountry.style.fontSize=Math.max(12,p-5)+'px';
+    if(roFromCity) roFromCity.style.fontSize=Math.max(12,p-2)+'px';
+    if(roFromCountry) roFromCountry.style.fontSize=Math.max(12,p-6)+'px';
   }
 
   function updateObsUI(){
@@ -280,16 +377,19 @@
   }
   
   let currentTile
-  const savedStyle=localStorage.getItem("mapStyle")||"bw"
-  currentTile=tileLayers[savedStyle]
-  currentTile.addTo(map)
-  mapStyleSelect.value=savedStyle
+  let savedStyle = localStorage.getItem("mapStyle") || "bw";
+  if (!tileLayers[savedStyle]) savedStyle = "bw";
+  currentTile = tileLayers[savedStyle];
+  currentTile.addTo(map);
+  mapStyleSelect.value = savedStyle;
+  localStorage.setItem("mapStyle", savedStyle)
   
   mapStyleSelect.onchange=e=>{
-   map.removeLayer(currentTile)
-   currentTile=tileLayers[e.target.value]
+   if(currentTile) map.removeLayer(currentTile)
+   const v=e.target.value
+   currentTile = tileLayers[v] || tileLayers.bw
    currentTile.addTo(map)
-   localStorage.setItem("mapStyle",e.target.value)
+   localStorage.setItem("mapStyle", tileLayers[v] ? v : "bw")
   }
   
   
@@ -357,8 +457,10 @@
    cities=j
    buildRegion()
    restore()
-   updateObsUI();
-   setupCitySearch();
+    if(typeof renderRouteList==='function') renderRouteList();
+    if(typeof enableRouteDnD==='function') enableRouteDnD();
+    if(typeof updateObsUI==='function') updateObsUI();
+    setupCitySearch();
   })
   /* ===== 都市検索 ===== */
   const norm=(s)=>(s??'').toString().trim().toLowerCase().normalize('NFKC');
@@ -615,7 +717,6 @@ function buildRegion(){
     if(countrySelect.value) countrySelect.onchange()
    }
    if(history.length) updateCurrent(history.at(-1))
-   updateObsUI();
   }
   
   /* ===== マーカー ===== */
@@ -706,9 +807,19 @@ function buildRegion(){
   
   /* ===== 追加/戻す ===== */
   addBtn.onclick=()=>{
-   const city=cities.find(c=>c.name===citySelect.value)
-   if(!city)return
+    const city=cities.find(c=>c.name===citySelect.value)
+    if(!city)return
 
+    // 挿入モードONの場合：指定位置に挿入
+    if(typeof insertAfterIndex !== 'undefined' && insertAfterIndex !== null){
+      const pos=Math.max(0, Math.min(insertAfterIndex+1, history.length));
+      history.splice(pos, 0, city);
+      localStorage.setItem('travelHistory', JSON.stringify(history));
+      if(typeof setInsertMode==='function') setInsertMode(null);
+      if(typeof rebuildRouteVisual==='function') rebuildRouteVisual();
+      map.setView([city.lat, city.lon], 5);
+      return;
+    }
    // 直前と同じ都市なら追加しない（配信中の連打事故防止）
    if(history.length && history.at(-1)?.name===city.name) return
    if(markers.length)markers.at(-1).setStyle({fillColor:pastColor})
@@ -732,9 +843,10 @@ function buildRegion(){
    points.pop()
    line.setLatLngs(points)
    if(history.length)addCurrent(history.at(-1))
-    updateObsUI();
+    if(typeof renderRouteList==='function') renderRouteList();
+    if(typeof updateObsUI==='function') updateObsUI();
   }
-  
+
   function restore(){
    history.forEach((c,i)=>{
     const m=L.circleMarker([c.lat,c.lon],{
@@ -779,79 +891,95 @@ function buildRegion(){
    // 現在地マーカー（脈動）も更新
    if(history.length) addCurrent(history.at(-1))
   }
-showLocation.onchange=e=>{
+showLocation.onchange = (e) => {
+    // 現在地テロップ表示/非表示
+    currentLocation.style.display = e.target.checked ? 'flex' : 'none';
+  };
 
+  // ===== OBS controls wiring =====
+  // ※ showLocation の変更イベントの外で一度だけ設定する（UI操作が効かないバグ防止）
+  if (showRouteOverlay) {
+    showRouteOverlay.onchange = (e) => {
+      localStorage.setItem(OVERLAY_SHOW_KEY, e.target.checked ? '1' : '0');
+      updateObsUI();
+    };
+  }
+  if (overlayFontSize) {
+    overlayFontSize.oninput = (e) => {
+      localStorage.setItem(OVERLAY_SIZE_KEY, String(e.target.value));
+      updateObsUI();
+    };
+  }
+  if (overlayFlagSize) {
+    overlayFlagSize.oninput = (e) => {
+      localStorage.setItem(OVERLAY_FLAG_KEY, String(e.target.value));
+      updateObsUI();
+    };
+  }
+  if (overlayOnlyInStream) {
+    overlayOnlyInStream.onchange = (e) => {
+      localStorage.setItem(OVERLAY_ONLY_STREAM_KEY, e.target.checked ? '1' : '0');
+      updateObsUI();
+    };
+  }
+  if (obsSafeFrame) {
+    obsSafeFrame.onchange = (e) => {
+      localStorage.setItem(SAFE_FRAME_KEY, e.target.checked ? '1' : '0');
+      updateObsUI();
+    };
+  }
 
-  // OBS overlay controls
+  // 初期状態をUIへ反映
   updateObsUI();
 
-  if(showRouteOverlay){
-    showRouteOverlay.onchange = (e) => { localStorage.setItem(OVERLAY_SHOW_KEY, e.target.checked ? '1' : '0'); updateObsUI(); };
+  /* ===== Global Shortcuts (OBS) ===== */
+  // どの状態でも動く配信向けショートカット（入力中は Alt+ でのみ有効）
+  if (streamBtn) {
+    streamBtn.addEventListener('click', () => {
+      if (typeof setStreaming === 'function') setStreaming(!isStreaming());
+    });
   }
-  if(overlayFontSize){
-    overlayFontSize.oninput = (e) => { localStorage.setItem(OVERLAY_SIZE_KEY, String(e.target.value)); updateObsUI(); };
-  }
-  if(overlayFlagSize){
-    overlayFlagSize.oninput = (e) => { localStorage.setItem(OVERLAY_FLAG_KEY, String(e.target.value)); updateObsUI(); };
-  }
-  if(overlayOnlyInStream){
-    overlayOnlyInStream.onchange = (e) => { localStorage.setItem(OVERLAY_ONLY_STREAM_KEY, e.target.checked ? '1' : '0'); updateObsUI(); };
-  }
-  if(obsSafeFrame){
-    obsSafeFrame.onchange = (e) => { localStorage.setItem(SAFE_FRAME_KEY, e.target.checked ? '1' : '0'); updateObsUI(); };
-  }
-   currentLocation.style.display=e.target.checked?"flex":"none"
-  }
-  
-  streamBtn.onclick=()=>setStreaming(!isStreaming())
-  
-  document.addEventListener("keydown", (e) => {
-    if(e.key === "Escape"){ setStreaming(false); return; }
-    if(e.key.toLowerCase() === 's' && !e.ctrlKey && !e.metaKey && !e.altKey){ setStreaming(!isStreaming()); return; }
-    if(e.key.toLowerCase() === 'r' && !e.ctrlKey && !e.metaKey && !e.altKey){
-      const s = getOverlaySettings();
-      localStorage.setItem(OVERLAY_SHOW_KEY, s.show ? '0' : '1');
-      updateObsUI();
+
+  document.addEventListener('keydown', (e) => {
+    const el = document.activeElement;
+    const tag = el && el.tagName ? el.tagName.toLowerCase() : '';
+    const editing = (tag === 'input' || tag === 'textarea' || tag === 'select' || (el && el.isContentEditable));
+
+    // ESC: 配信モード解除（配信中のみ）
+    if (e.key === 'Escape') {
+      if (typeof isStreaming === 'function' && isStreaming()) {
+        e.preventDefault();
+        if (typeof setStreaming === 'function') setStreaming(false);
+      }
+      return;
+    }
+
+    // 入力中は誤爆防止：Alt+S / Alt+R のみ許可
+    const allowWhileEditing = editing && e.altKey && !e.ctrlKey && !e.metaKey;
+    if (editing && !allowWhileEditing) return;
+
+    const k = (e.key || '').toLowerCase();
+
+    // S: 配信モード切替
+    if (k === 's' && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      if (typeof setStreaming === 'function') setStreaming(!isStreaming());
+      return;
+    }
+
+    // R: オーバーレイ表示切替
+    if (k === 'r' && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      try {
+        const cur = (localStorage.getItem(OVERLAY_SHOW_KEY) ?? '1') === '1';
+        localStorage.setItem(OVERLAY_SHOW_KEY, cur ? '0' : '1');
+        if (typeof updateObsUI === 'function') updateObsUI();
+      } catch (_) {}
       return;
     }
   });
-  
-  
-  /* ===== 現在地表示（サイズ調整） ===== */
-  const locFontKey = "locFontSize";
-  const locFlagKey = "locFlagSize";
-  const locPadKey  = "locPadding";
-  
-  let locFont = parseInt(localStorage.getItem(locFontKey) || "18", 10);
-  let locFlag = parseInt(localStorage.getItem(locFlagKey) || "24", 10);
-  let locPad  = parseInt(localStorage.getItem(locPadKey)  || "10", 10);
-  
-  function applyCurrentLocationStyle(){
-    // テロップ全体
-    currentLocation.style.fontSize = locFont + "px";
-    currentLocation.style.padding  = locPad + "px " + (locPad * 1.8) + "px";
-  
-    // 旗
-    flag.style.width  = locFlag + "px";
-    flag.style.height = Math.round(locFlag * 0.65) + "px"; // 旗っぽい比率
-    flag.style.objectFit = "cover";
-    
-    // テキスト（必要なら個別調整も可能）
-    currentText.style.lineHeight = "1.1";
-  }
-  
-  // UI初期値を反映
-  locFontSize.value = locFont;
-  locFlagSize.value = locFlag;
-  locPadding.value  = locPad;
-  applyCurrentLocationStyle();
-  
-  // 変更イベント
-  locFontSize.oninput = (e) => {
-    locFont = parseInt(e.target.value, 10);
-    localStorage.setItem(locFontKey, String(locFont));
-    applyCurrentLocationStyle();
-  };
+
+
   
   locFlagSize.oninput = (e) => {
     locFlag = parseInt(e.target.value, 10);
@@ -876,6 +1004,7 @@ showLocation.onchange=e=>{
   }
   
   currentLocation.onmousedown=e=>{
+    if(typeof locLocked !== 'undefined' && locLocked) return;
    drag=true
    dx=e.clientX-currentLocation.offsetLeft
    dy=e.clientY-currentLocation.offsetTop

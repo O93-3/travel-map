@@ -1,5 +1,7 @@
-// TravelMap Service Worker (OBS UI + Flags v1)
-const CACHE_NAME = 'travel-map-obs-flags-v1';
+// TravelMap Service Worker (v2)
+// same-origin cache-first + update-in-background
+
+const CACHE_NAME = 'travel-map-v2';
 const FILES = [
   './',
   './index.html',
@@ -7,9 +9,7 @@ const FILES = [
   './app.js',
   './cities.json',
   './manifest.json',
-  './icon.png',
-  './countries.geojson',
-  './countries.geo.json'
+  './sw.js'
 ];
 
 self.addEventListener('install', (event) => {
@@ -20,13 +20,11 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    (async () => {
-      const keys = await caches.keys();
-      await Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : Promise.resolve())));
-      await self.clients.claim();
-    })()
-  );
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : Promise.resolve())));
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener('fetch', (event) => {
@@ -37,20 +35,15 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(fetch(req));
     return;
   }
-
-  event.respondWith(
-    (async () => {
-      const cache = await caches.open(CACHE_NAME);
-      const cached = await cache.match(req);
-
-      const fetchPromise = fetch(req)
-        .then((res) => {
-          if (res && res.ok) cache.put(req, res.clone());
-          return res;
-        })
-        .catch(() => null);
-
-      return cached || (await fetchPromise) || cached;
-    })()
-  );
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    const cached = await cache.match(req);
+    const fetchPromise = fetch(req)
+      .then((res) => {
+        if (res && res.ok) cache.put(req, res.clone());
+        return res;
+      })
+      .catch(() => null);
+    return cached || (await fetchPromise) || cached;
+  })());
 });

@@ -224,44 +224,44 @@ select,button,input{width:180px;margin:2px 0}
 }
 
 
-/* ===== OBS UI OPT ===== */
+
+/* ===== OBS Route Overlay ===== */
+#routeOverlay{position:fixed;right:16px;bottom:16px;z-index:1250;min-width:280px;max-width:42vw;padding:10px 12px;border-radius:14px;background:rgba(0,0,0,0.62);border:1px solid rgba(255,255,255,0.14);box-shadow:0 10px 30px rgba(0,0,0,0.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;display:none}
+#routeOverlay .ro-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+#routeOverlay .ro-title{font-weight:900;letter-spacing:.08em;font-size:12px;opacity:.85}
+#routeOverlay .ro-progress{font-weight:800;font-size:12px;opacity:.85}
+#routeOverlay .ro-main{display:flex;flex-direction:column;gap:10px}
+#routeOverlay .ro-block{display:flex;flex-direction:column;gap:4px}
+#routeOverlay .ro-line1{display:flex;align-items:baseline;gap:10px}
+#routeOverlay .ro-line2{display:flex;align-items:center;gap:8px;opacity:.92}
+#routeOverlay .ro-label{font-weight:900;font-size:11px;opacity:.75;width:44px}
+#routeOverlay .ro-value{font-weight:900;font-size:18px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#routeOverlay .ro-country{font-size:13px;font-weight:800;opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#routeOverlay .ro-flag{width:32px;height:24px;border-radius:4px;object-fit:cover;background:rgba(255,255,255,0.10);display:none}
 
 
-/* Route overlay (country + flag) */
-#routeOverlay .ro-block{ display:flex; flex-direction:column; gap:4px; }
-#routeOverlay .ro-line1{ display:flex; align-items:baseline; gap:10px; }
-#routeOverlay .ro-line2{ display:flex; align-items:center; gap:8px; opacity:.92; }
-#routeOverlay .ro-flag{
-  width: 32px;
-  height: 24px;
-  border-radius: 4px;
-  object-fit: cover;
-  background: rgba(255,255,255,0.10);
-  display: none; /* codeが無い場合はJSで非表示 */
-}
-#routeOverlay .ro-country{
-  font-size: 13px;
-  font-weight: 800;
-  opacity: .92;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+/* ===== Stream Indicator ===== */
+#streamIndicator{position:fixed;top:10px;left:10px;z-index:1200;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.02em;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.14);color:#fff;display:none;user-select:none}
+.streaming #streamIndicator{display:inline-flex;align-items:center;gap:8px}
+#streamIndicator .dot{width:10px;height:10px;border-radius:999px;background:#ff3333;box-shadow:0 0 0 5px rgba(255,51,51,0.18)}
 
-#routeOverlay{
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 1250;
-  min-width: 260px;
-  max-width: 40vw;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: rgba(0,0,0,0.62);
-  border: 1px solid rgba(255,255,255,0.14);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: #fff;
-  display: none;
-}
+
+/* ===== Safe Frame ===== */
+#safeFrame{position:fixed;inset:0;z-index:1240;pointer-events:none;display:none}
+#safeFrame .sf{position:absolute;inset:0;border:2px dashed rgba(255,255,255,0.20);border-radius:10px}
+#safeFrame .sf[data-sf="title"]{inset:5% 5%}
+#safeFrame .sf[data-sf="action"]{inset:10% 10%;border-color:rgba(76,194,255,0.20)}
+
+
+/* ===== Route Editor list ===== */
+#ui .route-list{list-style:decimal;margin:10px 0 0;padding-left:18px}
+#ui .route-item{margin:8px 0;padding:10px 10px;border:1px solid rgba(255,255,255,0.12);border-radius:12px;background:rgba(0,0,0,0.18)}
+#ui .route-item[draggable="true"]{cursor:grab}
+#ui .route-item.selected{outline:2px solid rgba(0,140,255,0.40);background:rgba(0,140,255,0.12)}
+#ui .route-actions button,#ui #cancelInsertBtn,#ui #lockLocationBtn{width:auto !important}
+
+
+/* ===== OBS UI panel width ===== */
+#ui{width:320px;max-width:320px;border-radius:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12)}
+#ui button,#ui select{height:34px}
+#ui .hint{margin-top:8px;font-size:12px;opacity:.85;line-height:1.35}
