@@ -188,6 +188,19 @@
       routeList.appendChild(li);
       return;
     }
+
+
+  // ===== Route/UI Sync (single source of truth) =====
+  function syncRouteUI(){
+    // route list
+    if(typeof renderRouteList==='function'){
+      try{ renderRouteList(); }catch(_){ }
+    }
+    // overlay etc.
+    if(typeof updateObsUI==='function'){
+      try{ updateObsUI(); }catch(_){ }
+    }
+  }
     for(let i=0;i<history.length;i++){
       const c=history[i];
       const li=document.createElement('li');
@@ -220,6 +233,7 @@
     restore();
     renderRouteList();
     updateObsUI();
+    syncRouteUI();
   }
 
   function deleteHistoryAt(idx){
@@ -817,6 +831,7 @@ function buildRegion(){
       localStorage.setItem('travelHistory', JSON.stringify(history));
       if(typeof setInsertMode==='function') setInsertMode(null);
       if(typeof rebuildRouteVisual==='function') rebuildRouteVisual();
+      syncRouteUI();
       map.setView([city.lat, city.lon], 5);
       return;
     }
@@ -832,6 +847,7 @@ function buildRegion(){
    history.push(city)
    localStorage.setItem("travelHistory",JSON.stringify(history))
    addCurrent(city)
+   syncRouteUI();
    map.setView([city.lat,city.lon],5)
   }
   
@@ -845,6 +861,7 @@ function buildRegion(){
    if(history.length)addCurrent(history.at(-1))
     if(typeof renderRouteList==='function') renderRouteList();
     if(typeof updateObsUI==='function') updateObsUI();
+   syncRouteUI();
   }
 
   function restore(){
@@ -859,6 +876,8 @@ function buildRegion(){
    })
    line.setLatLngs(points)
    if(history.length)addCurrent(history.at(-1))
+    // sync UI after restore
+    syncRouteUI();
   }
   
   /* ===== UI ===== */
@@ -932,54 +951,6 @@ showLocation.onchange = (e) => {
   // 初期状態をUIへ反映
   updateObsUI();
 
-  /* ===== Global Shortcuts (OBS) ===== */
-  // どの状態でも動く配信向けショートカット（入力中は Alt+ でのみ有効）
-  if (streamBtn) {
-    streamBtn.addEventListener('click', () => {
-      if (typeof setStreaming === 'function') setStreaming(!isStreaming());
-    });
-  }
-
-  document.addEventListener('keydown', (e) => {
-    const el = document.activeElement;
-    const tag = el && el.tagName ? el.tagName.toLowerCase() : '';
-    const editing = (tag === 'input' || tag === 'textarea' || tag === 'select' || (el && el.isContentEditable));
-
-    // ESC: 配信モード解除（配信中のみ）
-    if (e.key === 'Escape') {
-      if (typeof isStreaming === 'function' && isStreaming()) {
-        e.preventDefault();
-        if (typeof setStreaming === 'function') setStreaming(false);
-      }
-      return;
-    }
-
-    // 入力中は誤爆防止：Alt+S / Alt+R のみ許可
-    const allowWhileEditing = editing && e.altKey && !e.ctrlKey && !e.metaKey;
-    if (editing && !allowWhileEditing) return;
-
-    const k = (e.key || '').toLowerCase();
-
-    // S: 配信モード切替
-    if (k === 's' && !e.ctrlKey && !e.metaKey) {
-      e.preventDefault();
-      if (typeof setStreaming === 'function') setStreaming(!isStreaming());
-      return;
-    }
-
-    // R: オーバーレイ表示切替
-    if (k === 'r' && !e.ctrlKey && !e.metaKey) {
-      e.preventDefault();
-      try {
-        const cur = (localStorage.getItem(OVERLAY_SHOW_KEY) ?? '1') === '1';
-        localStorage.setItem(OVERLAY_SHOW_KEY, cur ? '0' : '1');
-        if (typeof updateObsUI === 'function') updateObsUI();
-      } catch (_) {}
-      return;
-    }
-  });
-
-
   
   locFlagSize.oninput = (e) => {
     locFlag = parseInt(e.target.value, 10);
@@ -994,7 +965,48 @@ showLocation.onchange = (e) => {
   };
   
   
-  /* ===== ドラッグ ===== */
+  
+
+  /* ===== Current Location UI (robust) ===== */
+  (function setupCurrentLocationUI(){
+    const locFontSizeEl = document.getElementById('locFontSize');
+    const locFlagSizeEl = document.getElementById('locFlagSize');
+    const locPaddingEl  = document.getElementById('locPadding');
+    const showLocationEl = document.getElementById('showLocation');
+    const currentLocationEl = document.getElementById('currentLocation');
+    const flagEl = document.getElementById('flag');
+    const currentTextEl = document.getElementById('currentText');
+    if(!locFontSizeEl || !locFlagSizeEl || !locPaddingEl || !showLocationEl || !currentLocationEl || !flagEl || !currentTextEl) return;
+
+    const locFontKey = 'locFontSize';
+    const locFlagKey = 'locFlagSize';
+    const locPadKey  = 'locPadding';
+
+    let locFont = parseInt(localStorage.getItem(locFontKey) || String(locFontSizeEl.value || 18), 10);
+    let locFlag = parseInt(localStorage.getItem(locFlagKey) || String(locFlagSizeEl.value || 24), 10);
+    let locPad  = parseInt(localStorage.getItem(locPadKey)  || String(locPaddingEl.value  || 10), 10);
+
+    function apply(){
+      currentLocationEl.style.display = showLocationEl.checked ? 'flex' : 'none';
+      currentLocationEl.style.fontSize = locFont + 'px';
+      currentLocationEl.style.padding  = locPad + 'px ' + Math.round(locPad * 1.8) + 'px';
+      flagEl.style.width  = locFlag + 'px';
+      flagEl.style.height = Math.round(locFlag * 0.65) + 'px';
+      flagEl.style.objectFit = 'cover';
+      currentTextEl.style.lineHeight = '1.1';
+    }
+
+    locFontSizeEl.value = String(locFont);
+    locFlagSizeEl.value = String(locFlag);
+    locPaddingEl.value  = String(locPad);
+    apply();
+
+    showLocationEl.onchange = () => apply();
+    locFontSizeEl.oninput = (e) => { locFont = parseInt(e.target.value, 10); localStorage.setItem(locFontKey, String(locFont)); apply(); };
+    locFlagSizeEl.oninput = (e) => { locFlag = parseInt(e.target.value, 10); localStorage.setItem(locFlagKey, String(locFlag)); apply(); };
+    locPaddingEl.oninput  = (e) => { locPad  = parseInt(e.target.value, 10); localStorage.setItem(locPadKey,  String(locPad));  apply(); };
+  })();
+/* ===== ドラッグ ===== */
   let drag=false,dx,dy
   const pos=JSON.parse(localStorage.getItem("locUI"))
   if(pos){
@@ -1050,4 +1062,246 @@ showLocation.onchange = (e) => {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js');
   }
+
+
+  /* ===== STABILIZER_V1 ===== */
+  // 目的：
+  // - ルートリストが追加/挿入/戻すで即更新されない問題を根絶
+  // - 配信モード（streamBtn/Sキー）とオーバーレイ（Rキー）を確実に復旧
+  // - 現在地UI（文字/旗/パディング）を確実に復旧
+
+  // --- Route list renderer（この定義を最後に置き、壊れた旧定義を上書き） ---
+  function renderRouteList(){
+    if(!routeList) return;
+    routeList.innerHTML = '';
+
+    const list = Array.isArray(history) ? history : [];
+    if(list.length === 0){
+      const li = document.createElement('li');
+      li.style.opacity = '0.75';
+      li.style.fontSize = '12px';
+      li.textContent = (lang === 'jp') ? 'まだルートがありません。都市を追加してください。' : 'No route yet. Add a city.';
+      routeList.appendChild(li);
+      return;
+    }
+
+    for(let i=0;i<list.length;i++){
+      const c = list[i];
+      const li = document.createElement('li');
+      li.className = 'route-item';
+      li.dataset.index = String(i);
+      li.draggable = true;
+      if(Number.isFinite(selectedRouteIndex) && selectedRouteIndex === i) li.classList.add('selected');
+
+      const title = (typeof cityLabel === 'function') ? cityLabel(c) : (c?.name ?? '-');
+      const country = (typeof countryLabel === 'function') ? countryLabel(c) : (c?.country ?? '-');
+      const cc = c?.countryCode ? String(c.countryCode).toUpperCase() : '';
+
+      li.innerHTML = `
+        <div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap">
+          <span style="font-weight:800">${i+1}.</span>
+          <span style="font-weight:750">${title}</span>
+          <span style="opacity:.75;font-size:12px">${country}${cc?` (${cc})`:''}</span>
+        </div>
+        <div class="route-actions" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+          <button type="button" data-act="goto">移動</button>
+          <button type="button" data-act="insert">挿入</button>
+          <button type="button" data-act="up">↑</button>
+          <button type="button" data-act="down">↓</button>
+          <button type="button" data-act="del">削除</button>
+        </div>
+      `;
+
+      routeList.appendChild(li);
+    }
+  }
+
+  // --- Single source of truth for UI updates ---
+  function syncRouteUI(){
+    try{ renderRouteList(); }catch(_){ }
+    try{ if(typeof updateObsUI === 'function') updateObsUI(); }catch(_){ }
+  }
+
+  // bind route list interactions once
+  function bindRouteListOnce(){
+    if(!routeList) return;
+    if(routeList.dataset.bound === '1') return;
+    routeList.dataset.bound = '1';
+
+    // select on click
+    routeList.addEventListener('mousedown', (e) => {
+      const li = e.target.closest('li.route-item');
+      if(!li) return;
+      if(e.target.closest('button')) return;
+      const idx = Number(li.dataset.index);
+      if(Number.isFinite(idx) && typeof setSelectedRouteIndex === 'function'){
+        setSelectedRouteIndex(idx);
+      }
+    });
+
+    // actions
+    routeList.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      const li = e.target.closest('li.route-item');
+      if(!li) return;
+      const idx = Number(li.dataset.index);
+      if(!Number.isFinite(idx)) return;
+      if(typeof setSelectedRouteIndex === 'function') setSelectedRouteIndex(idx);
+
+      const act = btn.dataset.act;
+      if(act === 'goto'){
+        const c = history[idx];
+        if(c && map) map.setView([c.lat, c.lon], 5);
+      }
+      if(act === 'insert' && typeof setInsertMode === 'function') setInsertMode(idx);
+      if(act === 'up' && typeof moveHistory === 'function') moveHistory(idx, idx-1);
+      if(act === 'down' && typeof moveHistory === 'function') moveHistory(idx, idx+1);
+      if(act === 'del' && typeof deleteHistoryAt === 'function') deleteHistoryAt(idx);
+
+      // after any action
+      syncRouteUI();
+    });
+
+    // drag & drop: use existing enableRouteDnD if available
+    if(typeof enableRouteDnD === 'function'){
+      try{ enableRouteDnD(); }catch(_){ }
+    }
+  }
+
+  // --- wrap add/undo handlers to always sync ---
+  (function wrapButtons(){
+    if(addBtn && !addBtn.dataset.wrapSync){
+      addBtn.dataset.wrapSync = '1';
+      const old = addBtn.onclick;
+      addBtn.onclick = (ev) => {
+        try{ if(old) old(ev); }finally{ syncRouteUI(); }
+      };
+    }
+    if(undoBtn && !undoBtn.dataset.wrapSync){
+      undoBtn.dataset.wrapSync = '1';
+      const old = undoBtn.onclick;
+      undoBtn.onclick = (ev) => {
+        try{ if(old) old(ev); }finally{ syncRouteUI(); }
+      };
+    }
+  })();
+
+  // --- Streaming button + global shortcuts ---
+  (function setupStreamingAndShortcuts(){
+    if(streamBtn && !streamBtn.dataset.bound){
+      streamBtn.dataset.bound = '1';
+      streamBtn.addEventListener('click', () => {
+        if(typeof setStreaming === 'function') setStreaming(!isStreaming());
+      });
+    }
+
+    if(document.body.dataset.shortcutsBound === '1') return;
+    document.body.dataset.shortcutsBound = '1';
+
+    document.addEventListener('keydown', (e) => {
+      const el = document.activeElement;
+      const tag = el && el.tagName ? el.tagName.toLowerCase() : '';
+      const editing = (tag === 'input' || tag === 'textarea' || tag === 'select' || (el && el.isContentEditable));
+
+      // ESC: 配信モード解除（配信中のみ）
+      if(e.key === 'Escape'){
+        if(typeof isStreaming === 'function' && isStreaming()){
+          e.preventDefault();
+          if(typeof setStreaming === 'function') setStreaming(false);
+        }
+        return;
+      }
+
+      // 入力中は誤爆防止：Alt+S / Alt+R のみ許可
+      const allowWhileEditing = editing && e.altKey && !e.ctrlKey && !e.metaKey;
+      if(editing && !allowWhileEditing) return;
+
+      const k = (e.key || '').toLowerCase();
+
+      // S: 配信モード切替
+      if(k === 's' && !e.ctrlKey && !e.metaKey){
+        e.preventDefault();
+        if(typeof setStreaming === 'function') setStreaming(!isStreaming());
+        return;
+      }
+
+      // R: オーバーレイ表示切替
+      if(k === 'r' && !e.ctrlKey && !e.metaKey){
+        e.preventDefault();
+        try{
+          const cur = (localStorage.getItem(OVERLAY_SHOW_KEY) ?? '1') === '1';
+          localStorage.setItem(OVERLAY_SHOW_KEY, cur ? '0' : '1');
+          if(typeof updateObsUI === 'function') updateObsUI();
+        }catch(_){ }
+        return;
+      }
+
+      // Ctrl+Enter で追加
+      if((e.ctrlKey || e.metaKey) && e.key === 'Enter'){
+        e.preventDefault();
+        if(addBtn) addBtn.click();
+        return;
+      }
+
+      // Ctrl+Z で戻す
+      if((e.ctrlKey || e.metaKey) && k === 'z'){
+        e.preventDefault();
+        if(undoBtn) undoBtn.click();
+        return;
+      }
+    });
+  })();
+
+  // --- Current location UI robust ---
+  (function setupCurrentLocationUI(){
+    if(document.body.dataset.locUiBound === '1') return;
+    document.body.dataset.locUiBound = '1';
+
+    const locFontSizeEl = document.getElementById('locFontSize');
+    const locFlagSizeEl = document.getElementById('locFlagSize');
+    const locPaddingEl  = document.getElementById('locPadding');
+    const showLocationEl = document.getElementById('showLocation');
+    const currentLocationEl = document.getElementById('currentLocation');
+    const flagEl = document.getElementById('flag');
+    const currentTextEl = document.getElementById('currentText');
+
+    if(!locFontSizeEl || !locFlagSizeEl || !locPaddingEl || !showLocationEl || !currentLocationEl || !flagEl || !currentTextEl) return;
+
+    const locFontKey = 'locFontSize';
+    const locFlagKey = 'locFlagSize';
+    const locPadKey  = 'locPadding';
+
+    let locFont = parseInt(localStorage.getItem(locFontKey) || String(locFontSizeEl.value || 18), 10);
+    let locFlag = parseInt(localStorage.getItem(locFlagKey) || String(locFlagSizeEl.value || 24), 10);
+    let locPad  = parseInt(localStorage.getItem(locPadKey)  || String(locPaddingEl.value  || 10), 10);
+
+    function apply(){
+      currentLocationEl.style.display = showLocationEl.checked ? 'flex' : 'none';
+      currentLocationEl.style.fontSize = locFont + 'px';
+      currentLocationEl.style.padding  = locPad + 'px ' + Math.round(locPad * 1.8) + 'px';
+      flagEl.style.width  = locFlag + 'px';
+      flagEl.style.height = Math.round(locFlag * 0.65) + 'px';
+      flagEl.style.objectFit = 'cover';
+      currentTextEl.style.lineHeight = '1.1';
+    }
+
+    // restore toggle state
+    const showSaved = localStorage.getItem('showLocation');
+    if(showSaved !== null) showLocationEl.checked = (showSaved === '1');
+
+    locFontSizeEl.value = String(locFont);
+    locFlagSizeEl.value = String(locFlag);
+    locPaddingEl.value  = String(locPad);
+    apply();
+
+    showLocationEl.onchange = (e) => { localStorage.setItem('showLocation', e.target.checked?'1':'0'); apply(); };
+    locFontSizeEl.oninput = (e) => { locFont = parseInt(e.target.value,10); localStorage.setItem(locFontKey,String(locFont)); apply(); };
+    locFlagSizeEl.oninput = (e) => { locFlag = parseInt(e.target.value,10); localStorage.setItem(locFlagKey,String(locFlag)); apply(); };
+    locPaddingEl.oninput  = (e) => { locPad  = parseInt(e.target.value,10); localStorage.setItem(locPadKey,String(locPad)); apply(); };
+  })();
+
+  // --- Final init ---
+  bindRouteListOnce();
+  syncRouteUI();
 })();

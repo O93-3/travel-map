@@ -1,7 +1,7 @@
-// TravelMap Service Worker (v2)
-// same-origin cache-first + update-in-background
+// TravelMap Service Worker (v3)
+// cache-bust + update
 
-const CACHE_NAME = 'travel-map-v2';
+const CACHE_NAME = 'travel-map-v3';
 const FILES = [
   './',
   './index.html',
@@ -14,9 +14,7 @@ const FILES = [
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES).catch(() => {}))
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES).catch(() => {})));
 });
 
 self.addEventListener('activate', (event) => {
@@ -38,12 +36,10 @@ self.addEventListener('fetch', (event) => {
   event.respondWith((async () => {
     const cache = await caches.open(CACHE_NAME);
     const cached = await cache.match(req);
-    const fetchPromise = fetch(req)
-      .then((res) => {
-        if (res && res.ok) cache.put(req, res.clone());
-        return res;
-      })
-      .catch(() => null);
-    return cached || (await fetchPromise) || cached;
+    const fetched = fetch(req).then((res) => {
+      if (res && res.ok) cache.put(req, res.clone());
+      return res;
+    }).catch(() => null);
+    return cached || (await fetched) || cached;
   })());
 });
