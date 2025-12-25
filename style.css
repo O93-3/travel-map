@@ -214,3 +214,54 @@ select,button,input{width:180px;margin:2px 0}
 #ui details.ui-group[open] > :not(summary){
   margin-top: 10px;
 }
+
+
+/* ファイル入力（状態読み込み：非表示のまま） */
+#ui input[type="file"]{
+  width: 100% !important;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+
+/* ===== OBS UI OPT ===== */
+
+
+/* Route overlay (country + flag) */
+#routeOverlay .ro-block{ display:flex; flex-direction:column; gap:4px; }
+#routeOverlay .ro-line1{ display:flex; align-items:baseline; gap:10px; }
+#routeOverlay .ro-line2{ display:flex; align-items:center; gap:8px; opacity:.92; }
+#routeOverlay .ro-flag{
+  width: 32px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: cover;
+  background: rgba(255,255,255,0.10);
+  display: none; /* codeが無い場合はJSで非表示 */
+}
+#routeOverlay .ro-country{
+  font-size: 13px;
+  font-weight: 800;
+  opacity: .92;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#routeOverlay{
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1250;
+  min-width: 260px;
+  max-width: 40vw;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.62);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  display: none;
+}

@@ -15,6 +15,9 @@
   const undoBtn        = $('undoBtn');
   const langBtn        = $('langBtn');
   const streamBtn      = $('streamBtn');
+  const exportBtn      = $('exportBtn');
+  const importBtn      = $('importBtn');
+  const importFile     = $('importFile');
 
   const showLocation      = $('showLocation');
   const currentMarkerSize = $('currentMarkerSize');
@@ -29,6 +32,91 @@
   const flag = $('flag');
   const currentText = $('currentText');
 
+  // ===== OBS Route Overlay =====
+  const routeOverlay = $('routeOverlay');
+  const roProgress = $('roProgress');
+  const roNowCity = $('roNowCity');
+  const roNowCountry = $('roNowCountry');
+  const roNowFlag = $('roNowFlag');
+  const roFromCity = $('roFromCity');
+  const roFromCountry = $('roFromCountry');
+  const roFromFlag = $('roFromFlag');
+  const showRouteOverlay = $('showRouteOverlay');
+  const overlayFontSize = $('overlayFontSize');
+  const overlayFlagSize = $('overlayFlagSize');
+  const overlayOnlyInStream = $('overlayOnlyInStream');
+  const obsSafeFrame = $('obsSafeFrame');
+  const safeFrame = $('safeFrame');
+  const streamIndicator = $('streamIndicator');
+  const lockLocationBtn = $('lockLocationBtn');
+
+  // ===== 状態の保存/読み込み（エクスポート/インポート） =====
+  const STATE_VERSION = 'travelmap-state-v1';
+  const STATE_KEYS = ['mapStyle','bordersOn','lineColor','currentColor','pastColor','curSize','locFontSize','locFlagSize','locPadding','locUI'];
+
+  function collectState(){
+    const state = { version: STATE_VERSION, savedAt: new Date().toISOString(), keys: {}, travelHistory: [] };
+    for (const k of STATE_KEYS){
+      const v = localStorage.getItem(k);
+      if (v !== null) state.keys[k] = v;
+    }
+    try { state.travelHistory = JSON.parse(localStorage.getItem('travelHistory') || '[]'); } catch (_) { state.travelHistory = []; }
+    return state;
+  }
+
+  function applyState(state){
+    if (!state || typeof state !== 'object') throw new Error('state is not object');
+    const keys = state.keys || {};
+    for (const k of STATE_KEYS){
+      if (Object.prototype.hasOwnProperty.call(keys, k)) localStorage.setItem(k, String(keys[k]));
+    }
+    if (Array.isArray(state.travelHistory)) localStorage.setItem('travelHistory', JSON.stringify(state.travelHistory));
+  }
+
+  function tsFile(){
+    const d = new Date();
+    const pad = (n) => String(n).padStart(2,'0');
+    return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'_'+pad(d.getHours())+pad(d.getMinutes())+pad(d.getSeconds());
+  }
+
+  function downloadJson(filename, obj){
+    const text = JSON.stringify(obj, null, 2);
+    const blob = new Blob([text], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  if (exportBtn){
+    exportBtn.onclick = () => {
+      try { downloadJson('travelmap_state_'+tsFile()+'.json', collectState()); }
+      catch (e){ alert('保存に失敗しました: ' + (e && e.message ? e.message : e)); }
+    };
+  }
+
+  if (importBtn && importFile){
+    importBtn.onclick = () => importFile.click();
+  }
+
+  if (importFile){
+    importFile.addEventListener('change', (ev) => {
+      const file = ev.target.files && ev.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try { applyState(JSON.parse(String(reader.result || ''))); location.reload(); }
+        catch (e){ alert('読み込みに失敗しました（JSON形式を確認）: ' + (e && e.message ? e.message : e)); }
+      };
+      reader.readAsText(file);
+      ev.target.value='';
+    });
+  }
+
   if (!mapStyleSelect || !toggleBorders || !regionSelect || !countrySelect || !citySelect) {
     console.error('[TravelMap] required elements are missing.');
     return;
@@ -36,6 +124,153 @@
 
   /* ===== 基本 ===== */
   const map=L.map("map",{zoomControl:false}).setView([20,0],2)
+
+  // ===== OBS / Overlay =====
+  function isStreaming(){
+    return document.body.classList.contains('streaming');
+  }
+
+  function setStreaming(on){
+    const streamingOn = !!on;
+    document.body.classList.toggle('streaming', streamingOn);
+    if(streamIndicator){
+      streamIndicator.style.display = streamingOn ? 'inline-flex' : 'none';
+    }
+    // 配信中は地図操作をロック
+    try{
+      if(streamingOn){
+        map.dragging.disable();
+        map.scrollWheelZoom.disable();
+        map.doubleClickZoom.disable();
+        map.boxZoom.disable();
+        map.keyboard.disable();
+        map.touchZoom.disable();
+      }else{
+        map.dragging.enable();
+        map.scrollWheelZoom.enable();
+        map.doubleClickZoom.enable();
+        map.boxZoom.enable();
+        map.keyboard.enable();
+        map.touchZoom.enable();
+      }
+    }catch(_){/* ignore */}
+
+    updateObsUI();
+  }
+
+  // currentLocation lock
+  const LOC_LOCK_KEY = 'locLocked';
+  let locLocked = (localStorage.getItem(LOC_LOCK_KEY) === '1');
+  function updateLocLockBtn(){
+    if(!lockLocationBtn) return;
+    lockLocationBtn.textContent = locLocked ? '位置ロック: ON' : '位置ロック: OFF';
+  }
+  if(lockLocationBtn){
+    updateLocLockBtn();
+    lockLocationBtn.onclick = () => {
+      locLocked = !locLocked;
+      localStorage.setItem(LOC_LOCK_KEY, locLocked ? '1' : '0');
+      updateLocLockBtn();
+    };
+  }
+
+  const OVERLAY_SHOW_KEY = 'overlayShow';
+  const OVERLAY_SIZE_KEY = 'overlayFontSize';
+  const OVERLAY_FLAG_KEY = 'overlayFlagSize';
+  const OVERLAY_ONLY_STREAM_KEY = 'overlayOnlyInStream';
+  const SAFE_FRAME_KEY = 'obsSafeFrame';
+
+  function getOverlaySettings(){
+    const show = (localStorage.getItem(OVERLAY_SHOW_KEY) ?? '1') === '1';
+    const size = Number(localStorage.getItem(OVERLAY_SIZE_KEY) ?? '18');
+    const flagSize = Number(localStorage.getItem(OVERLAY_FLAG_KEY) ?? '22');
+    const onlyStream = (localStorage.getItem(OVERLAY_ONLY_STREAM_KEY) ?? '1') === '1';
+    const safe = (localStorage.getItem(SAFE_FRAME_KEY) ?? '0') === '1';
+    return { show, size, flagSize, onlyStream, safe };
+  }
+
+  function applyOverlaySettingsToUI(){
+    const s = getOverlaySettings();
+    if(showRouteOverlay) showRouteOverlay.checked = s.show;
+    if(overlayFontSize) overlayFontSize.value = String(s.size);
+    if(overlayFlagSize) overlayFlagSize.value = String(s.flagSize);
+    if(overlayOnlyInStream) overlayOnlyInStream.checked = s.onlyStream;
+    if(obsSafeFrame) obsSafeFrame.checked = s.safe;
+    if(safeFrame) safeFrame.style.display = s.safe ? 'block' : 'none';
+  }
+
+  function setOverlayVisible(visible){
+    if(!routeOverlay) return;
+    routeOverlay.style.display = visible ? 'block' : 'none';
+  }
+
+  function setOverlayFontSize(px){
+    const p = Math.max(12, Math.min(40, Number(px) || 18));
+    if(roNowCity) roNowCity.style.fontSize = p + 'px';
+    if(roFromCity) roFromCity.style.fontSize = Math.max(12, p-2) + 'px';
+  }
+
+  function flagCdnUrl(code, height){
+    if(!code) return '';
+    const AVAILABLE_H = [12,15,18,21,24,27,30,36,42,45,48,54,60,63,72,81,84,90,96,108,120,144,168,192];
+    const base = Number(height) || 24;
+    const h = AVAILABLE_H.reduce((best, v) => (Math.abs(v - base) < Math.abs(best - base) ? v : best), AVAILABLE_H[0]);
+    const w = Math.round(h * 4 / 3);
+    return { url: `https://flagcdn.com/${w}x${h}/${String(code).toLowerCase()}.png`, w, h };
+  }
+
+  function updateRouteOverlay(){
+    if(!routeOverlay) return;
+    const s = getOverlaySettings();
+    const shouldShow = s.show && (!s.onlyStream || isStreaming());
+    setOverlayVisible(shouldShow);
+    setOverlayFontSize(s.size);
+
+    const total = Array.isArray(history) ? history.length : 0;
+    const nowIdx = total ? total - 1 : 0;
+    const now = total ? history[nowIdx] : null;
+    const from = (total >= 2) ? history[total - 2] : null;
+
+    if(roProgress) roProgress.textContent = `${total ? (nowIdx+1) : 0}/${total}`;
+
+    // NOW
+    if(roNowCity) roNowCity.textContent = now ? cityLabel(now) : '-';
+    if(roNowCountry) roNowCountry.textContent = now ? countryLabel(now) + ((now.countryCode) ? ` (${String(now.countryCode).toUpperCase()})` : '') : '-';
+    if(roNowFlag){
+      const code = now?.countryCode ? String(now.countryCode).toLowerCase() : '';
+      if(code){
+        const f = flagCdnUrl(code, s.flagSize);
+        roNowFlag.src = f.url;
+        roNowFlag.style.width = f.w + 'px';
+        roNowFlag.style.height = f.h + 'px';
+        roNowFlag.style.display = 'block';
+      }else{
+        roNowFlag.style.display = 'none';
+      }
+    }
+
+    // FROM
+    if(roFromCity) roFromCity.textContent = from ? cityLabel(from) : '-';
+    if(roFromCountry) roFromCountry.textContent = from ? countryLabel(from) + ((from.countryCode) ? ` (${String(from.countryCode).toUpperCase()})` : '') : '-';
+    if(roFromFlag){
+      const code = from?.countryCode ? String(from.countryCode).toLowerCase() : '';
+      if(code){
+        const f = flagCdnUrl(code, s.flagSize);
+        roFromFlag.src = f.url;
+        roFromFlag.style.width = f.w + 'px';
+        roFromFlag.style.height = f.h + 'px';
+        roFromFlag.style.display = 'block';
+      }else{
+        roFromFlag.style.display = 'none';
+      }
+    }
+  }
+
+  function updateObsUI(){
+    applyOverlaySettingsToUI();
+    updateRouteOverlay();
+  }
+
   
   const tileLayers={
    osm:L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
@@ -45,7 +280,7 @@
   }
   
   let currentTile
-  const savedStyle=localStorage.getItem("mapStyle")||"osm"
+  const savedStyle=localStorage.getItem("mapStyle")||"bw"
   currentTile=tileLayers[savedStyle]
   currentTile.addTo(map)
   mapStyleSelect.value=savedStyle
@@ -66,7 +301,7 @@
   
   // 追加：保存値から初期状態を決定（未保存なら true=ON）
   let bordersOn = localStorage.getItem(BORDER_KEY);
-  bordersOn = (bordersOn === null) ? true : (bordersOn === "1");
+  bordersOn = (bordersOn === null) ? false : (bordersOn === "1");
   
   function countryColor(name){
     const c=["#f44336","#e91e63","#9c27b0","#673ab7","#3f51b5",
@@ -122,7 +357,8 @@
    cities=j
    buildRegion()
    restore()
-  setupCitySearch();
+   updateObsUI();
+   setupCitySearch();
   })
   /* ===== 都市検索 ===== */
   const norm=(s)=>(s??'').toString().trim().toLowerCase().normalize('NFKC');
@@ -379,6 +615,7 @@ function buildRegion(){
     if(countrySelect.value) countrySelect.onchange()
    }
    if(history.length) updateCurrent(history.at(-1))
+   updateObsUI();
   }
   
   /* ===== マーカー ===== */
@@ -495,6 +732,7 @@ function buildRegion(){
    points.pop()
    line.setLatLngs(points)
    if(history.length)addCurrent(history.at(-1))
+    updateObsUI();
   }
   
   function restore(){
@@ -542,13 +780,41 @@ function buildRegion(){
    if(history.length) addCurrent(history.at(-1))
   }
 showLocation.onchange=e=>{
+
+
+  // OBS overlay controls
+  updateObsUI();
+
+  if(showRouteOverlay){
+    showRouteOverlay.onchange = (e) => { localStorage.setItem(OVERLAY_SHOW_KEY, e.target.checked ? '1' : '0'); updateObsUI(); };
+  }
+  if(overlayFontSize){
+    overlayFontSize.oninput = (e) => { localStorage.setItem(OVERLAY_SIZE_KEY, String(e.target.value)); updateObsUI(); };
+  }
+  if(overlayFlagSize){
+    overlayFlagSize.oninput = (e) => { localStorage.setItem(OVERLAY_FLAG_KEY, String(e.target.value)); updateObsUI(); };
+  }
+  if(overlayOnlyInStream){
+    overlayOnlyInStream.onchange = (e) => { localStorage.setItem(OVERLAY_ONLY_STREAM_KEY, e.target.checked ? '1' : '0'); updateObsUI(); };
+  }
+  if(obsSafeFrame){
+    obsSafeFrame.onchange = (e) => { localStorage.setItem(SAFE_FRAME_KEY, e.target.checked ? '1' : '0'); updateObsUI(); };
+  }
    currentLocation.style.display=e.target.checked?"flex":"none"
   }
   
-  streamBtn.onclick=()=>document.body.classList.add("streaming")
-  document.addEventListener("keydown",e=>{
-   if(e.key==="Escape")document.body.classList.remove("streaming")
-  })
+  streamBtn.onclick=()=>setStreaming(!isStreaming())
+  
+  document.addEventListener("keydown", (e) => {
+    if(e.key === "Escape"){ setStreaming(false); return; }
+    if(e.key.toLowerCase() === 's' && !e.ctrlKey && !e.metaKey && !e.altKey){ setStreaming(!isStreaming()); return; }
+    if(e.key.toLowerCase() === 'r' && !e.ctrlKey && !e.metaKey && !e.altKey){
+      const s = getOverlaySettings();
+      localStorage.setItem(OVERLAY_SHOW_KEY, s.show ? '0' : '1');
+      updateObsUI();
+      return;
+    }
+  });
   
   
   /* ===== 現在地表示（サイズ調整） ===== */

@@ -13,6 +13,15 @@
 <body>
 
 
+<div id="safeFrame" aria-hidden="true">
+  <div class="sf" data-sf="title"></div>
+  <div class="sf" data-sf="action"></div>
+</div>
+
+<div id="streamIndicator"><span class="dot"></span><span>配信モード</span></div>
+
+
+
 <div id="ui">
 
   <!-- ===== 基本 ===== -->
@@ -20,6 +29,10 @@
     <summary class="ui-title">基本</summary>
     <button id="langBtn">日本語</button>
     <button id="streamBtn">配信モード</button>
+    <button id="exportBtn">現在の状態を保存</button>
+    <button id="importBtn">保存した状態を読み込み</button>
+    <input type="file" id="importFile" accept="application/json" style="display:none">
+
   </details>
 
   <!-- ===== ルート（訪問履歴） ===== -->
@@ -62,6 +75,12 @@
       <span>現在地表示</span>
     </label>
 
+    <div class="row" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <button id="lockLocationBtn" type="button">位置ロック: OFF</button>
+      <span class="muted" style="font-size:12px;opacity:.85">テロップ位置ズレ防止</span>
+    </div>
+
+
     <label class="col">
       <span>現在地サイズ</span>
       <input type="range" id="currentMarkerSize" min="8" max="40">
@@ -103,6 +122,39 @@
     </label>
   </details>
 
+
+  <!-- ===== OBS ===== -->
+  <details class="ui-group" id="group-obs" open>
+    <summary class="ui-title">OBS</summary>
+
+    <label class="row">
+      <input type="checkbox" id="showRouteOverlay" checked>
+      <span>ルートオーバーレイ表示</span>
+    </label>
+
+    <label class="col">
+      <span>オーバーレイ文字サイズ</span>
+      <input type="range" id="overlayFontSize" min="12" max="40" value="18">
+    </label>
+
+    <label class="col">
+      <span>国旗サイズ</span>
+      <input type="range" id="overlayFlagSize" min="12" max="42" value="22">
+    </label>
+
+    <label class="row">
+      <input type="checkbox" id="overlayOnlyInStream" checked>
+      <span>配信モード中のみ表示</span>
+    </label>
+
+    <label class="row">
+      <input type="checkbox" id="obsSafeFrame">
+      <span>セーフフレーム表示（見切れ確認）</span>
+    </label>
+
+    <div class="hint">キー: S=配信モード / R=オーバーレイ / ESC=解除</div>
+  </details>
+
 </div>
 
 <div id="currentLocation">
@@ -113,6 +165,37 @@
   <span id="currentCity"></span>
 </span>
 
+</div>
+
+
+<div id="routeOverlay" aria-label="route overlay">
+  <div class="ro-head">
+    <span class="ro-title">ROUTE</span>
+    <span class="ro-progress" id="roProgress">0/0</span>
+  </div>
+  <div class="ro-main">
+    <div class="ro-block" data-ro="now">
+      <div class="ro-line1">
+        <span class="ro-label">NOW</span>
+        <span class="ro-value" id="roNowCity">-</span>
+      </div>
+      <div class="ro-line2">
+        <img class="ro-flag" id="roNowFlag" alt="flag" />
+        <span class="ro-country" id="roNowCountry">-</span>
+      </div>
+    </div>
+
+    <div class="ro-block" data-ro="from">
+      <div class="ro-line1">
+        <span class="ro-label">FROM</span>
+        <span class="ro-value" id="roFromCity">-</span>
+      </div>
+      <div class="ro-line2">
+        <img class="ro-flag" id="roFromFlag" alt="flag" />
+        <span class="ro-country" id="roFromCountry">-</span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div id="map"></div>
