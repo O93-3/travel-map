@@ -1,7 +1,7 @@
-// TravelMap Service Worker (v3)
-// cache-bust + update
+// TravelMap Service Worker (GitHub Pages stable v8)
+// Notes: external CDN assets (Leaflet) are not cached here; same-origin only.
 
-const CACHE_NAME = 'travel-map-v3';
+const CACHE_NAME = 'travel-map-v9';
 const FILES = [
   './',
   './index.html',
@@ -9,7 +9,9 @@ const FILES = [
   './app.js',
   './cities.json',
   './manifest.json',
-  './sw.js'
+ './icon.png',
+  './sw.js',
+  './js/extensions.js'
 ];
 
 self.addEventListener('install', (event) => {
@@ -33,6 +35,7 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(fetch(req));
     return;
   }
+
   event.respondWith((async () => {
     const cache = await caches.open(CACHE_NAME);
     const cached = await cache.match(req);
