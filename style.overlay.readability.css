@@ -1,0 +1,13 @@
+
+/* ===== Overlay Readability (Opacity & Line-height) ===== */
+/* Base: apply CSS variables with safe defaults */
+#routeOverlay {
+  /* overall opacity */
+  opacity: var(--ro-opacity, 1);
+  /* background alpha: blend with base background color */
+  background: rgba(0,0,0, var(--ro-bg-alpha, 0.62));
+}
+/* line-height for all overlay texts */
+#routeOverlay, #routeOverlay * {
+  line-height: var(--ro-line-height, 1.10);
+}

@@ -1,0 +1,29 @@
+
+/* ===== Mobile Bar Icon Buttons ===== */
+#mobileBar .mb-left { display:flex; gap:8px; align-items:center; }
+#mobileBar .mb-title { font-weight:900; letter-spacing:.04em; font-size:13px; opacity:.85; }
+#mobileBar .icon-btn { 
+  display:inline-flex; align-items:center; justify-content:center; 
+  gap:8px; height:34px; padding:0 12px; border-radius:999px; 
+  background: rgba(255,255,255,0.10); color:#fff; border:1px solid rgba(255,255,255,0.18);
+}
+#mobileBar .icon-btn .ico { width:18px; height:18px; display:inline-block; }
+#mobileBar .icon-btn .lbl { font-weight:800; font-size:12px; letter-spacing:.02em; }
+/* Hover/active */
+#mobileBar .icon-btn:hover { background: rgba(255,255,255,0.16); }
+#mobileBar .icon-btn:active { background: rgba(255,255,255,0.22); }
+
+/* SVG icons (compact/menu) */
+#mobileBar .ico.compact { 
+  background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"%23ffffff\"><path d=\"M4 7h16v2H4V7zm4 4h8v2H8v-2zm-4 4h16v2H4v-2z\"/></svg>') center/18px 18px no-repeat; 
+}
+#mobileBar .ico.menu { 
+  background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"%23ffffff\"><path d=\"M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z\"/></svg>') center/18px 18px no-repeat; 
+}
+
+/* Reduce size slightly on very small screens */
+@media (max-width: 360px) {
+  #mobileBar .icon-btn { height:32px; padding:0 10px; gap:6px; }
+  #mobileBar .icon-btn .ico { width:16px; height:16px; }
+  #mobileBar .icon-btn .lbl { font-size:11px; }
+}

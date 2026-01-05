@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,17 +5,21 @@
   <title>Travel Map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="manifest" href="./manifest.json">
-  <!-- Leaflet -->
+  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <!-- Base styles -->
   <link rel="stylesheet" href="./style.css">
-<link rel="stylesheet" href="./style.cityresults.fix.css">
-  <link rel="stylesheet" href="./style.routeoverlay.drag.css">
+  <!-- Overrides / add-ons (load AFTER style.css) -->
+  <link rel="stylesheet" href="./style.cityresults.fix.css">
   <link rel="stylesheet" href="./style.overlay.fontsize.all.css">
+  <link rel="stylesheet" href="./style.routeoverlay.drag.css">
+  <link rel="stylesheet" href="./style.overlay.readability.css">
+  <link rel="stylesheet" href="./style.mobile.compact.css">
 </head>
 <body>
   <div id="map"></div>
 
-  <!-- 現在地 -->
+  <!-- 現在地表示（ドラッグ可） -->
   <div id="currentLocation">
     <img id="flag" alt="flag">
     <div id="currentText">
@@ -25,11 +28,14 @@
     </div>
   </div>
 
+  <!-- モバイルバー（コンパクト/メニュー） -->
+  <div id="mobileBar"><div class="mb-left"><span class="mb-title">TRAVEL MAP</span><button id="toggleCompact">コンパクト</button><button id="toggleMenu">メニュー表示/非表示</button></div></div>
+
   <!-- 配信インジケータ & SafeFrame -->
   <div id="streamIndicator"><span class="dot"></span> LIVE</div>
   <div id="safeFrame"><div class="sf" data-sf="title"></div><div class="sf" data-sf="action"></div></div>
 
-  <!-- ルートオーバーレイ -->
+  <!-- OBS Route Overlay -->
   <div id="routeOverlay">
     <div class="ro-head"><div class="ro-title">ROUTE</div><div id="roProgress" class="ro-progress">0/0</div></div>
     <div class="ro-main">
@@ -56,28 +62,27 @@
       <input id="importFile" type="file" accept="application/json" style="display:none">
     </details>
 
-<!-- Route section (search moved to the top) -->
-<details class="ui-group"><summary class="ui-title">ルート</summary>
-  <!-- 検索を最上段へ配置 -->
-  <div class="searchWrap" style="margin-bottom:8px;">
-    <input id="citySearch" placeholder="都市名・国名で検索">
-    <div id="cityResults" class="city-results"></div>
-  </div>
+    <!-- ルート（検索を最上段へ） -->
+    <details class="ui-group"><summary class="ui-title">ルート</summary>
+      <!-- 検索を最上段へ配置 -->
+      <div class="searchWrap" style="margin-bottom:8px;">
+        <input id="citySearch" placeholder="都市名・国名で検索">
+        <div id="cityResults" class="city-results"></div>
+      </div>
 
-  <!-- 地域／国セレクト -->
-  <select id="regionSelect"><option value="">地域</option></select>
-  <select id="countrySelect"><option value="">国</option></select>
+      <!-- 地域／国セレクト -->
+      <select id="regionSelect"><option value="">地域</option></select>
+      <select id="countrySelect"><option value="">国</option></select>
 
-  <!-- 都市セレクト／操作 -->
-  <select id="citySelect"><option value="">都市</option></select>
-  <button id="addBtn">追加</button>
-  <button id="undoBtn">ひとつ戻す</button>
-  <button id="cancelInsertBtn">挿入解除</button>
-  <div>挿入モード: <span id="insertModeLabel">OFF</span></div>
-  <ol id="routeList" class="route-list"></ol>
-  <button id="resetHistoryBtn" class="danger">ルート履歴をリセット</button>
-</details>
-
+      <!-- 都市セレクト／操作 -->
+      <select id="citySelect"><option value="">都市</option></select>
+      <button id="addBtn">追加</button>
+      <button id="undoBtn">ひとつ戻す</button>
+      <button id="cancelInsertBtn">挿入解除</button>
+      <div>挿入モード: <span id="insertModeLabel">OFF</span></div>
+      <ol id="routeList" class="route-list"></ol>
+      <button id="resetHistoryBtn" class="danger">ルート履歴をリセット</button>
+    </details>
 
     <details class="ui-group"><summary class="ui-title">地図</summary>
       <select id="mapStyleSelect">
@@ -107,16 +112,29 @@
       <label class="col"><span>オーバーレイ文字サイズ</span><input id="overlayFontSize" type="range" min="12" max="40" value="18"></label>
       <label class="col"><span>国旗サイズ</span><input id="overlayFlagSize" type="range" min="12" max="96" value="22"></label>
       <label><input id="overlayOnlyInStream" type="checkbox"> 配信モード中のみ表示</label>
-      <label><input id="obsSafeFrame" type="checkbox"> セーフフレーム表示</label>
+      <label><input id="obsSafeFrame" type="checkbox"> セーフフレーム表示（見切れ確認）</label>
+      <!-- 見やすさ（不透明度／背景透過／行間） -->
+      <label class="col"><span>オーバーレイ不透明度</span>
+        <input id="overlayOpacity" type="range" min="0.60" max="1.00" step="0.01" value="1.00">
+      </label>
+      <label class="col"><span>背景の透過度</span>
+        <input id="overlayBgAlpha" type="range" min="0.30" max="0.90" step="0.01" value="0.62">
+      </label>
+      <label class="col"><span>行間（ラインハイト）</span>
+        <input id="overlayLineHeight" type="range" min="1.00" max="1.50" step="0.01" value="1.10">
+      </label>
     </details>
   </div>
 
-  <!-- Leaflet & Scripts（app.js → extensions.js の順） -->
+  <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="./app.js"></script>
   <script src="./js/extensions.js"></script>
+  <!-- Safe add-ons (app.jsは不変のまま機能追加) -->
   <script src="./js/fix-lineweight.js"></script>
-    <script src="./js/draggable-routeoverlay.js"></script>
-        <script src="./js/overlay-fontsize.all.js"></script>
+  <script src="./js/draggable-routeoverlay.js"></script>
+  <script src="./js/overlay-fontsize.all.js"></script>
+  <script src="./js/overlay-readability.js"></script>
+  <script src="./js/mobile-compact.js"></script>
 </body>
 </html>

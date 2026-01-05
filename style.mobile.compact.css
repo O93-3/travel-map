@@ -1,0 +1,41 @@
+
+/* ===== Mobile Compact UI ===== */
+@media (max-width: 640px) {
+  /* Base font scale */
+  html { font-size: 14px; }
+  #ui { width: 92vw; max-width: 92vw; left: 4vw; right: 4vw; top: 10px; }
+  #ui button, #ui select { height: 32px; }
+  /* inputs full width */
+  #ui select, #ui button, #ui input[type="range"], #ui input[type="color"], #ui input[type="checkbox"] { width: 100% !important; }
+  /* color picker compact */
+  #ui input[type="color"] { width: 60px !important; height: 28px; }
+  /* reduce inner gaps */
+  #ui label.col { margin: 6px 0; gap: 3px; }
+  /* details summary larger tap target */
+  #ui details.ui-group > summary.ui-title { padding: 10px 8px; }
+  /* collapse groups by default on mobile */
+  #ui details.ui-group:not([open]) { opacity: 0.96; }
+  /* search results max height tuned for viewport */
+  #cityResults.city-results { max-height: 50vh; }
+  /* overlay safely smaller margins */
+  #routeOverlay { right: 10px; bottom: 10px; }
+}
+
+/* Super-compact mode class (forced, regardless of breakpoint) */
+.compact #ui { width: 92vw; max-width: 92vw; left: 4vw; right: 4vw; }
+.compact #ui button, .compact #ui select { height: 32px; }
+.compact #ui select, .compact #ui button, .compact #ui input[type="range"], .compact #ui input[type="color"], .compact #ui input[type="checkbox"] { width: 100% !important; }
+.compact #ui input[type="color"] { width: 60px !important; height: 28px; }
+.compact #ui label.col { margin: 6px 0; gap: 3px; }
+.compact #ui details.ui-group > summary.ui-title { padding: 10px 8px; }
+.compact #cityResults.city-results { max-height: 55vh; }
+
+/* Sticky header with compact toggles */
+#mobileBar { position: fixed; z-index: 1300; left: 0; right: 0; top: 0; padding: 8px 10px; display: none; background: rgba(0,0,0,0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; border-bottom: 1px solid rgba(255,255,255,0.14); }
+#mobileBar .mb-left { display: flex; gap: 8px; align-items: center; }
+#mobileBar .mb-title { font-weight: 900; letter-spacing: .04em; font-size: 13px; opacity: .85; }
+#mobileBar button { height: 30px; padding: 0 10px; }
+@media (max-width: 640px) { #mobileBar { display: flex; justify-content: space-between; } }
+
+/* When mobile bar is shown, push UI a bit down */
+@media (max-width: 640px) { #ui { top: 54px; } }
