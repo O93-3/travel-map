@@ -1,0 +1,1792 @@
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "California",
+    "state_jp": "カリフォルニア州",
+    "stateCode": "CA",
+    "name": "Los Angeles",
+    "name_jp": "ロサンゼルス",
+    "lat": 34.0522,
+    "lon": -118.2437
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "California",
+    "state_jp": "カリフォルニア州",
+    "stateCode": "CA",
+    "name": "San Diego",
+    "name_jp": "サンディエゴ",
+    "lat": 32.7157,
+    "lon": -117.1611
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "California",
+    "state_jp": "カリフォルニア州",
+    "stateCode": "CA",
+    "name": "San Francisco",
+    "name_jp": "サンフランシスコ",
+    "lat": 37.7749,
+    "lon": -122.4194
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "California",
+    "state_jp": "カリフォルニア州",
+    "stateCode": "CA",
+    "name": "Sacramento",
+    "name_jp": "サクラメント",
+    "lat": 38.5816,
+    "lon": -121.4944
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "California",
+    "state_jp": "カリフォルニア州",
+    "stateCode": "CA",
+    "name": "Fresno",
+    "name_jp": "フレズノ",
+    "lat": 36.7378,
+    "lon": -119.7871
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "California",
+    "state_jp": "カリフォルニア州",
+    "stateCode": "CA",
+    "name": "Bakersfield",
+    "name_jp": "ベーカーズフィールド",
+    "lat": 35.3733,
+    "lon": -119.0187
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "California",
+    "state_jp": "カリフォルニア州",
+    "stateCode": "CA",
+    "name": "Redding",
+    "name_jp": "レディング",
+    "lat": 40.5865,
+    "lon": -122.3917
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "California",
+    "state_jp": "カリフォルニア州",
+    "stateCode": "CA",
+    "name": "Eureka",
+    "name_jp": "ユーレカ",
+    "lat": 40.8021,
+    "lon": -124.1637
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Arizona",
+    "state_jp": "アリゾナ州",
+    "stateCode": "AZ",
+    "name": "Phoenix",
+    "name_jp": "フェニックス",
+    "lat": 33.4484,
+    "lon": -112.0740
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Arizona",
+    "state_jp": "アリゾナ州",
+    "stateCode": "AZ",
+    "name": "Tucson",
+    "name_jp": "ツーソン",
+    "lat": 32.2226,
+    "lon": -110.9747
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Arizona",
+    "state_jp": "アリゾナ州",
+    "stateCode": "AZ",
+    "name": "Flagstaff",
+    "name_jp": "フラッグスタッフ",
+    "lat": 35.1983,
+    "lon": -111.6513
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Arizona",
+    "state_jp": "アリゾナ州",
+    "stateCode": "AZ",
+    "name": "Yuma",
+    "name_jp": "ユマ",
+    "lat": 32.6927,
+    "lon": -114.6277
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Arizona",
+    "state_jp": "アリゾナ州",
+    "stateCode": "AZ",
+    "name": "Kingman",
+    "name_jp": "キングマン",
+    "lat": 35.1894,
+    "lon": -114.0530
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Nevada",
+    "state_jp": "ネバダ州",
+    "stateCode": "NV",
+    "name": "Las Vegas",
+    "name_jp": "ラスベガス",
+    "lat": 36.1699,
+    "lon": -115.1398
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Nevada",
+    "state_jp": "ネバダ州",
+    "stateCode": "NV",
+    "name": "Reno",
+    "name_jp": "リノ",
+    "lat": 39.5296,
+    "lon": -119.8138
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Nevada",
+    "state_jp": "ネバダ州",
+    "stateCode": "NV",
+    "name": "Elko",
+    "name_jp": "エルコ",
+    "lat": 40.8324,
+    "lon": -115.7631
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Nevada",
+    "state_jp": "ネバダ州",
+    "stateCode": "NV",
+    "name": "Ely",
+    "name_jp": "イーリー",
+    "lat": 39.2474,
+    "lon": -114.8886
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Nevada",
+    "state_jp": "ネバダ州",
+    "stateCode": "NV",
+    "name": "Winnemucca",
+    "name_jp": "ウィネマッカ",
+    "lat": 40.9729,
+    "lon": -117.7357
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "New Mexico",
+    "state_jp": "ニューメキシコ州",
+    "stateCode": "NM",
+    "name": "Albuquerque",
+    "name_jp": "アルバカーキ",
+    "lat": 35.0844,
+    "lon": -106.6504
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "New Mexico",
+    "state_jp": "ニューメキシコ州",
+    "stateCode": "NM",
+    "name": "Santa Fe",
+    "name_jp": "サンタフェ",
+    "lat": 35.6870,
+    "lon": -105.9378
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "New Mexico",
+    "state_jp": "ニューメキシコ州",
+    "stateCode": "NM",
+    "name": "Roswell",
+    "name_jp": "ロズウェル",
+    "lat": 33.3943,
+    "lon": -104.5230
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "New Mexico",
+    "state_jp": "ニューメキシコ州",
+    "stateCode": "NM",
+    "name": "Farmington",
+    "name_jp": "ファーミントン",
+    "lat": 36.7281,
+    "lon": -108.2187
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "New Mexico",
+    "state_jp": "ニューメキシコ州",
+    "stateCode": "NM",
+    "name": "Las Cruces",
+    "name_jp": "ラスクルーセス",
+    "lat": 32.3199,
+    "lon": -106.7637
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Oregon",
+    "state_jp": "オレゴン州",
+    "stateCode": "OR",
+    "name": "Portland",
+    "name_jp": "ポートランド",
+    "lat": 45.5152,
+    "lon": -122.6784
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Oregon",
+    "state_jp": "オレゴン州",
+    "stateCode": "OR",
+    "name": "Salem",
+    "name_jp": "セーラム",
+    "lat": 44.9429,
+    "lon": -123.0351
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Oregon",
+    "state_jp": "オレゴン州",
+    "stateCode": "OR",
+    "name": "Eugene",
+    "name_jp": "ユージーン",
+    "lat": 44.0521,
+    "lon": -123.0868
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Oregon",
+    "state_jp": "オレゴン州",
+    "stateCode": "OR",
+    "name": "Medford",
+    "name_jp": "メドフォード",
+    "lat": 42.3265,
+    "lon": -122.8756
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Oregon",
+    "state_jp": "オレゴン州",
+    "stateCode": "OR",
+    "name": "Pendleton",
+    "name_jp": "ペンドルトン",
+    "lat": 45.6721,
+    "lon": -118.7886
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Washington",
+    "state_jp": "ワシントン州",
+    "stateCode": "WA",
+    "name": "Seattle",
+    "name_jp": "シアトル",
+    "lat": 47.6062,
+    "lon": -122.3321
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Washington",
+    "state_jp": "ワシントン州",
+    "stateCode": "WA",
+    "name": "Tacoma",
+    "name_jp": "タコマ",
+    "lat": 47.2529,
+    "lon": -122.4443
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Washington",
+    "state_jp": "ワシントン州",
+    "stateCode": "WA",
+    "name": "Spokane",
+    "name_jp": "スポケーン",
+    "lat": 47.6588,
+    "lon": -117.4260
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Washington",
+    "state_jp": "ワシントン州",
+    "stateCode": "WA",
+    "name": "Everett",
+    "name_jp": "エバレット",
+    "lat": 47.9780,
+    "lon": -122.2021
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Washington",
+    "state_jp": "ワシントン州",
+    "stateCode": "WA",
+    "name": "Yakima",
+    "name_jp": "ヤキマ",
+    "lat": 46.6021,
+    "lon": -120.5059
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Utah",
+    "state_jp": "ユタ州",
+    "stateCode": "UT",
+    "name": "Salt Lake City",
+    "name_jp": "ソルトレイクシティ",
+    "lat": 40.7608,
+    "lon": -111.8910
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Utah",
+    "state_jp": "ユタ州",
+    "stateCode": "UT",
+    "name": "Ogden",
+    "name_jp": "オグデン",
+    "lat": 41.2230,
+    "lon": -111.9738
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Utah",
+    "state_jp": "ユタ州",
+    "stateCode": "UT",
+    "name": "Provo",
+    "name_jp": "プロボ",
+    "lat": 40.2338,
+    "lon": -111.6585
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Utah",
+    "state_jp": "ユタ州",
+    "stateCode": "UT",
+    "name": "Moab",
+    "name_jp": "モアブ",
+    "lat": 38.5733,
+    "lon": -109.5498
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Utah",
+    "state_jp": "ユタ州",
+    "stateCode": "UT",
+    "name": "St. George",
+    "name_jp": "セントジョージ",
+    "lat": 37.0965,
+    "lon": -113.5684
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Idaho",
+    "state_jp": "アイダホ州",
+    "stateCode": "ID",
+    "name": "Boise",
+    "name_jp": "ボイシ",
+    "lat": 43.6150,
+    "lon": -116.2023
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Idaho",
+    "state_jp": "アイダホ州",
+    "stateCode": "ID",
+    "name": "Twin Falls",
+    "name_jp": "ツインフォールズ",
+    "lat": 42.5629,
+    "lon": -114.4609
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Idaho",
+    "state_jp": "アイダホ州",
+    "stateCode": "ID",
+    "name": "Idaho Falls",
+    "name_jp": "アイダホフォールズ",
+    "lat": 43.4917,
+    "lon": -112.0339
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Idaho",
+    "state_jp": "アイダホ州",
+    "stateCode": "ID",
+    "name": "Pocatello",
+    "name_jp": "ポカテロ",
+    "lat": 42.8713,
+    "lon": -112.4455
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Idaho",
+    "state_jp": "アイダホ州",
+    "stateCode": "ID",
+    "name": "Coeur d'Alene",
+    "name_jp": "クーアダリーン",
+    "lat": 47.6777,
+    "lon": -116.7805
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Montana",
+    "state_jp": "モンタナ州",
+    "stateCode": "MT",
+    "name": "Billings",
+    "name_jp": "ビリングス",
+    "lat": 45.7833,
+    "lon": -108.5007
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Montana",
+    "state_jp": "モンタナ州",
+    "stateCode": "MT",
+    "name": "Great Falls",
+    "name_jp": "グレートフォールズ",
+    "lat": 47.5053,
+    "lon": -111.3008
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Montana",
+    "state_jp": "モンタナ州",
+    "stateCode": "MT",
+    "name": "Helena",
+    "name_jp": "ヘレナ",
+    "lat": 46.5891,
+    "lon": -112.0391
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Montana",
+    "state_jp": "モンタナ州",
+    "stateCode": "MT",
+    "name": "Missoula",
+    "name_jp": "ミズーラ",
+    "lat": 46.8721,
+    "lon": -113.9940
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Montana",
+    "state_jp": "モンタナ州",
+    "stateCode": "MT",
+    "name": "Kalispell",
+    "name_jp": "カリスペル",
+    "lat": 48.1958,
+    "lon": -114.3129
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Wyoming",
+    "state_jp": "ワイオミング州",
+    "stateCode": "WY",
+    "name": "Cheyenne",
+    "name_jp": "シャイアン",
+    "lat": 41.1400,
+    "lon": -104.8202
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Wyoming",
+    "state_jp": "ワイオミング州",
+    "stateCode": "WY",
+    "name": "Casper",
+    "name_jp": "キャスパー",
+    "lat": 42.8666,
+    "lon": -106.3131
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Wyoming",
+    "state_jp": "ワイオミング州",
+    "stateCode": "WY",
+    "name": "Rock Springs",
+    "name_jp": "ロックスプリングス",
+    "lat": 41.5868,
+    "lon": -109.2029
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Wyoming",
+    "state_jp": "ワイオミング州",
+    "stateCode": "WY",
+    "name": "Sheridan",
+    "name_jp": "シェリダン",
+    "lat": 44.7972,
+    "lon": -106.9562
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Colorado",
+    "state_jp": "コロラド州",
+    "stateCode": "CO",
+    "name": "Denver",
+    "name_jp": "デンバー",
+    "lat": 39.7392,
+    "lon": -104.9903
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Colorado",
+    "state_jp": "コロラド州",
+    "stateCode": "CO",
+    "name": "Colorado Springs",
+    "name_jp": "コロラドスプリングス",
+    "lat": 38.8339,
+    "lon": -104.8214
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Colorado",
+    "state_jp": "コロラド州",
+    "stateCode": "CO",
+    "name": "Pueblo",
+    "name_jp": "プエブロ",
+    "lat": 38.2544,
+    "lon": -104.6091
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Colorado",
+    "state_jp": "コロラド州",
+    "stateCode": "CO",
+    "name": "Grand Junction",
+    "name_jp": "グランドジャンクション",
+    "lat": 39.0639,
+    "lon": -108.5506
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Colorado",
+    "state_jp": "コロラド州",
+    "stateCode": "CO",
+    "name": "Steamboat Springs",
+    "name_jp": "スチームボートスプリングス",
+    "lat": 40.4850,
+    "lon": -106.8317
+  }
+]
+
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Texas",
+    "state_jp": "テキサス州",
+    "stateCode": "TX",
+    "name": "Dallas",
+    "name_jp": "ダラス",
+    "lat": 32.7767,
+    "lon": -96.7970
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Texas",
+    "state_jp": "テキサス州",
+    "stateCode": "TX",
+    "name": "Fort Worth",
+    "name_jp": "フォートワース",
+    "lat": 32.7555,
+    "lon": -97.3308
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Texas",
+    "state_jp": "テキサス州",
+    "stateCode": "TX",
+    "name": "Houston",
+    "name_jp": "ヒューストン",
+    "lat": 29.7604,
+    "lon": -95.3698
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Texas",
+    "state_jp": "テキサス州",
+    "stateCode": "TX",
+    "name": "San Antonio",
+    "name_jp": "サンアントニオ",
+    "lat": 29.4241,
+    "lon": -98.4936
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Texas",
+    "state_jp": "テキサス州",
+    "stateCode": "TX",
+    "name": "Austin",
+    "name_jp": "オースティン",
+    "lat": 30.2672,
+    "lon": -97.7431
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Texas",
+    "state_jp": "テキサス州",
+    "stateCode": "TX",
+    "name": "El Paso",
+    "name_jp": "エルパソ",
+    "lat": 31.7619,
+    "lon": -106.4850
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Texas",
+    "state_jp": "テキサス州",
+    "stateCode": "TX",
+    "name": "Laredo",
+    "name_jp": "ラレド",
+    "lat": 27.5306,
+    "lon": -99.4803
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Texas",
+    "state_jp": "テキサス州",
+    "stateCode": "TX",
+    "name": "Corpus Christi",
+    "name_jp": "コーパスクリスティ",
+    "lat": 27.8006,
+    "lon": -97.3964
+  }
+]
+
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Oklahoma",
+    "state_jp": "オクラホマ州",
+    "stateCode": "OK",
+    "name": "Oklahoma City",
+    "name_jp": "オクラホマシティ",
+    "lat": 35.4676,
+    "lon": -97.5164
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Oklahoma",
+    "state_jp": "オクラホマ州",
+    "stateCode": "OK",
+    "name": "Tulsa",
+    "name_jp": "タルサ",
+    "lat": 36.1539,
+    "lon": -95.9928
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Oklahoma",
+    "state_jp": "オクラホマ州",
+    "stateCode": "OK",
+    "name": "Lawton",
+    "name_jp": "ロートン",
+    "lat": 34.6036,
+    "lon": -98.3959
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Kansas",
+    "state_jp": "カンザス州",
+    "stateCode": "KS",
+    "name": "Wichita",
+    "name_jp": "ウィチタ",
+    "lat": 37.6872,
+    "lon": -97.3301
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Kansas",
+    "state_jp": "カンザス州",
+    "stateCode": "KS",
+    "name": "Topeka",
+    "name_jp": "トピーカ",
+    "lat": 39.0473,
+    "lon": -95.6752
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Kansas",
+    "state_jp": "カンザス州",
+    "stateCode": "KS",
+    "name": "Dodge City",
+    "name_jp": "ドッジシティ",
+    "lat": 37.7528,
+    "lon": -100.0171
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Nebraska",
+    "state_jp": "ネブラスカ州",
+    "stateCode": "NE",
+    "name": "Omaha",
+    "name_jp": "オマハ",
+    "lat": 41.2565,
+    "lon": -95.9345
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Nebraska",
+    "state_jp": "ネブラスカ州",
+    "stateCode": "NE",
+    "name": "Lincoln",
+    "name_jp": "リンカーン",
+    "lat": 40.8136,
+    "lon": -96.7026
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Nebraska",
+    "state_jp": "ネブラスカ州",
+    "stateCode": "NE",
+    "name": "Scottsbluff",
+    "name_jp": "スコッツブラフ",
+    "lat": 41.8666,
+    "lon": -103.6672
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Arkansas",
+    "state_jp": "アーカンソー州",
+    "stateCode": "AR",
+    "name": "Little Rock",
+    "name_jp": "リトルロック",
+    "lat": 34.7465,
+    "lon": -92.2896
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Arkansas",
+    "state_jp": "アーカンソー州",
+    "stateCode": "AR",
+    "name": "Fayetteville",
+    "name_jp": "フェイエットビル",
+    "lat": 36.0822,
+    "lon": -94.1719
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Missouri",
+    "state_jp": "ミズーリ州",
+    "stateCode": "MO",
+    "name": "Kansas City",
+    "name_jp": "カンザスシティ",
+    "lat": 39.0997,
+    "lon": -94.5786
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Missouri",
+    "state_jp": "ミズーリ州",
+    "stateCode": "MO",
+    "name": "St. Louis",
+    "name_jp": "セントルイス",
+    "lat": 38.6270,
+    "lon": -90.1994
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Missouri",
+    "state_jp": "ミズーリ州",
+    "stateCode": "MO",
+    "name": "Springfield",
+    "name_jp": "スプリングフィールド",
+    "lat": 37.2089,
+    "lon": -93.2923
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Iowa",
+    "state_jp": "アイオワ州",
+    "stateCode": "IA",
+    "name": "Des Moines",
+    "name_jp": "デモイン",
+    "lat": 41.5868,
+    "lon": -93.6250
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Iowa",
+    "state_jp": "アイオワ州",
+    "stateCode": "IA",
+    "name": "Davenport",
+    "name_jp": "ダベンポート",
+    "lat": 41.5236,
+    "lon": -90.5776
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Minnesota",
+    "state_jp": "ミネソタ州",
+    "stateCode": "MN",
+    "name": "Minneapolis",
+    "name_jp": "ミネアポリス",
+    "lat": 44.9778,
+    "lon": -93.2650
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Minnesota",
+    "state_jp": "ミネソタ州",
+    "stateCode": "MN",
+    "name": "St. Paul",
+    "name_jp": "セントポール",
+    "lat": 44.9537,
+    "lon": -93.0900
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Minnesota",
+    "state_jp": "ミネソタ州",
+    "stateCode": "MN",
+    "name": "Duluth",
+    "name_jp": "ダルース",
+    "lat": 46.7867,
+    "lon": -92.1005
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "South Dakota",
+    "state_jp": "サウスダコタ州",
+    "stateCode": "SD",
+    "name": "Sioux Falls",
+    "name_jp": "スーフォールズ",
+    "lat": 43.5446,
+    "lon": -96.7311
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "South Dakota",
+    "state_jp": "サウスダコタ州",
+    "stateCode": "SD",
+    "name": "Rapid City",
+    "name_jp": "ラピッドシティ",
+    "lat": 44.0805,
+    "lon": -103.2310
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "North Dakota",
+    "state_jp": "ノースダコタ州",
+    "stateCode": "ND",
+    "name": "Fargo",
+    "name_jp": "ファーゴ",
+    "lat": 46.8772,
+    "lon": -96.7898
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "North Dakota",
+    "state_jp": "ノースダコタ州",
+    "stateCode": "ND",
+    "name": "Bismarck",
+    "name_jp": "ビスマーク",
+    "lat": 46.8083,
+    "lon": -100.7837
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Wisconsin",
+    "state_jp": "ウィスコンシン州",
+    "stateCode": "WI",
+    "name": "Milwaukee",
+    "name_jp": "ミルウォーキー",
+    "lat": 43.0389,
+    "lon": -87.9065
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Wisconsin",
+    "state_jp": "ウィスコンシン州",
+    "stateCode": "WI",
+    "name": "Madison",
+    "name_jp": "マディソン",
+    "lat": 43.0731,
+    "lon": -89.4012
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Wisconsin",
+    "state_jp": "ウィスコンシン州",
+    "stateCode": "WI",
+    "name": "Green Bay",
+    "name_jp": "グリーンベイ",
+    "lat": 44.5133,
+    "lon": -88.0133
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Illinois",
+    "state_jp": "イリノイ州",
+    "stateCode": "IL",
+    "name": "Chicago",
+    "name_jp": "シカゴ",
+    "lat": 41.8781,
+    "lon": -87.6298
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Illinois",
+    "state_jp": "イリノイ州",
+    "stateCode": "IL",
+    "name": "Rockford",
+    "name_jp": "ロックフォード",
+    "lat": 42.2711,
+    "lon": -89.0937
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Illinois",
+    "state_jp": "イリノイ州",
+    "stateCode": "IL",
+    "name": "Springfield",
+    "name_jp": "スプリングフィールド",
+    "lat": 39.7817,
+    "lon": -89.6501
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Michigan",
+    "state_jp": "ミシガン州",
+    "stateCode": "MI",
+    "name": "Detroit",
+    "name_jp": "デトロイト",
+    "lat": 42.3314,
+    "lon": -83.0458
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Michigan",
+    "state_jp": "ミシガン州",
+    "stateCode": "MI",
+    "name": "Grand Rapids",
+    "name_jp": "グランドラピッズ",
+    "lat": 42.9634,
+    "lon": -85.6681
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Michigan",
+    "state_jp": "ミシガン州",
+    "stateCode": "MI",
+    "name": "Lansing",
+    "name_jp": "ランシング",
+    "lat": 42.7325,
+    "lon": -84.5555
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Indiana",
+    "state_jp": "インディアナ州",
+    "stateCode": "IN",
+    "name": "Indianapolis",
+    "name_jp": "インディアナポリス",
+    "lat": 39.7684,
+    "lon": -86.1581
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Indiana",
+    "state_jp": "インディアナ州",
+    "stateCode": "IN",
+    "name": "Fort Wayne",
+    "name_jp": "フォートウェイン",
+    "lat": 41.0793,
+    "lon": -85.1394
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Indiana",
+    "state_jp": "インディアナ州",
+    "stateCode": "IN",
+    "name": "Evansville",
+    "name_jp": "エバンズビル",
+    "lat": 37.9716,
+    "lon": -87.5711
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Ohio",
+    "state_jp": "オハイオ州",
+    "stateCode": "OH",
+    "name": "Columbus",
+    "name_jp": "コロンバス",
+    "lat": 39.9612,
+    "lon": -82.9988
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Ohio",
+    "state_jp": "オハイオ州",
+    "stateCode": "OH",
+    "name": "Cleveland",
+    "name_jp": "クリーブランド",
+    "lat": 41.4993,
+    "lon": -81.6944
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Ohio",
+    "state_jp": "オハイオ州",
+    "stateCode": "OH",
+    "name": "Cincinnati",
+    "name_jp": "シンシナティ",
+    "lat": 39.1031,
+    "lon": -84.5120
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Ohio",
+    "state_jp": "オハイオ州",
+    "stateCode": "OH",
+    "name": "Toledo",
+    "name_jp": "トレド",
+    "lat": 41.6528,
+    "lon": -83.5379
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Kentucky",
+    "state_jp": "ケンタッキー州",
+    "stateCode": "KY",
+    "name": "Louisville",
+    "name_jp": "ルイビル",
+    "lat": 38.2527,
+    "lon": -85.7585
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Kentucky",
+    "state_jp": "ケンタッキー州",
+    "stateCode": "KY",
+    "name": "Lexington",
+    "name_jp": "レキシントン",
+    "lat": 38.0406,
+    "lon": -84.5037
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Tennessee",
+    "state_jp": "テネシー州",
+    "stateCode": "TN",
+    "name": "Nashville",
+    "name_jp": "ナッシュビル",
+    "lat": 36.1627,
+    "lon": -86.7816
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Tennessee",
+    "state_jp": "テネシー州",
+    "stateCode": "TN",
+    "name": "Memphis",
+    "name_jp": "メンフィス",
+    "lat": 35.1495,
+    "lon": -90.0490
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Tennessee",
+    "state_jp": "テネシー州",
+    "stateCode": "TN",
+    "name": "Knoxville",
+    "name_jp": "ノックスビル",
+    "lat": 35.9606,
+    "lon": -83.9207
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "West Virginia",
+    "state_jp": "ウェストバージニア州",
+    "stateCode": "WV",
+    "name": "Charleston",
+    "name_jp": "チャールストン",
+    "lat": 38.3498,
+    "lon": -81.6326
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "West Virginia",
+    "state_jp": "ウェストバージニア州",
+    "stateCode": "WV",
+    "name": "Huntington",
+    "name_jp": "ハンティントン",
+    "lat": 38.4192,
+    "lon": -82.4452
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Virginia",
+    "state_jp": "バージニア州",
+    "stateCode": "VA",
+    "name": "Richmond",
+    "name_jp": "リッチモンド",
+    "lat": 37.5407,
+    "lon": -77.4360
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Virginia",
+    "state_jp": "バージニア州",
+    "stateCode": "VA",
+    "name": "Norfolk",
+    "name_jp": "ノーフォーク",
+    "lat": 36.8508,
+    "lon": -76.2859
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "North Carolina",
+    "state_jp": "ノースカロライナ州",
+    "stateCode": "NC",
+    "name": "Charlotte",
+    "name_jp": "シャーロット",
+    "lat": 35.2271,
+    "lon": -80.8431
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "North Carolina",
+    "state_jp": "ノースカロライナ州",
+    "stateCode": "NC",
+    "name": "Raleigh",
+    "name_jp": "ローリー",
+    "lat": 35.7796,
+    "lon": -78.6382
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "North Carolina",
+    "state_jp": "ノースカロライナ州",
+    "stateCode": "NC",
+    "name": "Wilmington",
+    "name_jp": "ウィルミントン",
+    "lat": 34.2257,
+    "lon": -77.9447
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "South Carolina",
+    "state_jp": "サウスカロライナ州",
+    "stateCode": "SC",
+    "name": "Columbia",
+    "name_jp": "コロンビア",
+    "lat": 34.0007,
+    "lon": -81.0348
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "South Carolina",
+    "state_jp": "サウスカロライナ州",
+    "stateCode": "SC",
+    "name": "Charleston",
+    "name_jp": "チャールストン",
+    "lat": 32.7765,
+    "lon": -79.9311
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Georgia",
+    "state_jp": "ジョージア州",
+    "stateCode": "GA",
+    "name": "Atlanta",
+    "name_jp": "アトランタ",
+    "lat": 33.7490,
+    "lon": -84.3880
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Georgia",
+    "state_jp": "ジョージア州",
+    "stateCode": "GA",
+    "name": "Savannah",
+    "name_jp": "サバンナ",
+    "lat": 32.0809,
+    "lon": -81.0912
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Florida",
+    "state_jp": "フロリダ州",
+    "stateCode": "FL",
+    "name": "Jacksonville",
+    "name_jp": "ジャクソンビル",
+    "lat": 30.3322,
+    "lon": -81.6557
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Florida",
+    "state_jp": "フロリダ州",
+    "stateCode": "FL",
+    "name": "Orlando",
+    "name_jp": "オーランド",
+    "lat": 28.5383,
+    "lon": -81.3792
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Florida",
+    "state_jp": "フロリダ州",
+    "stateCode": "FL",
+    "name": "Tampa",
+    "name_jp": "タンパ",
+    "lat": 27.9506,
+    "lon": -82.4572
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Florida",
+    "state_jp": "フロリダ州",
+    "stateCode": "FL",
+    "name": "Miami",
+    "name_jp": "マイアミ",
+    "lat": 25.7617,
+    "lon": -80.1918
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Alabama",
+    "state_jp": "アラバマ州",
+    "stateCode": "AL",
+    "name": "Birmingham",
+    "name_jp": "バーミングハム",
+    "lat": 33.5186,
+    "lon": -86.8104
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Alabama",
+    "state_jp": "アラバマ州",
+    "stateCode": "AL",
+    "name": "Montgomery",
+    "name_jp": "モンゴメリー",
+    "lat": 32.3792,
+    "lon": -86.3077
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Alabama",
+    "state_jp": "アラバマ州",
+    "stateCode": "AL",
+    "name": "Mobile",
+    "name_jp": "モービル",
+    "lat": 30.6954,
+    "lon": -88.0399
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Mississippi",
+    "state_jp": "ミシシッピ州",
+    "stateCode": "MS",
+    "name": "Jackson",
+    "name_jp": "ジャクソン",
+    "lat": 32.2988,
+    "lon": -90.1848
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Mississippi",
+    "state_jp": "ミシシッピ州",
+    "stateCode": "MS",
+    "name": "Gulfport",
+    "name_jp": "ガルフポート",
+    "lat": 30.3674,
+    "lon": -89.0928
+  }
+]
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Louisiana",
+    "state_jp": "ルイジアナ州",
+    "stateCode": "LA",
+    "name": "New Orleans",
+    "name_jp": "ニューオーリンズ",
+    "lat": 29.9511,
+    "lon": -90.0715
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Louisiana",
+    "state_jp": "ルイジアナ州",
+    "stateCode": "LA",
+    "name": "Baton Rouge",
+    "name_jp": "バトンルージュ",
+    "lat": 30.4515,
+    "lon": -91.1871
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "country_jp": "アメリカ合衆国",
+    "countryCode": "US",
+    "state": "Louisiana",
+    "state_jp": "ルイジアナ州",
+    "stateCode": "LA",
+    "name": "Lake Charles",
+    "name_jp": "レイクチャールズ",
+    "lat": 30.2266,
+    "lon": -93.2174
+  }
+]
