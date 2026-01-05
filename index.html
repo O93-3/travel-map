@@ -1,231 +1,122 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>Travel Map</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<link rel="stylesheet" href="./style.css"/>
-
-
+  <meta charset="UTF-8" />
+  <title>Travel Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="manifest" href="./manifest.json">
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./style.cityresults.fix.css">
+  <link rel="stylesheet" href="./style.routeoverlay.drag.css">
+  <link rel="stylesheet" href="./style.overlay.fontsize.all.css">
 </head>
-
 <body>
+  <div id="map"></div>
 
-<div id="safeFrame" aria-hidden="true">
-  <div class="sf" data-sf="title"></div>
-  <div class="sf" data-sf="action"></div>
-</div>
-
-<div id="streamIndicator"><span class="dot"></span><span>配信モード</span></div>
-
-
-
-<div id="ui">
-
-  <!-- ===== 基本 ===== -->
-  <details class="ui-group" open>
-    <summary class="ui-title">基本</summary>
-    <button id="langBtn">日本語</button>
-    <button id="streamBtn">配信モード</button>
-    <button id="exportBtn">現在の状態を保存</button>
-    <button id="importBtn">保存した状態を読み込み</button>
-    <input type="file" id="importFile" accept="application/json" style="display:none">
-
-  </details>
-
-  <!-- ===== ルート（訪問履歴） ===== -->
-  <details class="ui-group" open>
-    <summary class="ui-title">ルート</summary>
-
-    <div class="searchWrap">
-      <input id="citySearch" type="text" placeholder="都市 / 国を検索…" autocomplete="off">
-      <div id="cityResults" class="city-results" aria-label="検索結果"></div>
-    </div>
-
-    <select id="regionSelect"><option value="">地域</option></select>
-    <select id="countrySelect"><option value="">国</option></select>
-    <select id="citySelect"><option value="">都市</option></select>
-
-    <button id="addBtn">追加</button>
-    <button id="undoBtn">ひとつ戻す</button>
-
-    <div class="routeEditBar" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px">
-      <span style="font-size:12px;opacity:.85">挿入モード: <strong id="insertModeLabel">OFF</strong></span>
-      <button id="cancelInsertBtn" type="button">挿入解除</button>
-    </div>
-
-    <ol id="routeList" class="route-list" style="margin:10px 0 0;padding-left:18px"></ol>
-
-    <button type="button" id="resetHistoryBtn" class="danger" style="margin-top:10px;width:100%">ルート履歴をリセット</button>
-
-    <div class="hint" style="margin-top:10px">Ctrl+Z=戻す / S=配信 / R=ルートオーバーレイ</div>
-
-  </details>
-
-  <!-- ===== 地図表示 ===== -->
-  <details class="ui-group" open>
-    <summary class="ui-title">地図</summary>
-
-    <select id="mapStyleSelect">
-      <option value="osm">標準</option>
-      <option value="bw">白黒</option>
-      <option value="sat">衛星</option>
-      <option value="topo">地形</option>
-    </select>
-
-    <button id="toggleBorders">国境色分け ON/OFF</button>
-  </details>
-
-  <!-- ===== 現在地（ここを“寄せる”） ===== -->
-  <details class="ui-group" id="group-current" open>
-    <summary class="ui-title">現在地</summary>
-
-    <label class="row">
-      <input type="checkbox" id="showLocation" checked>
-      <span>現在地表示</span>
-    </label>
-
-    <div class="row" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-      <button id="lockLocationBtn" type="button">位置ロック: OFF</button>
-      <span class="muted" style="font-size:12px;opacity:.85">テロップ位置ズレ防止</span>
-    </div>
-
-
-    <label class="col">
-      <span>現在地サイズ</span>
-      <input type="range" id="currentMarkerSize" min="8" max="40">
-    </label>
-
-    <label class="col">
-      <span>現在地テキストサイズ</span>
-      <input type="range" id="locFontSize" min="12" max="60" value="18">
-    </label>
-
-    <label class="col">
-      <span>旗サイズ</span>
-      <input type="range" id="locFlagSize" min="12" max="80" value="24">
-    </label>
-
-    <label class="col">
-      <span>現在地パディング</span>
-      <input type="range" id="locPadding" min="0" max="40" value="10">
-    </label>
-  </details>
-
-  <!-- ===== 見た目 ===== -->
-  <details class="ui-group" open>
-    <summary class="ui-title">見た目</summary>    <label class="col">
-      <span>ルート線の色</span>
-      <input type="color" id="lineColor">
-
-    <label class="col">
-      <span>ルート線の太さ</span>
-      <input type="range" id="lineWeight" min="1" max="12" value="4">
-    </label>
-    </label>
-
-    <label class="col">
-      <span>現在地マーカー色</span>
-      <input type="color" id="currentMarkerColor">
-    </label>
-
-
-
-    <label class="col">
-      <span>過去マーカー色</span>
-      <input type="color" id="pastMarkerColor">
-    </label>
-  </details>
-
-
-  <!-- ===== ルートオーバーレイ ===== -->
-  <details class="ui-group" id="group-obs" open>
-    <summary class="ui-title">ルートオーバーレイ</summary>
-
-    <label class="row">
-      <input type="checkbox" id="showRouteOverlay" checked>
-      <span>ルートオーバーレイ表示</span>
-    </label>
-
-    <label class="col">
-      <span>オーバーレイ文字サイズ</span>
-      <input type="range" id="overlayFontSize" min="12" max="40" value="18">
-    </label>
-
-    <label class="col">
-      <span>国旗サイズ</span>
-      <input type="range" id="overlayFlagSize" min="12" max="42" value="22">
-    </label>
-
-    <label class="row">
-      <input type="checkbox" id="overlayOnlyInStream">
-      <span>配信モード中のみ表示</span>
-    </label>
-
-    <label class="row">
-      <input type="checkbox" id="obsSafeFrame">
-      <span>セーフフレーム表示（見切れ確認）</span>
-    </label>
-
-    <div class="hint">キー: S=配信モード / R=オーバーレイ / ESC=解除（入力中はショートカット無効）</div>
-  </details>
-
-</div>
-
-<div id="currentLocation">
-<img id="flag">
-
-<span id="currentText">
-  <span id="currentCountry">Now Traveling</span>
-  <span id="currentCity"></span>
-</span>
-
-</div>
-
-
-<div id="routeOverlay" aria-label="route overlay">
-  <div class="ro-head">
-    <span class="ro-title">ROUTE</span>
-    <span class="ro-progress" id="roProgress">0/0</span>
-  </div>
-  <div class="ro-main">
-    <div class="ro-block" data-ro="now">
-      <div class="ro-line1">
-        <span class="ro-label">NOW</span>
-        <span class="ro-value" id="roNowCity">-</span>
-      </div>
-      <div class="ro-line2">
-        <img class="ro-flag" id="roNowFlag" alt="flag" />
-        <span class="ro-country" id="roNowCountry">-</span>
-      </div>
-    </div>
-
-    <div class="ro-block" data-ro="from">
-      <div class="ro-line1">
-        <span class="ro-label">FROM</span>
-        <span class="ro-value" id="roFromCity">-</span>
-      </div>
-      <div class="ro-line2">
-        <img class="ro-flag" id="roFromFlag" alt="flag" />
-        <span class="ro-country" id="roFromCountry">-</span>
-      </div>
+  <!-- 現在地 -->
+  <div id="currentLocation">
+    <img id="flag" alt="flag">
+    <div id="currentText">
+      <span id="currentCountry"></span>
+      <span id="currentCity"></span>
     </div>
   </div>
 
-    <div class="ro-block" data-ro="hist">
-      <div class="ro-line1">
-        <span class="ro-label">HIS</span>
-        <span class="ro-country" style="font-weight:900">過去5件</span>
+  <!-- 配信インジケータ & SafeFrame -->
+  <div id="streamIndicator"><span class="dot"></span> LIVE</div>
+  <div id="safeFrame"><div class="sf" data-sf="title"></div><div class="sf" data-sf="action"></div></div>
+
+  <!-- ルートオーバーレイ -->
+  <div id="routeOverlay">
+    <div class="ro-head"><div class="ro-title">ROUTE</div><div id="roProgress" class="ro-progress">0/0</div></div>
+    <div class="ro-main">
+      <div class="ro-block">
+        <div class="ro-line1"><div class="ro-label">NOW</div><div id="roNowCity" class="ro-value">-</div></div>
+        <div class="ro-line2"><img id="roNowFlag" class="ro-flag" alt="flag"><div id="roNowCountry" class="ro-country">-</div></div>
+      </div>
+      <div class="ro-block">
+        <div class="ro-line1"><div class="ro-label">FROM</div><div id="roFromCity" class="ro-value">-</div></div>
+        <div class="ro-line2"><img id="roFromFlag" class="ro-flag" alt="flag"><div id="roFromCountry" class="ro-country">-</div></div>
       </div>
       <div id="roHistory" class="ro-history"></div>
     </div>
-</div>
+  </div>
 
-<div id="map"></div>
+  <!-- メニュー（折り畳み、Redoなし） -->
+  <div id="ui">
+    <button id="langBtn">日本語</button>
+    <button id="streamBtn">配信モード</button>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="./app.js" defer></script>
-  <script src="./js/extensions.js" defer></script>
+    <details class="ui-group"><summary class="ui-title">現在の状態</summary>
+      <button id="exportBtn">現在の状態を保存</button>
+      <button id="importBtn">保存した状態を読み込み</button>
+      <input id="importFile" type="file" accept="application/json" style="display:none">
+    </details>
+
+<!-- Route section (search moved to the top) -->
+<details class="ui-group"><summary class="ui-title">ルート</summary>
+  <!-- 検索を最上段へ配置 -->
+  <div class="searchWrap" style="margin-bottom:8px;">
+    <input id="citySearch" placeholder="都市名・国名で検索">
+    <div id="cityResults" class="city-results"></div>
+  </div>
+
+  <!-- 地域／国セレクト -->
+  <select id="regionSelect"><option value="">地域</option></select>
+  <select id="countrySelect"><option value="">国</option></select>
+
+  <!-- 都市セレクト／操作 -->
+  <select id="citySelect"><option value="">都市</option></select>
+  <button id="addBtn">追加</button>
+  <button id="undoBtn">ひとつ戻す</button>
+  <button id="cancelInsertBtn">挿入解除</button>
+  <div>挿入モード: <span id="insertModeLabel">OFF</span></div>
+  <ol id="routeList" class="route-list"></ol>
+  <button id="resetHistoryBtn" class="danger">ルート履歴をリセット</button>
+</details>
+
+
+    <details class="ui-group"><summary class="ui-title">地図</summary>
+      <select id="mapStyleSelect">
+        <option value="osm">標準</option>
+        <option value="bw">白黒</option>
+        <option value="sat">衛星</option>
+        <option value="topo">地形</option>
+      </select>
+      <button id="toggleBorders">国境色分け ON/OFF</button>
+    </details>
+
+    <details class="ui-group"><summary class="ui-title">現在地</summary>
+      <label><input id="showLocation" type="checkbox"> 現在地表示</label>
+      <button id="lockLocationBtn">位置ロック: OFF</button>
+      <label class="col"><span>現在地サイズ</span><input id="currentMarkerSize" type="range" min="8" max="60" value="20"></label>
+      <label class="col"><span>現在地テキストサイズ</span><input id="locFontSize" type="range" min="12" max="40" value="18"></label>
+      <label class="col"><span>旗サイズ</span><input id="locFlagSize" type="range" min="12" max="96" value="24"></label>
+      <label class="col"><span>パディング</span><input id="locPadding" type="range" min="4" max="40" value="10"></label>
+      <label class="col"><span>ルート線の色</span><input id="lineColor" type="color" value="#ff3333"></label>
+      <label class="col"><span>ルート線の太さ</span><input id="lineWeight" type="range" min="1" max="12" value="4"></label>
+      <label class="col"><span>現在地マーカー色</span><input id="currentMarkerColor" type="color" value="#00ffff"></label>
+      <label class="col"><span>過去マーカー色</span><input id="pastMarkerColor" type="color" value="#ff3333"></label>
+    </details>
+
+    <details class="ui-group"><summary class="ui-title">ルートオーバーレイ</summary>
+      <label><input id="showRouteOverlay" type="checkbox" checked> オーバーレイ表示</label>
+      <label class="col"><span>オーバーレイ文字サイズ</span><input id="overlayFontSize" type="range" min="12" max="40" value="18"></label>
+      <label class="col"><span>国旗サイズ</span><input id="overlayFlagSize" type="range" min="12" max="96" value="22"></label>
+      <label><input id="overlayOnlyInStream" type="checkbox"> 配信モード中のみ表示</label>
+      <label><input id="obsSafeFrame" type="checkbox"> セーフフレーム表示</label>
+    </details>
+  </div>
+
+  <!-- Leaflet & Scripts（app.js → extensions.js の順） -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="./app.js"></script>
+  <script src="./js/extensions.js"></script>
+  <script src="./js/fix-lineweight.js"></script>
+    <script src="./js/draggable-routeoverlay.js"></script>
+        <script src="./js/overlay-fontsize.all.js"></script>
 </body>
 </html>

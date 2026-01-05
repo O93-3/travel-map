@@ -1,0 +1,3 @@
+/* Cursor and visual hint for draggable overlay */
+#routeOverlay { cursor: move; }
+#routeOverlay.dragging { opacity: 0.98; }

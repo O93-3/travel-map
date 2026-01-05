@@ -1,0 +1,13 @@
+/* City results position fix (load this after style.css) */
+.searchWrap { position: relative; }
+#cityResults.city-results {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px); /* place popup directly under input */
+  z-index: 1300;
+}
+/* Optional: improve viewport fit */
+@media (max-height: 700px) {
+  #cityResults.city-results { max-height: 40vh; }
+}

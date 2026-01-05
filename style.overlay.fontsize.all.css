@@ -1,0 +1,13 @@
+
+/* Route Overlay: apply unified font size to all texts */
+#routeOverlay { font-size: var(--ro-font-size, 18px); }
+#routeOverlay .ro-title,
+#routeOverlay .ro-progress,
+#routeOverlay .ro-label,
+#routeOverlay .ro-value,
+#routeOverlay .ro-country,
+#routeOverlay .ro-history .ro-h-no,
+#routeOverlay .ro-history .ro-h-city,
+#routeOverlay .ro-history .ro-h-country {
+  font-size: inherit !important; /* force unified sizing */
+}
