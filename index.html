@@ -24,8 +24,8 @@
   <div id="currentLocation">
     <img id="flag" alt="flag">
     <div id="currentText">
-      <span id="currentCountry"></span>
-      <span id="currentCity"></span>
+      <span id="currentCountry">日本 (JP)</span>
+      <span id="currentCity">神戸</span>
     </div>
   </div>
 
@@ -54,6 +54,7 @@
 
   <!-- メニュー（折り畳み、Redoなし） -->
   <div id="ui">
+    <div id="uiDragHandle" title="ドラッグで移動">⋮⋮</div>
     <button id="langBtn">日本語</button>
     <button id="streamBtn">配信モード</button>
 
@@ -133,6 +134,8 @@
   <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="./app.js"></script>
+<script src="./js/fix-currentlocation-drag.js"></script>
+  <script src="./js/draggable-ui.js"></script>
   <script src="./js/extensions.js"></script>
   <!-- Safe add-ons (app.jsは不変のまま機能追加) -->
   <script src="./js/fix-lineweight.js"></script>

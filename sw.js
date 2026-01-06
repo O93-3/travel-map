@@ -1,6 +1,6 @@
 // TravelMap Service Worker (stable v26)
 // Same-origin only. External CDN assets (Leaflet) are not cached.
-const CACHE_NAME = 'travel-map-v26';
+const CACHE_NAME = 'travel-map-v29-20260106';
 const FILES = [
   './',
   './index.html',
@@ -10,8 +10,16 @@ const FILES = [
   './manifest.json',
   './icon.png',
   './js/extensions.js',
+ './js/fix-currentlocation-drag.js',
+  './js/draggable-ui.js',
   './countries.geojson',
   './countries.geo.json',
+  './js/fix-lineweight.js',
+  './js/draggable-routeoverlay.js',
+  './js/overlay-fontsize.all.js',
+  './js/overlay-readability.js',
+  './js/mobile-compact.js',
+  './js/mobile-icons.js',
   './sw.js'
 ];
 

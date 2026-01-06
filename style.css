@@ -12,8 +12,10 @@ body{
 /* Current location bubble */
 #currentLocation{
   position:fixed;
-  left:16px;
-  bottom:16px;
+  right:16px;
+  top:64px;
+  left:auto;
+  bottom:auto;
   z-index: 1501;
   display:flex;
   align-items:center;
@@ -149,3 +151,34 @@ body.streaming #mobileBar{ display:none !important; }
 body.streaming #cityResults{ display:none !important; }
 
 #stateSearch{ display:none !important; }
+
+
+/* ===== UI draggable handle ===== */
+#ui{ position:fixed; }
+#uiDragHandle{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: -10px -10px 10px -10px;
+  padding: 6px 10px;
+  text-align: center;
+  cursor: move;
+  user-select: none;
+  font-weight: 900;
+  letter-spacing: .2em;
+  opacity: .85;
+  background: rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+body.streaming #uiDragHandle{ display:none !important; }
+
+
+/* ===== Current location drag stability v2 ===== */
+#currentLocation{ box-sizing: border-box; }
+#currentLocation.dragging{
+  right:auto !important;
+  bottom:auto !important;
+  transform:none !important;
+}

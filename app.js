@@ -36,6 +36,36 @@
   const flag = $('flag');
   const currentText = $('currentText');
 
+  // ===== Current location default (when no route) =====
+  const DEFAULT_LOC = {
+    jp: { country: '日本', city: '神戸', code: 'JP' },
+    en: { country: 'Japan', city: 'Kobe', code: 'JP' }
+  };
+
+  function getFlagCdnSrcByWidth(code, baseW){
+    const c = String(code || '').toLowerCase();
+    const w0 = Number(baseW) || 24;
+    const desiredH = Math.max(12, Math.round(w0 * 3 / 4));
+    const AVAILABLE_H = [12,15,18,21,24,27,30,36,42,45,48,54,60,63,72,81,84,90,96,108,120,144,168,192];
+    const h = AVAILABLE_H.reduce((best, v) => (Math.abs(v - desiredH) < Math.abs(best - desiredH) ? v : best), AVAILABLE_H[0]);
+    const w = Math.round(h * 4 / 3);
+    return `https://flagcdn.com/${w}x${h}/${c}.png`;
+  }
+
+  function setDefaultCurrentLocation(){
+    try{
+      const d = (lang === 'jp') ? DEFAULT_LOC.jp : DEFAULT_LOC.en;
+      if(currentCountry) currentCountry.textContent = `${d.country}（${d.code}）`;
+      if(currentCity) currentCity.textContent = d.city;
+      const baseW = Number(document.getElementById('locFlagSize')?.value) || 24;
+      if(flag){
+        flag.src = getFlagCdnSrcByWidth(d.code, baseW);
+        flag.style.display = 'block';
+      }
+    }catch(_){ }
+  }
+
+
   // ===== Route Editor / OBS Overlay refs =====
   const routeList = $('routeList');
   const insertModeLabel = $('insertModeLabel');
@@ -247,6 +277,7 @@
     try{ line.setLatLngs([]); }catch(_){ }
     if(currentMarker){ try{ map.removeLayer(currentMarker); }catch(_){ } currentMarker=null; }
     restore();
+  if(!history || history.length===0){ try{ setDefaultCurrentLocation(); }catch(_){ } }
     renderRouteList();
     updateObsUI();
     syncRouteUI();
@@ -758,11 +789,7 @@ function setupStateSearch(){
     return scored.slice(0,30).map(x=>x.i);
   }
 
-  function closeResults(){
-    if(!cityResults) return;
-    cityResults.classList.remove('open');
-    cityResults.innerHTML='';
-  }
+  function closeResults(){ cityResults?.classList.remove('open'); }
 
   function applyCitySelection(idx){
   const c=cities[idx];
@@ -858,13 +885,7 @@ function renderResults(indices, activePos = -1){
     let activePos = -1;
 
     const runNow = () => {
-      const q = (citySearch.value || '').trim();
-      if(!q){
-        lastIndices = [];
-        activePos = -1;
-        closeResults();
-        return;
-      }
+      const q = citySearch.value || '';
       lastIndices = buildSearchResults(q);
       activePos = lastIndices.length ? 0 : -1;
       renderResults(lastIndices, activePos);
@@ -1106,7 +1127,7 @@ if(citySelect){
     regionSelect.onchange()
     if(countrySelect.value) countrySelect.onchange()
    }
-   if(history.length) updateCurrent(history.at(-1))
+   if(history.length) updateCurrent(history.at(-1)); else setDefaultCurrentLocation();
   }
   
   /* ===== マーカー ===== */
@@ -1121,7 +1142,8 @@ if(citySelect){
   if (currentMarkerColorInput) currentMarkerColorInput.value=currentColor
   
   function addCurrent(city){
-   if(currentMarker)map.removeLayer(currentMarker)
+    if(!city){ setDefaultCurrentLocation(); return; }
+    if(currentMarker)map.removeLayer(currentMarker)
    const icon=L.divIcon({
     className:"pulsate",
     html:`<div style="width:${curSize}px;height:${curSize}px;
@@ -1176,22 +1198,11 @@ if(citySelect){
   
     // 旗（countryCode がある場合のみ表示）
     if (code) {
-      const base = Number(document.getElementById("locFlagSize")?.value) || 24;
-  
-      // FlagCDNの対応サイズ（高さ）に丸める
-      const AVAILABLE_H = [12,15,18,21,24,27,30,36,42,45,48,54,60,63,72,81,84,90,96,108,120,144,168,192];
-      const h = AVAILABLE_H.reduce((best, v) =>
-        Math.abs(v - base) < Math.abs(best - base) ? v : best
-      , AVAILABLE_H[0]);
-  
-      const w = Math.round(h * 4 / 3); // 4:3（例: 24→32）
-  
-      flag.src = `https://flagcdn.com/${w}x${h}/${code.toLowerCase()}.png`;
-      flag.style.width = `${w}px`;
-      flag.style.height = `${h}px`;
-      flag.style.display = "block";
+      const baseW = Number(document.getElementById('locFlagSize')?.value) || 24;
+      flag.src = getFlagCdnSrcByWidth(code, baseW);
+      flag.style.display = 'block';
     } else {
-      flag.style.display = "none";
+      flag.style.display = 'none';
     }
   }
   
@@ -1375,7 +1386,7 @@ showLocation.onchange = (e) => {
       currentLocationEl.style.fontSize = locFont + 'px';
       currentLocationEl.style.padding  = locPad + 'px ' + Math.round(locPad * 1.8) + 'px';
       flagEl.style.width  = locFlag + 'px';
-      flagEl.style.height = Math.round(locFlag * 0.65) + 'px';
+      flagEl.style.height = Math.round(locFlag * 3 / 4) + 'px';
       flagEl.style.objectFit = 'cover';
       currentTextEl.style.lineHeight = '1.1';
     }
@@ -1390,85 +1401,38 @@ showLocation.onchange = (e) => {
     locFlagSizeEl.oninput = (e) => { locFlag = parseInt(e.target.value, 10); localStorage.setItem(locFlagKey, String(locFlag)); apply(); };
     locPaddingEl.oninput  = (e) => { locPad  = parseInt(e.target.value, 10); localStorage.setItem(locPadKey,  String(locPad));  apply(); };
   })();
-/* ===== ドラッグ（現在地：変形しない left/top 固定）===== */
-  (function(){
-    if(!currentLocation) return;
-    let dragging = false;
-    let dx = 0, dy = 0;
-    const KEY = 'locUI';
+/* ===== ドラッグ ===== */
+  let drag=false,dx,dy
+  const pos=JSON.parse(localStorage.getItem("locUI"))
+  if(pos){
+   currentLocation.style.left=pos.x+"px"
+   currentLocation.style.top=pos.y+"px"
+   currentLocation.style.transform="none"
+  }
+  
+  currentLocation.onmousedown=e=>{
+    if(typeof locLocked !== 'undefined' && locLocked) return;
+   drag=true
+   dx=e.clientX-currentLocation.offsetLeft
+   dy=e.clientY-currentLocation.offsetTop
+  }
+  document.onmousemove=e=>{
+   if(!drag)return
+   currentLocation.style.left=e.clientX-dx+"px"
+   currentLocation.style.top=e.clientY-dy+"px"
+  }
+  document.onmouseup=()=>{
+   if(!drag)return
+   drag=false
+   localStorage.setItem("locUI",JSON.stringify({
+    x:currentLocation.offsetLeft,
+    y:currentLocation.offsetTop
+   }))
+  }
+  
+  
 
-    // restore
-    try{
-      const pos = JSON.parse(localStorage.getItem(KEY) || 'null');
-      if(pos && typeof pos.x === 'number' && typeof pos.y === 'number'){
-        currentLocation.style.left = pos.x + 'px';
-        currentLocation.style.top  = pos.y + 'px';
-        currentLocation.style.right = 'auto';
-        currentLocation.style.bottom = 'auto';
-        currentLocation.style.transform = 'none';
-      }
-    }catch(_){ }
-
-    // if saved position overlaps UI, push it out (first load safety)
-    try{
-      const ui = document.getElementById('ui');
-      if(ui){
-        const r1 = currentLocation.getBoundingClientRect();
-        const r2 = ui.getBoundingClientRect();
-        const overlap = !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom);
-        if(overlap){
-          currentLocation.style.left = '16px';
-          currentLocation.style.top = 'auto';
-          currentLocation.style.bottom = '16px';
-          currentLocation.style.right = 'auto';
-        }
-      }
-    }catch(_){ }
-
-    function onDown(e){
-      if (typeof locLocked !== 'undefined' && locLocked) return;
-      if(e.button !== 0) return;
-      dragging = true;
-      const rect = currentLocation.getBoundingClientRect();
-      dx = e.clientX - rect.left;
-      dy = e.clientY - rect.top;
-      currentLocation.style.left = rect.left + 'px';
-      currentLocation.style.top  = rect.top  + 'px';
-      currentLocation.style.right = 'auto';
-      currentLocation.style.bottom = 'auto';
-      currentLocation.style.transform = 'none';
-      e.preventDefault();
-    }
-
-    function onMove(e){
-      if(!dragging) return;
-      const vw = document.documentElement.clientWidth;
-      const vh = document.documentElement.clientHeight;
-      const w = currentLocation.offsetWidth;
-      const h = currentLocation.offsetHeight;
-      let x = Math.round(e.clientX - dx);
-      let y = Math.round(e.clientY - dy);
-      x = Math.max(0, Math.min(vw - w, x));
-      y = Math.max(0, Math.min(vh - h, y));
-      currentLocation.style.left = x + 'px';
-      currentLocation.style.top  = y + 'px';
-    }
-
-    function onUp(){
-      if(!dragging) return;
-      dragging = false;
-      try{
-        localStorage.setItem(KEY, JSON.stringify({
-          x: currentLocation.offsetLeft,
-          y: currentLocation.offsetTop
-        }));
-      }catch(_){ }
-    }
-
-    currentLocation.addEventListener('mousedown', onDown);
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
-  })();
+  
   // 他タブ/別プロセス（OBS等）で travelHistory が更新されたら反映する
   window.addEventListener("storage", (e) => {
     if (e.key !== "travelHistory") return;
@@ -1502,6 +1466,10 @@ showLocation.onchange = (e) => {
       const msg = (lang==='jp') ? `ルート履歴をすべて削除しますか？（${total}件）` : `Clear all route history? (${total} items)`;
       if(!confirm(msg)) return;
       try{ history = []; localStorage.setItem('travelHistory','[]'); }catch(_){ }
+      try{ localStorage.removeItem('locUI'); }catch(_){ }
+      try{ setDefaultCurrentLocation(); }catch(_){ }
+      try{ if(citySearch) citySearch.value=''; }catch(_){ }
+      try{ if(regionSelect) regionSelect.value=''; if(countrySelect) countrySelect.value=''; if(stateSelect) stateSelect.value=''; if(citySelect) citySelect.value=''; }catch(_){ }
       try{ setInsertMode(null); }catch(_){ }
       try{ setSelectedRouteIndex(null); }catch(_){ }
       try{ rebuildRouteVisual(); }catch(_){ try{ syncRouteUI(); }catch(__){} }

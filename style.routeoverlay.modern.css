@@ -1,12 +1,9 @@
 /* ===== Route Overlay Modern (No-overlap, Stylish) ===== */
 :root{
-  --ro-font-size: 18px;
+  --ro-font-size: var(--ro-font-size, 18px);
 }
 
-
 #routeOverlay{
-  opacity: var(--ro-opacity, 1);
-
   --ro-base: var(--ro-font-size, 18px);
   --ro-gap: max(8px, calc(var(--ro-base) * 0.42));
   --ro-pad-y: max(10px, calc(var(--ro-base) * 0.55));
