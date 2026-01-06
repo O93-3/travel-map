@@ -10,7 +10,6 @@ const FILES = [
   './manifest.json',
   './icon.png',
   './js/extensions.js',
- './js/fix-currentlocation-drag.js',
   './js/draggable-ui.js',
   './countries.geojson',
   './countries.geo.json',
@@ -21,7 +20,16 @@ const FILES = [
   './js/mobile-compact.js',
   './js/mobile-icons.js',
   './sw.js'
-];
+
+ './js/fix-currentlocation-drag.js',
+ './js/error-banner.js',
+ './vendor/leaflet/leaflet.css',
+ './vendor/leaflet/leaflet.js',
+ './vendor/leaflet/images/layers.png',
+ './vendor/leaflet/images/layers-2x.png',
+ './vendor/leaflet/images/marker-icon.png',
+ './vendor/leaflet/images/marker-icon-2x.png',
+ './vendor/leaflet/images/marker-shadow.png',];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();

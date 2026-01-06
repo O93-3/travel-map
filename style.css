@@ -175,10 +175,6 @@ body.streaming #cityResults{ display:none !important; }
 body.streaming #uiDragHandle{ display:none !important; }
 
 
-/* ===== Current location drag stability v2 ===== */
+/* ===== Current location drag stability v3 ===== */
 #currentLocation{ box-sizing: border-box; }
-#currentLocation.dragging{
-  right:auto !important;
-  bottom:auto !important;
-  transform:none !important;
-}
+#currentLocation.dragging{ right:auto !important; bottom:auto !important; transform:none !important; }

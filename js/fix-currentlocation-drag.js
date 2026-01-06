@@ -1,17 +1,18 @@
-// Fix: Current Location bubble drag should not deform (stable add-on v2)
+// Fix: Current Location bubble drag should not deform (stable add-on v3)
 (function(){
   'use strict';
   function ready(fn){
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fn);
     else fn();
   }
-
   ready(function(){
     var el = document.getElementById('currentLocation');
     if(!el) return;
 
-    // Disable legacy inline drag handler if present (app.js used onmousedown + document.onmousemove).
-    try{ if(typeof el.onmousedown === 'function') el.onmousedown = null; }catch(_){ }
+    // Disable legacy handlers set by app.js (prevents layout deformation on drag)
+    try{ el.onmousedown = null; }catch(_){ }
+    try{ document.onmousemove = null; }catch(_){ }
+    try{ document.onmouseup = null; }catch(_){ }
 
     var key = 'locUI';
 
@@ -24,7 +25,7 @@
       try{ el.style.setProperty('transform','none','important'); }catch(_){ el.style.transform='none'; }
     }
 
-    // Normalize default position to left/top once (even without saved state)
+    // Normalize initial position to left/top once
     (function normalizeInitial(){
       try{
         var pos = JSON.parse(localStorage.getItem(key) || 'null');
@@ -55,7 +56,6 @@
       try{ el.setPointerCapture && e.pointerId !== undefined && el.setPointerCapture(e.pointerId); }catch(_){ }
       try{ e.preventDefault(); }catch(_){ }
     }
-
     function onMove(e){
       if(!dragging) return;
       var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -69,7 +69,6 @@
       forceLeftTop(x, y);
       try{ e.preventDefault(); }catch(_){ }
     }
-
     function onUp(e){
       if(!dragging) return;
       dragging=false;

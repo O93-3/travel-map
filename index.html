@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="manifest" href="./manifest.json">
   <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="./vendor/leaflet/leaflet.css">
   <!-- Base styles -->
   <link rel="stylesheet" href="./style.css">
   <!-- Overrides / add-ons (load AFTER style.css) -->
@@ -132,9 +132,10 @@
   </div>
 
   <!-- Scripts -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="./vendor/leaflet/leaflet.js"></script>
   <script src="./app.js"></script>
-<script src="./js/fix-currentlocation-drag.js"></script>
+  <script src="./js/fix-currentlocation-drag.js"></script>
+  <script src="./js/error-banner.js"></script>
   <script src="./js/draggable-ui.js"></script>
   <script src="./js/extensions.js"></script>
   <!-- Safe add-ons (app.jsは不変のまま機能追加) -->
