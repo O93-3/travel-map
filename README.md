@@ -5,7 +5,7 @@
 
 ---
 
-## 起動（デモ）
+## 起動
 - 起動URL： https://o93-3.github.io/travel-map/
 
 ---
