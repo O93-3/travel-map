@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="./style.overlay.fontsize.all.css">
   <link rel="stylesheet" href="./style.routeoverlay.drag.css">
   <link rel="stylesheet" href="./style.overlay.readability.css">
+  <link rel="stylesheet" href="./style.routeoverlay.modern.css">
   <link rel="stylesheet" href="./style.mobile.compact.css">
 </head>
 <body>
@@ -73,6 +74,9 @@
       <!-- 地域／国セレクト -->
       <select id="regionSelect"><option value="">地域</option></select>
       <select id="countrySelect"><option value="">国</option></select>
+<div class="stateWrap" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+  <select id="stateSelect"><option value="">州</option></select>
+</div>
 
       <!-- 都市セレクト／操作 -->
       <select id="citySelect"><option value="">都市</option></select>
@@ -95,7 +99,7 @@
     </details>
 
     <details class="ui-group"><summary class="ui-title">現在地</summary>
-      <label><input id="showLocation" type="checkbox"> 現在地表示</label>
+      <label><input id="showLocation" type="checkbox" checked> 現在地表示</label>
       <button id="lockLocationBtn">位置ロック: OFF</button>
       <label class="col"><span>現在地サイズ</span><input id="currentMarkerSize" type="range" min="8" max="60" value="20"></label>
       <label class="col"><span>現在地テキストサイズ</span><input id="locFontSize" type="range" min="12" max="40" value="18"></label>
@@ -136,5 +140,6 @@
   <script src="./js/overlay-fontsize.all.js"></script>
   <script src="./js/overlay-readability.js"></script>
   <script src="./js/mobile-compact.js"></script>
+  <script src="./js/mobile-icons.js"></script>
 </body>
 </html>

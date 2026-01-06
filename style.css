@@ -1,325 +1,151 @@
-html,body{margin:0;height:100%}
-#map{width:100%;height:100%}
-
-#ui{
- position:fixed;top:10px;left:10px;z-index:1000;
- background:rgba(0,0,0,.75);color:#fff;
- padding:10px;border-radius:8px
+/* ===== Travel Map Base Styles (Restored) ===== */
+html, body { height: 100%; margin: 0; }
+body{
+  font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans JP", sans-serif;
+  background:#0b0f14;
+  color:#fff;
+  overflow:hidden;
 }
-select,button,input{width:180px;margin:2px 0}
 
+#map{ position:fixed; inset:0; z-index:1; }
+
+/* Current location bubble */
 #currentLocation{
- position:fixed;top:15px;left:50%;
- transform:translateX(-50%);
- background:#000;color:#fff;
- padding:8px 14px;border-radius:6px;
- font-size:18px;display:flex;gap:8px;
- cursor:move;z-index:1100
-}
-#currentLocation img{width:32px;height:20px}
-
-.streaming #ui{display:none}
-
-.pulsate div{animation:pulse 1.5s infinite}
-@keyframes pulse{
- 0%{transform:scale(1);opacity:1}
- 50%{transform:scale(1.5);opacity:.7}
- 100%{transform:scale(1);opacity:1}
-}
-
-
-/* ===== UI: 標準幅 500px（追記で上書き） ===== */
-#ui{
-  width: 200px;
-  max-width: 200px;
-  box-sizing: border-box; /* padding込みで500pxにする */
-}
-
-/* パネル幅に合わせて各コントロールを伸ばす
-   ※現状は select,button,input が width:180px なのでそれを上書きする [1](blob:https://m365.cloud.microsoft/1a26e45b-36b5-4b0f-b876-7ad9422abe81) */
-#ui select,
-#ui button,
-#ui input[type="range"]{
-  width: 100% !important;
-  box-sizing: border-box;
-}
-
-/* カラーピッカーは横幅いっぱいにすると見づらい場合があるので控えめ */
-#ui input[type="color"]{
-  width: 80px !important;
-  height: 30px;
-  padding: 0;
-}
-
-/* チェックボックスは幅固定の影響を受けないようにする（離れる問題の根本対策） */
-#ui input[type="checkbox"]{
-  width: auto !important;
-  margin: 0;
-}
-
-
-/* UI全体の基準文字サイズ */
-#ui{
-  font-size: 14px; /* 好きなサイズに */
-}
-
-/* ===============================
-   現在地テロップ（都市だけ太字・大きく + 見た目強化）
-   =============================== */
-#currentLocation{
-  background: rgba(0,0,0,0.72);
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border-radius: 14px;
-}
-
-#flag{
-  border-radius: 4px;
-  object-fit: cover;
-  flex: 0 0 auto;
-}
-
-#currentText{
-  display: flex;
-  flex-direction: column;
-  line-height: 1.05;
-  white-space: normal;
-}
-
-#currentCountry{
-  display: block;
-  font-size: 0.75em;
-  font-weight: 600;
-  opacity: 0.9;
-}
-
-#currentCity{
-  display: block;
-  font-size: 1.25em;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  margin-top: 1px;
-}
-
-/* 配信モード：UIを消す（JSは body に streaming を付ける） */
-.streaming #ui{display:none;}
-
-/* ===== 都市検索 ===== */
-.searchWrap{ position:relative; }
-#citySearch{ width:100% !important; box-sizing:border-box; height:34px; padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.12); background: rgba(0,0,0,0.35); color:#fff; outline:none; }
-#citySearch::placeholder{ color: rgba(255,255,255,0.65); }
-
-#cityResults.city-results{
-  position:absolute;
-  left:0;
-  right:0;
-  top:38px;
-  z-index:1300;
-  display:none;
-  max-height:240px;
-  overflow:auto;
-  background: rgba(10,10,10,0.92);
+  position:fixed;
+  left:16px;
+  bottom:16px;
+  z-index: 1501;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 16px;
+  border-radius:14px;
+  background:rgba(0,0,0,0.55);
   border:1px solid rgba(255,255,255,0.14);
-  border-radius:12px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+  box-shadow:0 10px 28px rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  user-select:none;
 }
-#cityResults.city-results.open{ display:block; }
+#flag{ width:32px; height:24px; border-radius:6px; object-fit:cover; display:none; background:rgba(255,255,255,0.08); }
+#currentText span{ display:block; line-height:1.1; }
 
-.city-item{ padding:8px 10px; cursor:pointer; border-bottom:1px solid rgba(255,255,255,0.06); }
-.city-item:last-child{ border-bottom:none; }
-.city-item:hover{ background: rgba(255,255,255,0.08); }
-.city-item .main{ font-weight:800; }
-.city-item .sub{ font-size:12px; opacity:0.85; margin-top:2px; }
-
-.city-results::-webkit-scrollbar{ width:10px; }
-.city-results::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.18); border-radius:10px; }
-
-
-
-/* 検索候補：キーボード選択ハイライト */
-.city-item.active{
-  background: rgba(0, 140, 255, 0.22);
-  outline: 1px solid rgba(0, 140, 255, 0.35);
+/* Mobile bar */
+#mobileBar{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:1500;
+  padding:10px 12px;
+  background:rgba(0,0,0,0.55);
+  border-bottom:1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
-
-
-/* ===== 見た目：色設定を1項目ずつ別段（縦並び）にする ===== */
-#ui label.col{
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 8px 0;
+#mobileBar .mb-left{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+#mobileBar .mb-title{ font-weight:900; letter-spacing:.06em; opacity:.95; }
+#mobileBar button{ 
+  appearance:none; border:1px solid rgba(255,255,255,0.16);
+  background:rgba(255,255,255,0.08);
+  color:#fff; border-radius:10px; padding:6px 10px;
+  font-weight:800; cursor:pointer;
 }
-#ui label.col > span{
-  display: block;
-}
-/* カラーピッカーは左寄せのまま */
-#ui label.col input[type="color"]{
-  align-self: flex-start;
-}
+#mobileBar button:hover{ background:rgba(255,255,255,0.14); }
 
-
-/* ===== UI: スクロール＋折り畳み（details/summary） ===== */
-
-/* メニュー（#ui）が画面外に伸びたら、#ui内だけスクロールさせる */
+/* Main UI panel */
 #ui{
-  max-height: calc(100dvh - 20px); /* top:10px を考慮 */
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
+  position:fixed;
+  top:56px;
+  left:12px;
+  z-index:1450;
+  width:min(420px, 92vw);
+  max-height:calc(100vh - 72px);
+  overflow:auto;
+  padding:10px;
+  border-radius:16px;
+  background:rgba(0,0,0,0.55);
+  border:1px solid rgba(255,255,255,0.12);
+  box-shadow:0 16px 40px rgba(0,0,0,0.38);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+#ui button, #ui select, #ui input[type="text"], #ui input[type="number"], #ui input[type="range"], #ui input[type="color"]{
+  width:100%;
+  box-sizing:border-box;
+  margin:6px 0;
+}
+#ui button{
+  appearance:none;
+  border:1px solid rgba(255,255,255,0.16);
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+  border-radius:12px;
+  padding:8px 10px;
+  font-weight:900;
+  cursor:pointer;
+}
+#ui button:hover{ background:rgba(255,255,255,0.14); }
+#ui select, #ui input[type="text"], #ui input[type="number"]{
+  border:1px solid rgba(255,255,255,0.16);
+  background:rgba(8,10,14,0.72);
+  color:#fff;
+  border-radius:12px;
+  padding:8px 10px;
+}
+#ui input[type="range"]{ accent-color:#00ffff; }
+
+details.ui-group{
+  border:1px solid rgba(255,255,255,0.10);
+  background:rgba(255,255,255,0.04);
+  border-radius:14px;
+  padding:8px 10px;
+  margin:8px 0;
+}
+summary.ui-title{
+  cursor:pointer;
+  font-weight:900;
+  letter-spacing:.03em;
 }
 
-/* スクロールバー（WebKit系） */
-#ui::-webkit-scrollbar{ width: 10px; }
-#ui::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.18); border-radius: 10px; }
-
-/* 折り畳みセクション：ui-group を <details> 化 */
-#ui details.ui-group{
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 12px;
-  padding: 8px 10px;
-  margin: 10px 0;
-  background: rgba(0,0,0,0.18);
-}
-
-#ui details.ui-group > summary.ui-title{
-  cursor: pointer;
-  user-select: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 800;
-  list-style: none; /* 既定のマーカーを消す */
-}
-
-/* 既定の三角（Chrome等）を消す */
-#ui details.ui-group > summary.ui-title::-webkit-details-marker{ display:none; }
-
-/* 自前の三角アイコン */
-#ui details.ui-group > summary.ui-title::before{
-  content: "▸";
-  display: inline-block;
-  opacity: .85;
-  transform: translateY(-1px);
-  transition: transform .15s ease;
-}
-#ui details.ui-group[open] > summary.ui-title::before{
-  transform: rotate(90deg) translateX(1px);
-}
-
-/* 開いているときだけ中身に余白 */
-#ui details.ui-group[open] > :not(summary){
-  margin-top: 10px;
-}
-
-
-/* ファイル入力（状態読み込み：非表示のまま） */
-#ui input[type="file"]{
-  width: 100% !important;
-  box-sizing: border-box;
-  color: #fff;
-}
-
-
-
-/* ===== OBS Route Overlay ===== */
-#routeOverlay{position:fixed;right:16px;bottom:16px;z-index:1250;min-width:280px;max-width:42vw;padding:10px 12px;border-radius:14px;background:rgba(0,0,0,0.62);border:1px solid rgba(255,255,255,0.14);box-shadow:0 10px 30px rgba(0,0,0,0.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;display:none}
-#routeOverlay .ro-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
-#routeOverlay .ro-title{font-weight:900;letter-spacing:.08em;font-size:12px;opacity:.85}
-#routeOverlay .ro-progress{font-weight:800;font-size:12px;opacity:.85}
-#routeOverlay .ro-main{display:flex;flex-direction:column;gap:10px}
-#routeOverlay .ro-block{display:flex;flex-direction:column;gap:4px}
-#routeOverlay .ro-line1{display:flex;align-items:baseline;gap:10px}
-#routeOverlay .ro-line2{display:flex;align-items:center;gap:8px;opacity:.92}
-#routeOverlay .ro-label{font-weight:900;font-size:11px;opacity:.75;width:44px}
-#routeOverlay .ro-value{font-weight:900;font-size:18px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#routeOverlay .ro-country{font-size:13px;font-weight:800;opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#routeOverlay .ro-flag{width:32px;height:24px;border-radius:4px;object-fit:cover;background:rgba(255,255,255,0.10);display:none}
-
-
-/* ===== Stream Indicator ===== */
-#streamIndicator{position:fixed;top:10px;left:10px;z-index:1200;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.02em;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.14);color:#fff;display:none;user-select:none}
-.streaming #streamIndicator{display:inline-flex;align-items:center;gap:8px}
-#streamIndicator .dot{width:10px;height:10px;border-radius:999px;background:#ff3333;box-shadow:0 0 0 5px rgba(255,51,51,0.18)}
-
-
-/* ===== Safe Frame ===== */
-#safeFrame{position:fixed;inset:0;z-index:1240;pointer-events:none;display:none}
-#safeFrame .sf{position:absolute;inset:0;border:2px dashed rgba(255,255,255,0.20);border-radius:10px}
-#safeFrame .sf[data-sf="title"]{inset:5% 5%}
-#safeFrame .sf[data-sf="action"]{inset:10% 10%;border-color:rgba(76,194,255,0.20)}
-
-
-/* ===== Route Editor list ===== */
-#ui .route-list{list-style:decimal;margin:10px 0 0;padding-left:18px}
-#ui .route-item{margin:8px 0;padding:10px 10px;border:1px solid rgba(255,255,255,0.12);border-radius:12px;background:rgba(0,0,0,0.18)}
-#ui .route-item[draggable="true"]{cursor:grab}
-#ui .route-item.selected{outline:2px solid rgba(0,140,255,0.40);background:rgba(0,140,255,0.12)}
-#ui .route-actions button,#ui #cancelInsertBtn,#ui #lockLocationBtn{width:auto !important}
-
-
-/* ===== OBS UI panel width ===== */
-#ui{width:320px;max-width:320px;border-radius:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12)}
-#ui button,#ui select{height:34px}
-#ui .hint{margin-top:8px;font-size:12px;opacity:.85;line-height:1.35}
-
-
-/* ===== Danger button ===== */
-#ui button.danger{
-  background: rgba(255, 51, 51, 0.18);
-  border: 1px solid rgba(255, 51, 51, 0.45);
-}
-#ui button.danger:hover{
-  background: rgba(255, 51, 51, 0.28);
-}
-
-
-/* ===== Route overlay: past history list ===== */
-#routeOverlay .ro-history{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  margin-top:6px;
-}
-#routeOverlay .ro-history .ro-h-item{
-  display:flex;
-  align-items:flex-start;
+/* Stream indicator & safe frame */
+#streamIndicator{
+  position:fixed;
+  top:12px;
+  right:12px;
+  z-index:1600;
+  display:none;
+  align-items:center;
   gap:8px;
-  opacity:0.95;
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.55);
+  border:1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(8px);
 }
-#routeOverlay .ro-history .ro-h-no{
-  width:18px;
-  text-align:right;
-  font-weight:900;
-  font-size:11px;
-  opacity:0.7;
-  line-height:1.1;
-  padding-top:2px;
+#streamIndicator .dot{ width:10px; height:10px; border-radius:50%; background:#ff2d55; box-shadow:0 0 0 6px rgba(255,45,85,0.18); }
+
+#safeFrame{ position:fixed; inset:0; z-index:1590; pointer-events:none; display:none; }
+#safeFrame .sf{ position:absolute; border:2px solid rgba(0,255,255,0.4); }
+
+/* Route overlay base positioning (design is in style.routeoverlay.modern.css) */
+#routeOverlay{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  z-index:1550;
+  display:none;
+  color:#fff;
 }
-#routeOverlay .ro-history img{
-  width:24px;
-  height:18px;
-  border-radius:4px;
-  object-fit:cover;
-  flex:0 0 auto;
-  margin-top:2px;
-}
-#routeOverlay .ro-history .ro-h-city{
-  font-weight:900;
-  font-size:13px;
-  line-height:1.1;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-#routeOverlay .ro-history .ro-h-country{
-  font-size:12px;
-  opacity:0.85;
-  line-height:1.1;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
+
+/* City search results dropdown basic */
+#cityResults{ position:relative; }
+
+/* Prefer readable links */
+a{ color:#7be9ff; }
+
+
+/* ===== Streaming mode: hide editor UI ===== */
+body.streaming #ui{ display:none !important; }
+body.streaming #mobileBar{ display:none !important; }
+body.streaming #cityResults{ display:none !important; }
+
+#stateSearch{ display:none !important; }

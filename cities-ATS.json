@@ -10,7 +10,8 @@
     "name": "Los Angeles",
     "name_jp": "ロサンゼルス",
     "lat": 34.0522,
-    "lon": -118.2437
+    "lon": -118.2437,
+    "id": "US-CA-LosAngeles"
   },
   {
     "region": "North America",
@@ -23,7 +24,8 @@
     "name": "San Diego",
     "name_jp": "サンディエゴ",
     "lat": 32.7157,
-    "lon": -117.1611
+    "lon": -117.1611,
+    "id": "US-CA-SanDiego"
   },
   {
     "region": "North America",
@@ -36,7 +38,8 @@
     "name": "San Francisco",
     "name_jp": "サンフランシスコ",
     "lat": 37.7749,
-    "lon": -122.4194
+    "lon": -122.4194,
+    "id": "US-CA-SanFrancisco"
   },
   {
     "region": "North America",
@@ -49,7 +52,8 @@
     "name": "Sacramento",
     "name_jp": "サクラメント",
     "lat": 38.5816,
-    "lon": -121.4944
+    "lon": -121.4944,
+    "id": "US-CA-Sacramento"
   },
   {
     "region": "North America",
@@ -62,7 +66,8 @@
     "name": "Fresno",
     "name_jp": "フレズノ",
     "lat": 36.7378,
-    "lon": -119.7871
+    "lon": -119.7871,
+    "id": "US-CA-Fresno"
   },
   {
     "region": "North America",
@@ -75,7 +80,8 @@
     "name": "Bakersfield",
     "name_jp": "ベーカーズフィールド",
     "lat": 35.3733,
-    "lon": -119.0187
+    "lon": -119.0187,
+    "id": "US-CA-Bakersfield"
   },
   {
     "region": "North America",
@@ -88,7 +94,8 @@
     "name": "Redding",
     "name_jp": "レディング",
     "lat": 40.5865,
-    "lon": -122.3917
+    "lon": -122.3917,
+    "id": "US-CA-Redding"
   },
   {
     "region": "North America",
@@ -101,10 +108,9 @@
     "name": "Eureka",
     "name_jp": "ユーレカ",
     "lat": 40.8021,
-    "lon": -124.1637
-  }
-]
-[
+    "lon": -124.1637,
+    "id": "US-CA-Eureka"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -116,7 +122,8 @@
     "name": "Phoenix",
     "name_jp": "フェニックス",
     "lat": 33.4484,
-    "lon": -112.0740
+    "lon": -112.074,
+    "id": "US-AZ-Phoenix"
   },
   {
     "region": "North America",
@@ -129,7 +136,8 @@
     "name": "Tucson",
     "name_jp": "ツーソン",
     "lat": 32.2226,
-    "lon": -110.9747
+    "lon": -110.9747,
+    "id": "US-AZ-Tucson"
   },
   {
     "region": "North America",
@@ -142,7 +150,8 @@
     "name": "Flagstaff",
     "name_jp": "フラッグスタッフ",
     "lat": 35.1983,
-    "lon": -111.6513
+    "lon": -111.6513,
+    "id": "US-AZ-Flagstaff"
   },
   {
     "region": "North America",
@@ -155,7 +164,8 @@
     "name": "Yuma",
     "name_jp": "ユマ",
     "lat": 32.6927,
-    "lon": -114.6277
+    "lon": -114.6277,
+    "id": "US-AZ-Yuma"
   },
   {
     "region": "North America",
@@ -168,10 +178,9 @@
     "name": "Kingman",
     "name_jp": "キングマン",
     "lat": 35.1894,
-    "lon": -114.0530
-  }
-]
-[
+    "lon": -114.053,
+    "id": "US-AZ-Kingman"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -183,7 +192,8 @@
     "name": "Las Vegas",
     "name_jp": "ラスベガス",
     "lat": 36.1699,
-    "lon": -115.1398
+    "lon": -115.1398,
+    "id": "US-NV-LasVegas"
   },
   {
     "region": "North America",
@@ -196,7 +206,8 @@
     "name": "Reno",
     "name_jp": "リノ",
     "lat": 39.5296,
-    "lon": -119.8138
+    "lon": -119.8138,
+    "id": "US-NV-Reno"
   },
   {
     "region": "North America",
@@ -209,7 +220,8 @@
     "name": "Elko",
     "name_jp": "エルコ",
     "lat": 40.8324,
-    "lon": -115.7631
+    "lon": -115.7631,
+    "id": "US-NV-Elko"
   },
   {
     "region": "North America",
@@ -222,7 +234,8 @@
     "name": "Ely",
     "name_jp": "イーリー",
     "lat": 39.2474,
-    "lon": -114.8886
+    "lon": -114.8886,
+    "id": "US-NV-Ely"
   },
   {
     "region": "North America",
@@ -235,10 +248,9 @@
     "name": "Winnemucca",
     "name_jp": "ウィネマッカ",
     "lat": 40.9729,
-    "lon": -117.7357
-  }
-]
-[
+    "lon": -117.7357,
+    "id": "US-NV-Winnemucca"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -250,7 +262,8 @@
     "name": "Albuquerque",
     "name_jp": "アルバカーキ",
     "lat": 35.0844,
-    "lon": -106.6504
+    "lon": -106.6504,
+    "id": "US-NM-Albuquerque"
   },
   {
     "region": "North America",
@@ -262,8 +275,9 @@
     "stateCode": "NM",
     "name": "Santa Fe",
     "name_jp": "サンタフェ",
-    "lat": 35.6870,
-    "lon": -105.9378
+    "lat": 35.687,
+    "lon": -105.9378,
+    "id": "US-NM-SantaFe"
   },
   {
     "region": "North America",
@@ -276,7 +290,8 @@
     "name": "Roswell",
     "name_jp": "ロズウェル",
     "lat": 33.3943,
-    "lon": -104.5230
+    "lon": -104.523,
+    "id": "US-NM-Roswell"
   },
   {
     "region": "North America",
@@ -289,7 +304,8 @@
     "name": "Farmington",
     "name_jp": "ファーミントン",
     "lat": 36.7281,
-    "lon": -108.2187
+    "lon": -108.2187,
+    "id": "US-NM-Farmington"
   },
   {
     "region": "North America",
@@ -302,10 +318,9 @@
     "name": "Las Cruces",
     "name_jp": "ラスクルーセス",
     "lat": 32.3199,
-    "lon": -106.7637
-  }
-]
-[
+    "lon": -106.7637,
+    "id": "US-NM-LasCruces"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -317,7 +332,8 @@
     "name": "Portland",
     "name_jp": "ポートランド",
     "lat": 45.5152,
-    "lon": -122.6784
+    "lon": -122.6784,
+    "id": "US-OR-Portland"
   },
   {
     "region": "North America",
@@ -330,7 +346,8 @@
     "name": "Salem",
     "name_jp": "セーラム",
     "lat": 44.9429,
-    "lon": -123.0351
+    "lon": -123.0351,
+    "id": "US-OR-Salem"
   },
   {
     "region": "North America",
@@ -343,7 +360,8 @@
     "name": "Eugene",
     "name_jp": "ユージーン",
     "lat": 44.0521,
-    "lon": -123.0868
+    "lon": -123.0868,
+    "id": "US-OR-Eugene"
   },
   {
     "region": "North America",
@@ -356,7 +374,8 @@
     "name": "Medford",
     "name_jp": "メドフォード",
     "lat": 42.3265,
-    "lon": -122.8756
+    "lon": -122.8756,
+    "id": "US-OR-Medford"
   },
   {
     "region": "North America",
@@ -369,10 +388,9 @@
     "name": "Pendleton",
     "name_jp": "ペンドルトン",
     "lat": 45.6721,
-    "lon": -118.7886
-  }
-]
-[
+    "lon": -118.7886,
+    "id": "US-OR-Pendleton"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -384,7 +402,8 @@
     "name": "Seattle",
     "name_jp": "シアトル",
     "lat": 47.6062,
-    "lon": -122.3321
+    "lon": -122.3321,
+    "id": "US-WA-Seattle"
   },
   {
     "region": "North America",
@@ -397,7 +416,8 @@
     "name": "Tacoma",
     "name_jp": "タコマ",
     "lat": 47.2529,
-    "lon": -122.4443
+    "lon": -122.4443,
+    "id": "US-WA-Tacoma"
   },
   {
     "region": "North America",
@@ -410,7 +430,8 @@
     "name": "Spokane",
     "name_jp": "スポケーン",
     "lat": 47.6588,
-    "lon": -117.4260
+    "lon": -117.426,
+    "id": "US-WA-Spokane"
   },
   {
     "region": "North America",
@@ -422,8 +443,9 @@
     "stateCode": "WA",
     "name": "Everett",
     "name_jp": "エバレット",
-    "lat": 47.9780,
-    "lon": -122.2021
+    "lat": 47.978,
+    "lon": -122.2021,
+    "id": "US-WA-Everett"
   },
   {
     "region": "North America",
@@ -436,10 +458,9 @@
     "name": "Yakima",
     "name_jp": "ヤキマ",
     "lat": 46.6021,
-    "lon": -120.5059
-  }
-]
-[
+    "lon": -120.5059,
+    "id": "US-WA-Yakima"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -451,7 +472,8 @@
     "name": "Salt Lake City",
     "name_jp": "ソルトレイクシティ",
     "lat": 40.7608,
-    "lon": -111.8910
+    "lon": -111.891,
+    "id": "US-UT-SaltLakeCity"
   },
   {
     "region": "North America",
@@ -463,8 +485,9 @@
     "stateCode": "UT",
     "name": "Ogden",
     "name_jp": "オグデン",
-    "lat": 41.2230,
-    "lon": -111.9738
+    "lat": 41.223,
+    "lon": -111.9738,
+    "id": "US-UT-Ogden"
   },
   {
     "region": "North America",
@@ -477,7 +500,8 @@
     "name": "Provo",
     "name_jp": "プロボ",
     "lat": 40.2338,
-    "lon": -111.6585
+    "lon": -111.6585,
+    "id": "US-UT-Provo"
   },
   {
     "region": "North America",
@@ -490,7 +514,8 @@
     "name": "Moab",
     "name_jp": "モアブ",
     "lat": 38.5733,
-    "lon": -109.5498
+    "lon": -109.5498,
+    "id": "US-UT-Moab"
   },
   {
     "region": "North America",
@@ -503,10 +528,9 @@
     "name": "St. George",
     "name_jp": "セントジョージ",
     "lat": 37.0965,
-    "lon": -113.5684
-  }
-]
-[
+    "lon": -113.5684,
+    "id": "US-UT-StGeorge"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -517,8 +541,9 @@
     "stateCode": "ID",
     "name": "Boise",
     "name_jp": "ボイシ",
-    "lat": 43.6150,
-    "lon": -116.2023
+    "lat": 43.615,
+    "lon": -116.2023,
+    "id": "US-ID-Boise"
   },
   {
     "region": "North America",
@@ -531,7 +556,8 @@
     "name": "Twin Falls",
     "name_jp": "ツインフォールズ",
     "lat": 42.5629,
-    "lon": -114.4609
+    "lon": -114.4609,
+    "id": "US-ID-TwinFalls"
   },
   {
     "region": "North America",
@@ -544,7 +570,8 @@
     "name": "Idaho Falls",
     "name_jp": "アイダホフォールズ",
     "lat": 43.4917,
-    "lon": -112.0339
+    "lon": -112.0339,
+    "id": "US-ID-IdahoFalls"
   },
   {
     "region": "North America",
@@ -557,7 +584,8 @@
     "name": "Pocatello",
     "name_jp": "ポカテロ",
     "lat": 42.8713,
-    "lon": -112.4455
+    "lon": -112.4455,
+    "id": "US-ID-Pocatello"
   },
   {
     "region": "North America",
@@ -570,10 +598,9 @@
     "name": "Coeur d'Alene",
     "name_jp": "クーアダリーン",
     "lat": 47.6777,
-    "lon": -116.7805
-  }
-]
-[
+    "lon": -116.7805,
+    "id": "US-ID-CoeurdAlene"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -585,7 +612,8 @@
     "name": "Billings",
     "name_jp": "ビリングス",
     "lat": 45.7833,
-    "lon": -108.5007
+    "lon": -108.5007,
+    "id": "US-MT-Billings"
   },
   {
     "region": "North America",
@@ -598,7 +626,8 @@
     "name": "Great Falls",
     "name_jp": "グレートフォールズ",
     "lat": 47.5053,
-    "lon": -111.3008
+    "lon": -111.3008,
+    "id": "US-MT-GreatFalls"
   },
   {
     "region": "North America",
@@ -611,7 +640,8 @@
     "name": "Helena",
     "name_jp": "ヘレナ",
     "lat": 46.5891,
-    "lon": -112.0391
+    "lon": -112.0391,
+    "id": "US-MT-Helena"
   },
   {
     "region": "North America",
@@ -624,7 +654,8 @@
     "name": "Missoula",
     "name_jp": "ミズーラ",
     "lat": 46.8721,
-    "lon": -113.9940
+    "lon": -113.994,
+    "id": "US-MT-Missoula"
   },
   {
     "region": "North America",
@@ -637,10 +668,9 @@
     "name": "Kalispell",
     "name_jp": "カリスペル",
     "lat": 48.1958,
-    "lon": -114.3129
-  }
-]
-[
+    "lon": -114.3129,
+    "id": "US-MT-Kalispell"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -651,8 +681,9 @@
     "stateCode": "WY",
     "name": "Cheyenne",
     "name_jp": "シャイアン",
-    "lat": 41.1400,
-    "lon": -104.8202
+    "lat": 41.14,
+    "lon": -104.8202,
+    "id": "US-WY-Cheyenne"
   },
   {
     "region": "North America",
@@ -665,7 +696,8 @@
     "name": "Casper",
     "name_jp": "キャスパー",
     "lat": 42.8666,
-    "lon": -106.3131
+    "lon": -106.3131,
+    "id": "US-WY-Casper"
   },
   {
     "region": "North America",
@@ -678,7 +710,8 @@
     "name": "Rock Springs",
     "name_jp": "ロックスプリングス",
     "lat": 41.5868,
-    "lon": -109.2029
+    "lon": -109.2029,
+    "id": "US-WY-RockSprings"
   },
   {
     "region": "North America",
@@ -691,10 +724,9 @@
     "name": "Sheridan",
     "name_jp": "シェリダン",
     "lat": 44.7972,
-    "lon": -106.9562
-  }
-]
-[
+    "lon": -106.9562,
+    "id": "US-WY-Sheridan"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -706,7 +738,8 @@
     "name": "Denver",
     "name_jp": "デンバー",
     "lat": 39.7392,
-    "lon": -104.9903
+    "lon": -104.9903,
+    "id": "US-CO-Denver"
   },
   {
     "region": "North America",
@@ -719,7 +752,8 @@
     "name": "Colorado Springs",
     "name_jp": "コロラドスプリングス",
     "lat": 38.8339,
-    "lon": -104.8214
+    "lon": -104.8214,
+    "id": "US-CO-ColoradoSprings"
   },
   {
     "region": "North America",
@@ -732,7 +766,8 @@
     "name": "Pueblo",
     "name_jp": "プエブロ",
     "lat": 38.2544,
-    "lon": -104.6091
+    "lon": -104.6091,
+    "id": "US-CO-Pueblo"
   },
   {
     "region": "North America",
@@ -745,7 +780,8 @@
     "name": "Grand Junction",
     "name_jp": "グランドジャンクション",
     "lat": 39.0639,
-    "lon": -108.5506
+    "lon": -108.5506,
+    "id": "US-CO-GrandJunction"
   },
   {
     "region": "North America",
@@ -757,12 +793,10 @@
     "stateCode": "CO",
     "name": "Steamboat Springs",
     "name_jp": "スチームボートスプリングス",
-    "lat": 40.4850,
-    "lon": -106.8317
-  }
-]
-
-[
+    "lat": 40.485,
+    "lon": -106.8317,
+    "id": "US-CO-SteamboatSprings"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -774,7 +808,8 @@
     "name": "Dallas",
     "name_jp": "ダラス",
     "lat": 32.7767,
-    "lon": -96.7970
+    "lon": -96.797,
+    "id": "US-TX-Dallas"
   },
   {
     "region": "North America",
@@ -787,7 +822,8 @@
     "name": "Fort Worth",
     "name_jp": "フォートワース",
     "lat": 32.7555,
-    "lon": -97.3308
+    "lon": -97.3308,
+    "id": "US-TX-FortWorth"
   },
   {
     "region": "North America",
@@ -800,7 +836,8 @@
     "name": "Houston",
     "name_jp": "ヒューストン",
     "lat": 29.7604,
-    "lon": -95.3698
+    "lon": -95.3698,
+    "id": "US-TX-Houston"
   },
   {
     "region": "North America",
@@ -813,7 +850,8 @@
     "name": "San Antonio",
     "name_jp": "サンアントニオ",
     "lat": 29.4241,
-    "lon": -98.4936
+    "lon": -98.4936,
+    "id": "US-TX-SanAntonio"
   },
   {
     "region": "North America",
@@ -826,7 +864,8 @@
     "name": "Austin",
     "name_jp": "オースティン",
     "lat": 30.2672,
-    "lon": -97.7431
+    "lon": -97.7431,
+    "id": "US-TX-Austin"
   },
   {
     "region": "North America",
@@ -839,7 +878,8 @@
     "name": "El Paso",
     "name_jp": "エルパソ",
     "lat": 31.7619,
-    "lon": -106.4850
+    "lon": -106.485,
+    "id": "US-TX-ElPaso"
   },
   {
     "region": "North America",
@@ -852,7 +892,8 @@
     "name": "Laredo",
     "name_jp": "ラレド",
     "lat": 27.5306,
-    "lon": -99.4803
+    "lon": -99.4803,
+    "id": "US-TX-Laredo"
   },
   {
     "region": "North America",
@@ -865,11 +906,9 @@
     "name": "Corpus Christi",
     "name_jp": "コーパスクリスティ",
     "lat": 27.8006,
-    "lon": -97.3964
-  }
-]
-
-[
+    "lon": -97.3964,
+    "id": "US-TX-CorpusChristi"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -881,7 +920,8 @@
     "name": "Oklahoma City",
     "name_jp": "オクラホマシティ",
     "lat": 35.4676,
-    "lon": -97.5164
+    "lon": -97.5164,
+    "id": "US-OK-OklahomaCity"
   },
   {
     "region": "North America",
@@ -894,7 +934,8 @@
     "name": "Tulsa",
     "name_jp": "タルサ",
     "lat": 36.1539,
-    "lon": -95.9928
+    "lon": -95.9928,
+    "id": "US-OK-Tulsa"
   },
   {
     "region": "North America",
@@ -907,10 +948,9 @@
     "name": "Lawton",
     "name_jp": "ロートン",
     "lat": 34.6036,
-    "lon": -98.3959
-  }
-]
-[
+    "lon": -98.3959,
+    "id": "US-OK-Lawton"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -922,7 +962,8 @@
     "name": "Wichita",
     "name_jp": "ウィチタ",
     "lat": 37.6872,
-    "lon": -97.3301
+    "lon": -97.3301,
+    "id": "US-KS-Wichita"
   },
   {
     "region": "North America",
@@ -935,7 +976,8 @@
     "name": "Topeka",
     "name_jp": "トピーカ",
     "lat": 39.0473,
-    "lon": -95.6752
+    "lon": -95.6752,
+    "id": "US-KS-Topeka"
   },
   {
     "region": "North America",
@@ -948,10 +990,9 @@
     "name": "Dodge City",
     "name_jp": "ドッジシティ",
     "lat": 37.7528,
-    "lon": -100.0171
-  }
-]
-[
+    "lon": -100.0171,
+    "id": "US-KS-DodgeCity"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -963,7 +1004,8 @@
     "name": "Omaha",
     "name_jp": "オマハ",
     "lat": 41.2565,
-    "lon": -95.9345
+    "lon": -95.9345,
+    "id": "US-NE-Omaha"
   },
   {
     "region": "North America",
@@ -976,7 +1018,8 @@
     "name": "Lincoln",
     "name_jp": "リンカーン",
     "lat": 40.8136,
-    "lon": -96.7026
+    "lon": -96.7026,
+    "id": "US-NE-Lincoln"
   },
   {
     "region": "North America",
@@ -989,10 +1032,9 @@
     "name": "Scottsbluff",
     "name_jp": "スコッツブラフ",
     "lat": 41.8666,
-    "lon": -103.6672
-  }
-]
-[
+    "lon": -103.6672,
+    "id": "US-NE-Scottsbluff"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1004,7 +1046,8 @@
     "name": "Little Rock",
     "name_jp": "リトルロック",
     "lat": 34.7465,
-    "lon": -92.2896
+    "lon": -92.2896,
+    "id": "US-AR-LittleRock"
   },
   {
     "region": "North America",
@@ -1017,10 +1060,9 @@
     "name": "Fayetteville",
     "name_jp": "フェイエットビル",
     "lat": 36.0822,
-    "lon": -94.1719
-  }
-]
-[
+    "lon": -94.1719,
+    "id": "US-AR-Fayetteville"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1032,7 +1074,8 @@
     "name": "Kansas City",
     "name_jp": "カンザスシティ",
     "lat": 39.0997,
-    "lon": -94.5786
+    "lon": -94.5786,
+    "id": "US-MO-KansasCity"
   },
   {
     "region": "North America",
@@ -1044,8 +1087,9 @@
     "stateCode": "MO",
     "name": "St. Louis",
     "name_jp": "セントルイス",
-    "lat": 38.6270,
-    "lon": -90.1994
+    "lat": 38.627,
+    "lon": -90.1994,
+    "id": "US-MO-StLouis"
   },
   {
     "region": "North America",
@@ -1058,10 +1102,9 @@
     "name": "Springfield",
     "name_jp": "スプリングフィールド",
     "lat": 37.2089,
-    "lon": -93.2923
-  }
-]
-[
+    "lon": -93.2923,
+    "id": "US-MO-Springfield"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1073,7 +1116,8 @@
     "name": "Des Moines",
     "name_jp": "デモイン",
     "lat": 41.5868,
-    "lon": -93.6250
+    "lon": -93.625,
+    "id": "US-IA-DesMoines"
   },
   {
     "region": "North America",
@@ -1086,10 +1130,9 @@
     "name": "Davenport",
     "name_jp": "ダベンポート",
     "lat": 41.5236,
-    "lon": -90.5776
-  }
-]
-[
+    "lon": -90.5776,
+    "id": "US-IA-Davenport"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1101,7 +1144,8 @@
     "name": "Minneapolis",
     "name_jp": "ミネアポリス",
     "lat": 44.9778,
-    "lon": -93.2650
+    "lon": -93.265,
+    "id": "US-MN-Minneapolis"
   },
   {
     "region": "North America",
@@ -1114,7 +1158,8 @@
     "name": "St. Paul",
     "name_jp": "セントポール",
     "lat": 44.9537,
-    "lon": -93.0900
+    "lon": -93.09,
+    "id": "US-MN-StPaul"
   },
   {
     "region": "North America",
@@ -1127,10 +1172,9 @@
     "name": "Duluth",
     "name_jp": "ダルース",
     "lat": 46.7867,
-    "lon": -92.1005
-  }
-]
-[
+    "lon": -92.1005,
+    "id": "US-MN-Duluth"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1142,7 +1186,8 @@
     "name": "Sioux Falls",
     "name_jp": "スーフォールズ",
     "lat": 43.5446,
-    "lon": -96.7311
+    "lon": -96.7311,
+    "id": "US-SD-SiouxFalls"
   },
   {
     "region": "North America",
@@ -1155,10 +1200,9 @@
     "name": "Rapid City",
     "name_jp": "ラピッドシティ",
     "lat": 44.0805,
-    "lon": -103.2310
-  }
-]
-[
+    "lon": -103.231,
+    "id": "US-SD-RapidCity"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1170,7 +1214,8 @@
     "name": "Fargo",
     "name_jp": "ファーゴ",
     "lat": 46.8772,
-    "lon": -96.7898
+    "lon": -96.7898,
+    "id": "US-ND-Fargo"
   },
   {
     "region": "North America",
@@ -1183,10 +1228,9 @@
     "name": "Bismarck",
     "name_jp": "ビスマーク",
     "lat": 46.8083,
-    "lon": -100.7837
-  }
-]
-[
+    "lon": -100.7837,
+    "id": "US-ND-Bismarck"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1198,7 +1242,8 @@
     "name": "Milwaukee",
     "name_jp": "ミルウォーキー",
     "lat": 43.0389,
-    "lon": -87.9065
+    "lon": -87.9065,
+    "id": "US-WI-Milwaukee"
   },
   {
     "region": "North America",
@@ -1211,7 +1256,8 @@
     "name": "Madison",
     "name_jp": "マディソン",
     "lat": 43.0731,
-    "lon": -89.4012
+    "lon": -89.4012,
+    "id": "US-WI-Madison"
   },
   {
     "region": "North America",
@@ -1224,10 +1270,9 @@
     "name": "Green Bay",
     "name_jp": "グリーンベイ",
     "lat": 44.5133,
-    "lon": -88.0133
-  }
-]
-[
+    "lon": -88.0133,
+    "id": "US-WI-GreenBay"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1239,7 +1284,8 @@
     "name": "Chicago",
     "name_jp": "シカゴ",
     "lat": 41.8781,
-    "lon": -87.6298
+    "lon": -87.6298,
+    "id": "US-IL-Chicago"
   },
   {
     "region": "North America",
@@ -1252,7 +1298,8 @@
     "name": "Rockford",
     "name_jp": "ロックフォード",
     "lat": 42.2711,
-    "lon": -89.0937
+    "lon": -89.0937,
+    "id": "US-IL-Rockford"
   },
   {
     "region": "North America",
@@ -1265,10 +1312,9 @@
     "name": "Springfield",
     "name_jp": "スプリングフィールド",
     "lat": 39.7817,
-    "lon": -89.6501
-  }
-]
-[
+    "lon": -89.6501,
+    "id": "US-IL-Springfield"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1280,7 +1326,8 @@
     "name": "Detroit",
     "name_jp": "デトロイト",
     "lat": 42.3314,
-    "lon": -83.0458
+    "lon": -83.0458,
+    "id": "US-MI-Detroit"
   },
   {
     "region": "North America",
@@ -1293,7 +1340,8 @@
     "name": "Grand Rapids",
     "name_jp": "グランドラピッズ",
     "lat": 42.9634,
-    "lon": -85.6681
+    "lon": -85.6681,
+    "id": "US-MI-GrandRapids"
   },
   {
     "region": "North America",
@@ -1306,10 +1354,9 @@
     "name": "Lansing",
     "name_jp": "ランシング",
     "lat": 42.7325,
-    "lon": -84.5555
-  }
-]
-[
+    "lon": -84.5555,
+    "id": "US-MI-Lansing"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1321,7 +1368,8 @@
     "name": "Indianapolis",
     "name_jp": "インディアナポリス",
     "lat": 39.7684,
-    "lon": -86.1581
+    "lon": -86.1581,
+    "id": "US-IN-Indianapolis"
   },
   {
     "region": "North America",
@@ -1334,7 +1382,8 @@
     "name": "Fort Wayne",
     "name_jp": "フォートウェイン",
     "lat": 41.0793,
-    "lon": -85.1394
+    "lon": -85.1394,
+    "id": "US-IN-FortWayne"
   },
   {
     "region": "North America",
@@ -1347,10 +1396,9 @@
     "name": "Evansville",
     "name_jp": "エバンズビル",
     "lat": 37.9716,
-    "lon": -87.5711
-  }
-]
-[
+    "lon": -87.5711,
+    "id": "US-IN-Evansville"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1362,7 +1410,8 @@
     "name": "Columbus",
     "name_jp": "コロンバス",
     "lat": 39.9612,
-    "lon": -82.9988
+    "lon": -82.9988,
+    "id": "US-OH-Columbus"
   },
   {
     "region": "North America",
@@ -1375,7 +1424,8 @@
     "name": "Cleveland",
     "name_jp": "クリーブランド",
     "lat": 41.4993,
-    "lon": -81.6944
+    "lon": -81.6944,
+    "id": "US-OH-Cleveland"
   },
   {
     "region": "North America",
@@ -1388,7 +1438,8 @@
     "name": "Cincinnati",
     "name_jp": "シンシナティ",
     "lat": 39.1031,
-    "lon": -84.5120
+    "lon": -84.512,
+    "id": "US-OH-Cincinnati"
   },
   {
     "region": "North America",
@@ -1401,10 +1452,9 @@
     "name": "Toledo",
     "name_jp": "トレド",
     "lat": 41.6528,
-    "lon": -83.5379
-  }
-]
-[
+    "lon": -83.5379,
+    "id": "US-OH-Toledo"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1416,7 +1466,8 @@
     "name": "Louisville",
     "name_jp": "ルイビル",
     "lat": 38.2527,
-    "lon": -85.7585
+    "lon": -85.7585,
+    "id": "US-KY-Louisville"
   },
   {
     "region": "North America",
@@ -1429,10 +1480,9 @@
     "name": "Lexington",
     "name_jp": "レキシントン",
     "lat": 38.0406,
-    "lon": -84.5037
-  }
-]
-[
+    "lon": -84.5037,
+    "id": "US-KY-Lexington"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1444,7 +1494,8 @@
     "name": "Nashville",
     "name_jp": "ナッシュビル",
     "lat": 36.1627,
-    "lon": -86.7816
+    "lon": -86.7816,
+    "id": "US-TN-Nashville"
   },
   {
     "region": "North America",
@@ -1457,7 +1508,8 @@
     "name": "Memphis",
     "name_jp": "メンフィス",
     "lat": 35.1495,
-    "lon": -90.0490
+    "lon": -90.049,
+    "id": "US-TN-Memphis"
   },
   {
     "region": "North America",
@@ -1470,10 +1522,9 @@
     "name": "Knoxville",
     "name_jp": "ノックスビル",
     "lat": 35.9606,
-    "lon": -83.9207
-  }
-]
-[
+    "lon": -83.9207,
+    "id": "US-TN-Knoxville"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1485,7 +1536,8 @@
     "name": "Charleston",
     "name_jp": "チャールストン",
     "lat": 38.3498,
-    "lon": -81.6326
+    "lon": -81.6326,
+    "id": "US-WV-Charleston"
   },
   {
     "region": "North America",
@@ -1498,10 +1550,9 @@
     "name": "Huntington",
     "name_jp": "ハンティントン",
     "lat": 38.4192,
-    "lon": -82.4452
-  }
-]
-[
+    "lon": -82.4452,
+    "id": "US-WV-Huntington"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1513,7 +1564,8 @@
     "name": "Richmond",
     "name_jp": "リッチモンド",
     "lat": 37.5407,
-    "lon": -77.4360
+    "lon": -77.436,
+    "id": "US-VA-Richmond"
   },
   {
     "region": "North America",
@@ -1526,10 +1578,9 @@
     "name": "Norfolk",
     "name_jp": "ノーフォーク",
     "lat": 36.8508,
-    "lon": -76.2859
-  }
-]
-[
+    "lon": -76.2859,
+    "id": "US-VA-Norfolk"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1541,7 +1592,8 @@
     "name": "Charlotte",
     "name_jp": "シャーロット",
     "lat": 35.2271,
-    "lon": -80.8431
+    "lon": -80.8431,
+    "id": "US-NC-Charlotte"
   },
   {
     "region": "North America",
@@ -1554,7 +1606,8 @@
     "name": "Raleigh",
     "name_jp": "ローリー",
     "lat": 35.7796,
-    "lon": -78.6382
+    "lon": -78.6382,
+    "id": "US-NC-Raleigh"
   },
   {
     "region": "North America",
@@ -1567,10 +1620,9 @@
     "name": "Wilmington",
     "name_jp": "ウィルミントン",
     "lat": 34.2257,
-    "lon": -77.9447
-  }
-]
-[
+    "lon": -77.9447,
+    "id": "US-NC-Wilmington"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1582,7 +1634,8 @@
     "name": "Columbia",
     "name_jp": "コロンビア",
     "lat": 34.0007,
-    "lon": -81.0348
+    "lon": -81.0348,
+    "id": "US-SC-Columbia"
   },
   {
     "region": "North America",
@@ -1595,10 +1648,9 @@
     "name": "Charleston",
     "name_jp": "チャールストン",
     "lat": 32.7765,
-    "lon": -79.9311
-  }
-]
-[
+    "lon": -79.9311,
+    "id": "US-SC-Charleston"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1609,8 +1661,9 @@
     "stateCode": "GA",
     "name": "Atlanta",
     "name_jp": "アトランタ",
-    "lat": 33.7490,
-    "lon": -84.3880
+    "lat": 33.749,
+    "lon": -84.388,
+    "id": "US-GA-Atlanta"
   },
   {
     "region": "North America",
@@ -1623,10 +1676,9 @@
     "name": "Savannah",
     "name_jp": "サバンナ",
     "lat": 32.0809,
-    "lon": -81.0912
-  }
-]
-[
+    "lon": -81.0912,
+    "id": "US-GA-Savannah"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1638,7 +1690,8 @@
     "name": "Jacksonville",
     "name_jp": "ジャクソンビル",
     "lat": 30.3322,
-    "lon": -81.6557
+    "lon": -81.6557,
+    "id": "US-FL-Jacksonville"
   },
   {
     "region": "North America",
@@ -1651,7 +1704,8 @@
     "name": "Orlando",
     "name_jp": "オーランド",
     "lat": 28.5383,
-    "lon": -81.3792
+    "lon": -81.3792,
+    "id": "US-FL-Orlando"
   },
   {
     "region": "North America",
@@ -1664,7 +1718,8 @@
     "name": "Tampa",
     "name_jp": "タンパ",
     "lat": 27.9506,
-    "lon": -82.4572
+    "lon": -82.4572,
+    "id": "US-FL-Tampa"
   },
   {
     "region": "North America",
@@ -1677,10 +1732,9 @@
     "name": "Miami",
     "name_jp": "マイアミ",
     "lat": 25.7617,
-    "lon": -80.1918
-  }
-]
-[
+    "lon": -80.1918,
+    "id": "US-FL-Miami"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1692,7 +1746,8 @@
     "name": "Birmingham",
     "name_jp": "バーミングハム",
     "lat": 33.5186,
-    "lon": -86.8104
+    "lon": -86.8104,
+    "id": "US-AL-Birmingham"
   },
   {
     "region": "North America",
@@ -1705,7 +1760,8 @@
     "name": "Montgomery",
     "name_jp": "モンゴメリー",
     "lat": 32.3792,
-    "lon": -86.3077
+    "lon": -86.3077,
+    "id": "US-AL-Montgomery"
   },
   {
     "region": "North America",
@@ -1718,10 +1774,9 @@
     "name": "Mobile",
     "name_jp": "モービル",
     "lat": 30.6954,
-    "lon": -88.0399
-  }
-]
-[
+    "lon": -88.0399,
+    "id": "US-AL-Mobile"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1733,7 +1788,8 @@
     "name": "Jackson",
     "name_jp": "ジャクソン",
     "lat": 32.2988,
-    "lon": -90.1848
+    "lon": -90.1848,
+    "id": "US-MS-Jackson"
   },
   {
     "region": "North America",
@@ -1746,10 +1802,9 @@
     "name": "Gulfport",
     "name_jp": "ガルフポート",
     "lat": 30.3674,
-    "lon": -89.0928
-  }
-]
-[
+    "lon": -89.0928,
+    "id": "US-MS-Gulfport"
+  },
   {
     "region": "North America",
     "country": "USA",
@@ -1761,7 +1816,8 @@
     "name": "New Orleans",
     "name_jp": "ニューオーリンズ",
     "lat": 29.9511,
-    "lon": -90.0715
+    "lon": -90.0715,
+    "id": "US-LA-NewOrleans"
   },
   {
     "region": "North America",
@@ -1774,7 +1830,8 @@
     "name": "Baton Rouge",
     "name_jp": "バトンルージュ",
     "lat": 30.4515,
-    "lon": -91.1871
+    "lon": -91.1871,
+    "id": "US-LA-BatonRouge"
   },
   {
     "region": "North America",
@@ -1787,6 +1844,7 @@
     "name": "Lake Charles",
     "name_jp": "レイクチャールズ",
     "lat": 30.2266,
-    "lon": -93.2174
+    "lon": -93.2174,
+    "id": "US-LA-LakeCharles"
   }
 ]

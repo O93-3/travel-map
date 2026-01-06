@@ -8,7 +8,10 @@
   const toggleBorders  = $('toggleBorders');
   const regionSelect   = $('regionSelect');
   const countrySelect  = $('countrySelect');
+  const stateSelect = $('stateSelect');
+  const stateSearch = $('stateSearch');
   const citySelect     = $('citySelect');
+  const recentSelect = $('recentSelect');
   const citySearch    = $('citySearch');
   const cityResults   = $('cityResults');
   const addBtn         = $('addBtn');
@@ -131,6 +134,17 @@
     return;
   }
 
+
+  // 最近の都市セレクト
+  if(recentSelect){
+    recentSelect.addEventListener('change', ()=>{
+      const id = recentSelect.value;
+      if(!id) return;
+      const c = findCityById(id);
+      if(c) applyCityObject(c);
+      recentSelect.value='';
+    });
+  }
   /* ===== 基本 ===== */
   const map=L.map("map",{zoomControl:false}).setView([20,0],2)
 
@@ -540,6 +554,119 @@ function updateRouteOverlay(){
   
   /* ===== 都市 ===== */
   let cities=[]
+
+  // ===== City datasets (ETS2 / ATS) =====
+  const GROUP_KEY = 'cityGroup';
+  const GROUPS = [
+    { key: 'EURO', labelJP: 'EURO (ETS2)', labelEN: 'EURO (ETS2)' },
+    { key: 'AMERICA', labelJP: 'AMERICA (ATS)', labelEN: 'AMERICA (ATS)' }
+  ];
+  let allCities = [];
+  const citiesByGroup = { EURO: [], AMERICA: [] };
+  let currentGroup = (localStorage.getItem(GROUP_KEY) || 'EURO');
+
+  function groupOfCity(c){
+    const r = c && c.region ? String(c.region) : '';
+    if (r === 'Europe') return 'EURO';
+    if (r === 'North America') return 'AMERICA';
+    return 'EURO';
+  }
+  function groupLabel(key){
+    const g = GROUPS.find(x => x.key === key);
+    if (!g) return key;
+    return (lang === 'jp') ? g.labelJP : g.labelEN;
+  }
+  function stateLabel(c){
+    if (!c) return '';
+    return (lang === 'jp') ? (c.state_jp || c.state || '') : (c.state || c.state_jp || '');
+  }
+  function cityOptionLabel(c){
+    const s = stateLabel(c);
+    return s ? `${cityLabel(c)} / ${s}` : cityLabel(c);
+  }
+  function ensureCityId(c){
+    if (!c) return c;
+    if (!c.id){
+      const cc = String(c.countryCode || '').toUpperCase();
+      const sc = String(c.stateCode || c.provinceCode || '').toUpperCase();
+      const safe = String(c.name || '').replace(/[^A-Za-z0-9]/g, '');
+      c.id = sc ? `${cc}-${sc}-${safe}` : `${cc}-${safe}`;
+    }
+    c.group = c.group || groupOfCity(c);
+    return c;
+  }
+  async function loadCityDatasets(){
+    const euroP = fetch('cities.json').then(r => r.json()).catch(() => []);
+    const atsP  = fetch('cities-ATS.json').then(r => r.json()).catch(() => []);
+    const [euro, ats] = await Promise.all([euroP, atsP]);
+    allCities = ([]).concat(euro || [], ats || []).map(ensureCityId);
+    citiesByGroup.EURO = allCities.filter(c => c.group === 'EURO');
+    citiesByGroup.AMERICA = allCities.filter(c => c.group === 'AMERICA');
+    if (!citiesByGroup[currentGroup]) currentGroup = 'EURO';
+    cities = citiesByGroup[currentGroup] || [];
+  }
+
+
+  // ===== 最近使った都市（直近10件） =====
+  const RECENT_CITY_KEY = 'recentCityIds';
+  function loadRecentCityIds(){
+    try{
+      const a = JSON.parse(localStorage.getItem(RECENT_CITY_KEY) || '[]');
+      return Array.isArray(a) ? a.filter(x=>typeof x==='string') : [];
+    }catch(_){ return []; }
+  }
+  function saveRecentCityIds(ids){
+    try{ localStorage.setItem(RECENT_CITY_KEY, JSON.stringify(ids.slice(0,10))); }catch(_){ }
+  }
+  function pushRecentCityId(id){
+    if(!id) return;
+    const ids = loadRecentCityIds();
+    const next = [id, ...ids.filter(x=>x!==id)].slice(0,10);
+    saveRecentCityIds(next);
+    renderRecentSelect();
+  }
+  function findCityById(id){
+    if(!id) return null;
+    return (Array.isArray(allCities) ? allCities : []).find(c => c && c.id === id) || null;
+  }
+  function recentOptionLabel(c){
+    if(!c) return '';
+    const st = stateLabel(c);
+    const g = groupLabel(c.group || groupOfCity(c));
+    return st ? `${cityLabel(c)} / ${st} / ${g}` : `${cityLabel(c)} / ${g}`;
+  }
+  function renderRecentSelect(){
+    if(!recentSelect) return;
+    const ids = loadRecentCityIds();
+    const placeholder = (lang==='jp') ? '最近の都市' : 'Recent';
+    recentSelect.innerHTML = `<option value="">${placeholder}</option>`;
+    for(const id of ids){
+      const c = findCityById(id);
+      if(!c) continue;
+      recentSelect.add(new Option(recentOptionLabel(c), id));
+    }
+  }
+  function applyCityObject(c){
+    if(!c) return;
+    const g = c.group || groupOfCity(c);
+    regionSelect.value = g;
+    regionSelect.onchange?.();
+
+    if(g==='AMERICA'){
+      if(stateSelect && stateSelect.style.display !== 'none'){
+        const sk = stateKey(c);
+        if(sk){ stateSelect.value = sk; stateSelect.onchange?.(); }
+      }
+      citySelect.value = c.id;
+    }else{
+      countrySelect.value = c.country;
+      countrySelect.onchange?.();
+      citySelect.value = c.id;
+    }
+
+    if(citySearch) citySearch.value = cityLabel(c);
+    pushRecentCityId(c.id);
+  }
   let history=JSON.parse(localStorage.getItem("travelHistory"))||[]
   let markers=[],points=[]
   let lineColor=localStorage.getItem("lineColor")||"#ff3333"
@@ -549,18 +676,36 @@ function updateRouteOverlay(){
     color: lineColor, weight: lineWeight
   }).addTo(map)
   
-  let lang="jp"
+  let lang="jp";
   
-  fetch("cities.json").then(r=>r.json()).then(j=>{
-   cities=j
-   buildRegion()
-   restore()
-    if(typeof renderRouteList==='function') renderRouteList();
-    if(typeof enableRouteDnD==='function') enableRouteDnD();
-    if(typeof updateObsUI==='function') updateObsUI();
-    setupCitySearch();
-  })
-  /* ===== 都市検索 ===== */
+  ;(async()=>{
+  await loadCityDatasets();
+  buildRegion();
+  restore();
+  if(typeof renderRouteList==='function') renderRouteList();
+  if(typeof enableRouteDnD==='function') enableRouteDnD();
+  if(typeof updateObsUI==='function') updateObsUI();
+  setupCitySearch();
+  try{ renderRecentSelect(); }catch(_){ }
+  setupStateSearch();
+})();
+
+// ===== 州検索（ATS） =====
+let __stateSearchBound = false;
+function setupStateSearch(){
+  if(__stateSearchBound) return;
+  if(!stateSearch || !stateSelect) return;
+  stateSearch.placeholder = '州を検索';
+  stateSearch && stateSearch.addEventListener('input', ()=>{
+    // 入力に応じて州候補を絞り込む
+    try{ rebuildStateOptions(); }catch(_){ }
+    // 州が変わる可能性があるので都市も更新
+    try{ rebuildCityOptions(); }catch(_){ }
+  });
+  __stateSearchBound = true;
+}
+
+/* ===== 都市検索 ===== */
   const norm=(s)=>(s??'').toString().trim().toLowerCase().normalize('NFKC');
 
   // 現在地（＝最後に追加した都市。なければ地図中心）に近い順で優先するための距離計算
@@ -597,7 +742,7 @@ function updateRouteOverlay(){
     const scored=[];
     for(let i=0;i<cities.length;i++){
       const c=cities[i];
-      const hay=[norm(c.name_jp),norm(c.name),norm(c.country_jp),norm(c.country),norm(c.countryCode)].filter(Boolean);
+      const hay=[norm(c.name_jp),norm(c.name),norm(c.country_jp),norm(c.country),norm(c.countryCode),norm(c.state_jp),norm(c.state),norm(c.stateCode),norm(c.provinceCode)].filter(Boolean);
       let best=Infinity;
       for(const h of hay){
         if(h.startsWith(nq)) best=Math.min(best,0);
@@ -613,25 +758,37 @@ function updateRouteOverlay(){
     return scored.slice(0,30).map(x=>x.i);
   }
 
-  function closeResults(){ cityResults?.classList.remove('open'); }
-
-  function applyCitySelection(idx){
-    const c=cities[idx];
-    if(!c) return;
-    // 既存の連動ロジックに合わせる（region/countryを更新して citySelect を再構築）
-    regionSelect.value=c.region;
-    regionSelect.onchange?.();
-
-    countrySelect.value=c.country;
-    countrySelect.onchange?.();
-
-    // 現行実装：citySelect の value は city.name
-    citySelect.value=c.name;
-
-    if(citySearch) citySearch.value=cityLabel(c);
+  function closeResults(){
+    if(!cityResults) return;
+    cityResults.classList.remove('open');
+    cityResults.innerHTML='';
   }
 
-  function renderResults(indices, activePos = -1){
+  function applyCitySelection(idx){
+  const c=cities[idx];
+  if(!c) return;
+  regionSelect.value=(c.group||groupOfCity(c));
+  regionSelect.onchange?.();
+
+  if(currentGroup==='AMERICA'){
+    if(stateSelect && stateSelect.style.display!=='none'){
+      const sk = stateKey(c);
+      if(sk){ stateSelect.value=sk; stateSelect.onchange?.(); }
+    }
+    citySelect.value=c.id;
+    if(citySearch) citySearch.value=cityLabel(c);
+    try{ pushRecentCityId(c.id); }catch(_){ }
+    return;
+  }
+
+  countrySelect.value=c.country;
+  countrySelect.onchange?.();
+  citySelect.value=c.id;
+  if(citySearch) citySearch.value=cityLabel(c);
+  try{ pushRecentCityId(c.id); }catch(_){ }
+}
+
+function renderResults(indices, activePos = -1){
     if(!cityResults) return;
     cityResults.innerHTML='';
     if(!indices.length){ closeResults(); return; }
@@ -652,7 +809,7 @@ function updateRouteOverlay(){
 
       const sub=document.createElement('div');
       sub.className='sub';
-      sub.textContent=`${countryLabel(c)} / ${c.region||''}${c.countryCode?(' / '+c.countryCode):''}`;
+      sub.textContent=`${countryLabel(c)}${stateLabel(c)?(' / '+stateLabel(c)) : ''} / ${groupLabel(c.group||groupOfCity(c))}${c.countryCode?(' / '+c.countryCode):''}${c.stateCode?(' / '+c.stateCode):''}`;
 
       item.appendChild(main);
       item.appendChild(sub);
@@ -701,7 +858,13 @@ function updateRouteOverlay(){
     let activePos = -1;
 
     const runNow = () => {
-      const q = citySearch.value || '';
+      const q = (citySearch.value || '').trim();
+      if(!q){
+        lastIndices = [];
+        activePos = -1;
+        closeResults();
+        return;
+      }
       lastIndices = buildSearchResults(q);
       activePos = lastIndices.length ? 0 : -1;
       renderResults(lastIndices, activePos);
@@ -774,38 +937,167 @@ function updateRouteOverlay(){
   }
 
   window.setupCitySearch = setupCitySearch;
+
 function buildRegion(){
-   regionSelect.innerHTML=`<option value="">${lang==="jp"?"地域":"Region"}</option>`
-   ;[...new Set(cities.map(c=>c.region))].forEach(r=>{
-    const label=lang==="jp"?r:r
-    regionSelect.add(new Option(label,r))
-   })
-   countrySelect.innerHTML=`<option value="">${lang==="jp"?"国":"Country"}</option>`
-   citySelect.innerHTML=`<option value="">${lang==="jp"?"都市":"City"}</option>`
+  // 地域セレクト = モード（EURO/AMERICA）
+  regionSelect.innerHTML = `<option value="">${lang==='jp'?'モード':'Mode'}</option>`;
+  GROUPS.forEach(g => regionSelect.add(new Option(groupLabel(g.key), g.key)));
+  regionSelect.value = currentGroup;
+
+  // 初期化
+  countrySelect.innerHTML = `<option value="">${lang==='jp'?'国':'Country'}</option>`;
+  if(stateSelect){
+    stateSelect.innerHTML = `<option value="">${lang==='jp'?'州':'State'}</option>`;
+    stateSelect.style.display = 'none';
   }
-  
-  regionSelect.onchange=()=>{
-   countrySelect.innerHTML=`<option value="">${lang==="jp"?"国":"Country"}</option>`
-   citySelect.innerHTML=`<option value="">${lang==="jp"?"都市":"City"}</option>`
-   cities.filter(c=>c.region===regionSelect.value)
-    .map(c=>c.country).filter((v,i,a)=>a.indexOf(v)===i)
-    .forEach(code=>{
-     const c=cities.find(x=>x.country===code)
-     const label=lang==="jp"?c.country_jp:c.country
-     countrySelect.add(new Option(label,code))
-    })
+  citySelect.innerHTML = `<option value="">${lang==='jp'?'都市':'City'}</option>`;
+
+  if(currentGroup) regionSelect.onchange?.();
+}
+
+function uniqueCountriesByName(list){
+  const m=new Map();
+  for(const c of list){
+    if(!c||!c.country) continue;
+    if(!m.has(c.country)) m.set(c.country,c);
   }
-  
-  countrySelect.onchange=()=>{
-   citySelect.innerHTML=`<option value="">${lang==="jp"?"都市":"City"}</option>`
-   cities.filter(c=>c.country===countrySelect.value)
-    .forEach(c=>{
-     const label=lang==="jp"?c.name_jp:c.name
-     citySelect.add(new Option(label,c.name))
-    })
+  return Array.from(m.values());
+}
+
+// ATS用：州のキー（value）を統一
+function stateKey(c){
+  if(!c) return '';
+  return String(c.stateCode || c.provinceCode || c.state || c.state_jp || '').trim();
+}
+
+function rebuildStateOptions(){
+  if(!stateSelect) return;
+  stateSelect.innerHTML = `<option value="">${lang==='jp'?'州':'State'}</option>`;
+
+  // AMERICA(ATS): 国を使わず州リストを作る（US運用前提）
+  const map = new Map();
+  for(const c of cities){
+    const key = stateKey(c);
+    if(!key) continue;
+    if(!map.has(key)) map.set(key, c);
   }
-  
-  /* ===== 言語切替（完全修正） ===== */
+
+  const entries = Array.from(map.entries()).map(([key,c])=>({
+    key,
+    label: (lang==='jp') ? String(c.state_jp||c.state||key).trim() : String(c.state||c.state_jp||key).trim(),
+  }));
+  entries.sort((a,b)=>String(a.label).localeCompare(String(b.label),'ja'));
+
+  entries.forEach(e=>stateSelect.add(new Option(e.label, e.key)));
+  stateSelect.style.display = entries.length ? '' : 'none';
+}
+
+function rebuildCityOptions(){
+  citySelect.innerHTML = `<option value="">${lang==='jp'?'都市':'City'}</option>`;
+
+  let list;
+  if(currentGroup==='AMERICA'){
+    list = cities.slice();
+  }else{
+    const cc = countrySelect.value;
+    if(!cc) return;
+    list = cities.filter(c=>c.country===cc);
+  }
+
+  if(currentGroup==='AMERICA' && stateSelect && stateSelect.style.display!=='none'){
+    const sk = stateSelect.value;
+    if(sk) list = list.filter(c => stateKey(c)===sk);
+  }
+
+  list.sort((a,b)=>{
+    const sa=stateLabel(a)||''; const sb=stateLabel(b)||'';
+    const ca=cityLabel(a)||'';  const cb=cityLabel(b)||'';
+    const s=sa.localeCompare(sb,'ja');
+    return s!==0? s : ca.localeCompare(cb,'ja');
+  });
+
+  list.forEach(c => citySelect.add(new Option(cityOptionLabel(c), c.id)));
+}
+
+regionSelect.onchange = ()=>{
+  countrySelect.innerHTML = `<option value="">${lang==='jp'?'国':'Country'}</option>`;
+  if(stateSelect){
+    stateSelect.innerHTML = `<option value="">${lang==='jp'?'州':'State'}</option>`;
+    stateSelect.style.display = 'none';
+  }
+  citySelect.innerHTML = `<option value="">${lang==='jp'?'都市':'City'}</option>`;
+
+  const v = regionSelect.value;
+  if(!v) return;
+  currentGroup = v;
+  localStorage.setItem(GROUP_KEY, currentGroup);
+  cities = citiesByGroup[currentGroup] || [];
+
+  if(currentGroup==='EURO'){
+    if(stateSelect) stateSelect.style.display='none';
+    countrySelect.style.display='';
+
+    const countries = uniqueCountriesByName(cities);
+    countries.sort((a,b)=>{
+      const la=(lang==='jp'?(a.country_jp||a.country):(a.country||a.country_jp))||'';
+      const lb=(lang==='jp'?(b.country_jp||b.country):(b.country||b.country_jp))||'';
+      return la.localeCompare(lb,'ja');
+    });
+    countries.forEach(c=>{
+      const label=(lang==='jp')?(c.country_jp||c.country):(c.country||c.country_jp);
+      countrySelect.add(new Option(label, c.country));
+    });
+    return;
+  }
+
+  // AMERICA(ATS)
+  countrySelect.style.display='none';
+  if(stateSelect){
+    rebuildStateOptions();
+  }
+  rebuildCityOptions();
+};
+
+countrySelect.onchange = ()=>{
+  if(currentGroup!=='EURO') return;
+  rebuildCityOptions();
+  // EURO: 国の中心へズーム
+  try{
+    const cc = countrySelect.value;
+    if(!cc) return;
+    const arr = cities.filter(c => c && c.country===cc && Number.isFinite(c.lat) && Number.isFinite(c.lon));
+    if(!arr.length) return;
+    const lat = arr.reduce((s,c)=>s+c.lat,0)/arr.length;
+    const lon = arr.reduce((s,c)=>s+c.lon,0)/arr.length;
+    map.setView([lat, lon], 5);
+  }catch(_){ }
+};
+
+if(stateSelect){
+  stateSelect.onchange = ()=>{
+    if(currentGroup!=='AMERICA') return;
+    rebuildCityOptions();
+    // ATS: 州の中心へズーム
+    try{
+      const sk = stateSelect.value;
+      if(!sk) return;
+      const arr = cities.filter(c => stateKey(c)===sk && Number.isFinite(c.lat) && Number.isFinite(c.lon));
+      if(!arr.length) return;
+      const lat = arr.reduce((s,c)=>s+c.lat,0)/arr.length;
+      const lon = arr.reduce((s,c)=>s+c.lon,0)/arr.length;
+      map.setView([lat, lon], 5);
+    }catch(_){ }
+  };
+}
+
+
+// 都市選択（手動）も最近に記録
+if(citySelect){
+  citySelect.addEventListener('change', ()=>{
+    try{ const id = citySelect.value; if(id) pushRecentCityId(id); }catch(_){ }
+  });
+}
+/* ===== 言語切替（完全修正） ===== */
   langBtn.onclick=()=>{
    lang=lang==="jp"?"en":"jp"
    langBtn.textContent=lang==="jp"?"日本語":"English"
@@ -906,7 +1198,7 @@ function buildRegion(){
   
   /* ===== 追加/戻す ===== */
   addBtn.onclick=()=>{
-    const city=cities.find(c=>c.name===citySelect.value)
+    const city=cities.find(c=>c.id===citySelect.value)
     if(!city)return
 
     // 挿入モードONの場合：指定位置に挿入
@@ -1098,38 +1390,85 @@ showLocation.onchange = (e) => {
     locFlagSizeEl.oninput = (e) => { locFlag = parseInt(e.target.value, 10); localStorage.setItem(locFlagKey, String(locFlag)); apply(); };
     locPaddingEl.oninput  = (e) => { locPad  = parseInt(e.target.value, 10); localStorage.setItem(locPadKey,  String(locPad));  apply(); };
   })();
-/* ===== ドラッグ ===== */
-  let drag=false,dx,dy
-  const pos=JSON.parse(localStorage.getItem("locUI"))
-  if(pos){
-   currentLocation.style.left=pos.x+"px"
-   currentLocation.style.top=pos.y+"px"
-   currentLocation.style.transform="none"
-  }
-  
-  currentLocation.onmousedown=e=>{
-    if(typeof locLocked !== 'undefined' && locLocked) return;
-   drag=true
-   dx=e.clientX-currentLocation.offsetLeft
-   dy=e.clientY-currentLocation.offsetTop
-  }
-  document.onmousemove=e=>{
-   if(!drag)return
-   currentLocation.style.left=e.clientX-dx+"px"
-   currentLocation.style.top=e.clientY-dy+"px"
-  }
-  document.onmouseup=()=>{
-   if(!drag)return
-   drag=false
-   localStorage.setItem("locUI",JSON.stringify({
-    x:currentLocation.offsetLeft,
-    y:currentLocation.offsetTop
-   }))
-  }
-  
-  
+/* ===== ドラッグ（現在地：変形しない left/top 固定）===== */
+  (function(){
+    if(!currentLocation) return;
+    let dragging = false;
+    let dx = 0, dy = 0;
+    const KEY = 'locUI';
 
-  
+    // restore
+    try{
+      const pos = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if(pos && typeof pos.x === 'number' && typeof pos.y === 'number'){
+        currentLocation.style.left = pos.x + 'px';
+        currentLocation.style.top  = pos.y + 'px';
+        currentLocation.style.right = 'auto';
+        currentLocation.style.bottom = 'auto';
+        currentLocation.style.transform = 'none';
+      }
+    }catch(_){ }
+
+    // if saved position overlaps UI, push it out (first load safety)
+    try{
+      const ui = document.getElementById('ui');
+      if(ui){
+        const r1 = currentLocation.getBoundingClientRect();
+        const r2 = ui.getBoundingClientRect();
+        const overlap = !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom);
+        if(overlap){
+          currentLocation.style.left = '16px';
+          currentLocation.style.top = 'auto';
+          currentLocation.style.bottom = '16px';
+          currentLocation.style.right = 'auto';
+        }
+      }
+    }catch(_){ }
+
+    function onDown(e){
+      if (typeof locLocked !== 'undefined' && locLocked) return;
+      if(e.button !== 0) return;
+      dragging = true;
+      const rect = currentLocation.getBoundingClientRect();
+      dx = e.clientX - rect.left;
+      dy = e.clientY - rect.top;
+      currentLocation.style.left = rect.left + 'px';
+      currentLocation.style.top  = rect.top  + 'px';
+      currentLocation.style.right = 'auto';
+      currentLocation.style.bottom = 'auto';
+      currentLocation.style.transform = 'none';
+      e.preventDefault();
+    }
+
+    function onMove(e){
+      if(!dragging) return;
+      const vw = document.documentElement.clientWidth;
+      const vh = document.documentElement.clientHeight;
+      const w = currentLocation.offsetWidth;
+      const h = currentLocation.offsetHeight;
+      let x = Math.round(e.clientX - dx);
+      let y = Math.round(e.clientY - dy);
+      x = Math.max(0, Math.min(vw - w, x));
+      y = Math.max(0, Math.min(vh - h, y));
+      currentLocation.style.left = x + 'px';
+      currentLocation.style.top  = y + 'px';
+    }
+
+    function onUp(){
+      if(!dragging) return;
+      dragging = false;
+      try{
+        localStorage.setItem(KEY, JSON.stringify({
+          x: currentLocation.offsetLeft,
+          y: currentLocation.offsetTop
+        }));
+      }catch(_){ }
+    }
+
+    currentLocation.addEventListener('mousedown', onDown);
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  })();
   // 他タブ/別プロセス（OBS等）で travelHistory が更新されたら反映する
   window.addEventListener("storage", (e) => {
     if (e.key !== "travelHistory") return;
@@ -1285,7 +1624,8 @@ if((e.ctrlKey||e.metaKey) && k === 'z'){
     let locPad =parseInt(localStorage.getItem(locPadKey)  || String(locPaddingEl.value ||10),10);
 
     const showSaved = localStorage.getItem('showLocation');
-    if(showSaved !== null) showLocationEl.checked = (showSaved==='1');
+    if(showSaved !== null) { showLocationEl.checked = (showSaved==='1'); }
+    else { showLocationEl.checked = true; try{ localStorage.setItem('showLocation','1'); }catch(_){ } }
 
     function apply(){
       currentLocationEl.style.display = showLocationEl.checked ? 'flex':'none';

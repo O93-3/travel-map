@@ -1,13 +1,41 @@
-/* City results position fix (load this after style.css) */
-.searchWrap { position: relative; }
-#cityResults.city-results {
+/* ===== City search dropdown: readable + overlay-safe ===== */
+
+.searchWrap{ position: relative; }
+
+#cityResults.city-results{
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(100% + 4px); /* place popup directly under input */
-  z-index: 1300;
+  top: calc(100% + 6px);
+  z-index: 2000;
+
+  display: none;
+  max-height: min(52vh, 420px);
+  overflow: auto;
+
+  background: rgba(10, 12, 18, 0.92);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
-/* Optional: improve viewport fit */
-@media (max-height: 700px) {
-  #cityResults.city-results { max-height: 40vh; }
+
+#cityResults.city-results.open{ display: block; }
+
+#cityResults .city-item{
+  padding: 10px 12px;
+  cursor: pointer;
+  display: grid;
+  gap: 2px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
 }
+#cityResults .city-item:last-child{ border-bottom: none; }
+
+#cityResults .city-item:hover,
+#cityResults .city-item.active{ background: rgba(255,255,255,0.10); }
+
+#cityResults .city-item .main{ font-weight: 900; letter-spacing: .02em; }
+#cityResults .city-item .sub{ opacity: .85; font-size: 12px; }
+
+#citySearch{ position: relative; z-index: 2001; }
