@@ -35,6 +35,8 @@
   const currentLocation = $('currentLocation');
   const flag = $('flag');
   const currentText = $('currentText');
+  const currentCountry = $('currentCountry');
+  const currentCity = $('currentCity');
 
   // ===== Current location default (when no route) =====
   const DEFAULT_LOC = {
@@ -151,7 +153,7 @@
       if (!file) return;
       const reader = new FileReader();
       reader.onload = () => {
-        try { applyState(JSON.parse(String(reader.result || ''))); location.reload(); }
+        try { applyState(JSON.parse(String(reader.result || ''))); /* removed reload */; }
         catch (e){ alert('読み込みに失敗しました（JSON形式を確認）: ' + (e && e.message ? e.message : e)); }
       };
       reader.readAsText(file);
@@ -177,6 +179,9 @@
   }
   /* ===== 基本 ===== */
   const map=L.map("map",{zoomControl:false}).setView([20,0],2)
+;/* borders pane (stable) */
+try{ if(!map.getPane('bordersPane')) map.createPane('bordersPane'); if(map.getPane('bordersPane')) map.getPane('bordersPane').style.zIndex=350; }catch(_){ }
+
 
   // ==============================
   // OBS / Route Overlay / Route Editor (B)
@@ -555,6 +560,7 @@ function updateRouteOverlay(){
       catch(_){ return await fetch('countries.geo.json'); }
     })().then(r=>r.json()).then(j=>{
     borderLayer = L.geoJSON(j,{
+      pane: 'bordersPane',
       style:f=>({
         color:"#fff",
         weight:1,
@@ -565,6 +571,7 @@ function updateRouteOverlay(){
   
     if (bordersOn) {
       borderLayer.addTo(map);
+    try{ borderLayer.bringToBack && borderLayer.bringToBack(); }catch(_){ }
     }
   });
   
@@ -576,6 +583,7 @@ function updateRouteOverlay(){
       map.removeLayer(borderLayer);
     } else {
       map.addLayer(borderLayer);
+    try{ borderLayer.bringToBack && borderLayer.bringToBack(); }catch(_){ }
     }
   
     bordersOn = !bordersOn;
@@ -612,6 +620,8 @@ function updateRouteOverlay(){
     return (lang === 'jp') ? (c.state_jp || c.state || '') : (c.state || c.state_jp || '');
   }
   function cityOptionLabel(c){
+    // ATS(AMERICA)では都市ドロップダウンに州名を付けない
+    if(currentGroup==='AMERICA') return cityLabel(c);
     const s = stateLabel(c);
     return s ? `${cityLabel(c)} / ${s}` : cityLabel(c);
   }
@@ -700,10 +710,71 @@ function updateRouteOverlay(){
   }
   let history=JSON.parse(localStorage.getItem("travelHistory"))||[]
   let markers=[],points=[]
+
+  // ===== Current marker blink (always glow) =====
+  const blinkCurrentMarkerEl = document.getElementById('blinkCurrentMarker');
+  let blinkEnabled = true;
+  let __blinkRetry = 0;
+  try{ blinkEnabled = (localStorage.getItem('blinkCurrentMarker') || '1') === '1'; }catch(_){ }
+  if(blinkCurrentMarkerEl){
+    blinkCurrentMarkerEl.checked = blinkEnabled;
+    blinkCurrentMarkerEl.addEventListener('change', ()=>{
+      blinkEnabled = !!blinkCurrentMarkerEl.checked;
+      try{ localStorage.setItem('blinkCurrentMarker', blinkEnabled ? '1' : '0'); }catch(_){ }
+      try{ applyCurrentMarkerBlink(); }catch(_){ }
+    });
+  }
+
+  function applyCurrentMarkerBlink(){
+    try{
+      for(const mm of (markers||[])){
+        const el = mm && mm.getElement ? mm.getElement() : null;
+        if(el) el.classList.remove('tm-blink');
+      }
+      if(!blinkEnabled){ __blinkRetry = 0; return; }
+      const last = markers && markers.length ? markers[markers.length-1] : null;
+      const el = last && last.getElement ? last.getElement() : null;
+      if(el){
+        el.classList.add('tm-blink');
+        __blinkRetry = 0;
+      }else{
+        if(__blinkRetry < 12){
+          __blinkRetry++;
+          setTimeout(()=>{ try{ applyCurrentMarkerBlink(); }catch(_){} }, 60);
+        }
+      }
+    }catch(_){ }
+  }
+
   let lineColor=localStorage.getItem("lineColor")||"#ff3333"
   let lineWeight = Number(localStorage.getItem('lineWeight')||'4');
   if(!Number.isFinite(lineWeight) || lineWeight<1) lineWeight = 4;
-  let line=L.polyline([], {
+  
+
+  // ===== Visual effects (route/marker animation) =====
+  function tmAnimatePath(path){
+    try{
+      if(!path || !path.getTotalLength) return;
+      const len = path.getTotalLength();
+      path.style.transition = 'none';
+      path.style.strokeDasharray = len + ' ' + len;
+      path.style.strokeDashoffset = String(len);
+      path.getBoundingClientRect();
+      path.style.transition = 'stroke-dashoffset 520ms cubic-bezier(.22,.61,.36,1)';
+      path.style.strokeDashoffset = '0';
+      setTimeout(()=>{ try{ path.style.transition=''; path.style.strokeDasharray=''; path.style.strokeDashoffset=''; }catch(_){} }, 700);
+    }catch(_){ }
+  }
+  function tmPop(el){
+    try{
+      if(!el) return;
+      el.classList.remove('tm-glow');
+      void el.offsetWidth;
+      el.classList.add('tm-glow');
+      setTimeout(()=>{ try{ el.classList.remove('tm-glow'); }catch(_){} }, 500);
+    }catch(_){ }
+  }
+let line=L.polyline([], {
     color: lineColor, weight: lineWeight
   }).addTo(map)
   
@@ -1144,9 +1215,12 @@ if(citySelect){
   function addCurrent(city){
     if(!city){ setDefaultCurrentLocation(); return; }
     if(currentMarker)map.removeLayer(currentMarker)
+   const size = Number(curSize)||24;
    const icon=L.divIcon({
     className:"pulsate",
-    html:`<div style="width:${curSize}px;height:${curSize}px;
+    iconSize:[size,size],
+    iconAnchor:[size/2,size/2],
+    html:`<div style="width:${size}px;height:${size}px;box-sizing:border-box;
     background:${currentColor};border:2px solid #fff;border-radius:50%"></div>`
    })
    currentMarker=L.marker([city.lat,city.lon],{icon}).addTo(map)
@@ -1192,8 +1266,10 @@ if(citySelect){
       }
     } else {
       // 念のため旧方式の保険（要素が無い場合）
-      currentText.textContent =
-        (line1 && line2) ? `${line1}\n${line2}` : (line1 || line2 || fallback);
+      if(currentText){
+        currentText.textContent =
+          (line1 && line2) ? `${line1}\n${line2}` : (line1 || line2 || fallback);
+      }
     }
   
     // 旗（countryCode がある場合のみ表示）
@@ -1232,6 +1308,8 @@ if(citySelect){
    markers.push(m)
    points.push([city.lat,city.lon])
    line.setLatLngs(points)
+   try{ tmPop(m.getElement && m.getElement()); }catch(_){ }
+   try{ tmAnimatePath(line.getElement && line.getElement()); }catch(_){ }
    history.push(city)
    localStorage.setItem("travelHistory",JSON.stringify(history))
    addCurrent(city)
@@ -1402,59 +1480,33 @@ showLocation.onchange = (e) => {
     locPaddingEl.oninput  = (e) => { locPad  = parseInt(e.target.value, 10); localStorage.setItem(locPadKey,  String(locPad));  apply(); };
   })();
 /* ===== ドラッグ ===== */
-  let drag=false,dx,dy
-  const pos=JSON.parse(localStorage.getItem("locUI"))
-  if(pos){
-   currentLocation.style.left=pos.x+"px"
-   currentLocation.style.top=pos.y+"px"
-   currentLocation.style.transform="none"
-  }
-  
-  currentLocation.onmousedown=e=>{
-    if(typeof locLocked !== 'undefined' && locLocked) return;
-   drag=true
-   dx=e.clientX-currentLocation.offsetLeft
-   dy=e.clientY-currentLocation.offsetTop
-  }
-  document.onmousemove=e=>{
-   if(!drag)return
-   currentLocation.style.left=e.clientX-dx+"px"
-   currentLocation.style.top=e.clientY-dy+"px"
-  }
-  document.onmouseup=()=>{
-   if(!drag)return
-   drag=false
-   localStorage.setItem("locUI",JSON.stringify({
-    x:currentLocation.offsetLeft,
-    y:currentLocation.offsetTop
-   }))
-  }
-  
-  
-
-  
-  // 他タブ/別プロセス（OBS等）で travelHistory が更新されたら反映する
-  window.addEventListener("storage", (e) => {
-    if (e.key !== "travelHistory") return;
-  
-    // 1) 新しい履歴を読む
-    history = JSON.parse(e.newValue || "[]");
-  
-    // 2) 既存の表示を消す（安全にやる）
-    markers.forEach(m => map.removeLayer(m));
-    markers = [];
-    points = [];
-    line.setLatLngs([]);
-  
-    // 3) もう一度復元
-    restore();
-  
-    // 4) 最終地点があれば現在地更新
-    if (history.length) addCurrent(history.at(-1));
-  });
-
-
-
+  (function(){
+    if(!currentLocation) return;
+    let drag=false, dx=0, dy=0;
+    let pos=null;
+    try{ pos = JSON.parse(localStorage.getItem('locUI')||'null'); }catch(_){ pos=null; }
+    if(pos && typeof pos.x==='number' && typeof pos.y==='number'){
+      currentLocation.style.left = pos.x + 'px';
+      currentLocation.style.top  = pos.y + 'px';
+      currentLocation.style.transform = 'none';
+    }
+    currentLocation.onmousedown = (e)=>{
+      if(typeof locLocked !== 'undefined' && locLocked) return;
+      drag=true;
+      dx = e.clientX - currentLocation.offsetLeft;
+      dy = e.clientY - currentLocation.offsetTop;
+    };
+    document.onmousemove = (e)=>{
+      if(!drag) return;
+      currentLocation.style.left = (e.clientX - dx) + 'px';
+      currentLocation.style.top  = (e.clientY - dy) + 'px';
+    };
+    document.onmouseup = ()=>{
+      if(!drag) return;
+      drag=false;
+      try{ localStorage.setItem('locUI', JSON.stringify({x: currentLocation.offsetLeft, y: currentLocation.offsetTop})); }catch(_){ }
+    };
+  })();
   // ===== Route history reset =====
   if(resetHistoryBtn){
     resetHistoryBtn.onclick = ()=>{

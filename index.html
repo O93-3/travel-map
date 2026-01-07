@@ -15,11 +15,10 @@
   <link rel="stylesheet" href="./style.routeoverlay.drag.css">
   <link rel="stylesheet" href="./style.overlay.readability.css">
   <link rel="stylesheet" href="./style.routeoverlay.modern.css">
-  <link rel="stylesheet" href="./style.mobile.compact.css">
 </head>
 <body>
   <div id="map"></div>
-
+  <button id="uiToggle" class="ui-toggle" type="button" aria-label="メニュー" aria-expanded="false">☰</button>
   <!-- 現在地表示（ドラッグ可） -->
   <div id="currentLocation">
     <img id="flag" alt="flag">
@@ -29,12 +28,8 @@
     </div>
   </div>
 
-  <!-- モバイルバー（コンパクト/メニュー） -->
-  <div id="mobileBar"><div class="mb-left"><span class="mb-title">TRAVEL MAP</span><button id="toggleCompact">コンパクト</button><button id="toggleMenu">メニュー表示/非表示</button></div></div>
-
-  <!-- 配信インジケータ & SafeFrame -->
+  <!-- 配信インジケータ -->
   <div id="streamIndicator"><span class="dot"></span> LIVE</div>
-  <div id="safeFrame"><div class="sf" data-sf="title"></div><div class="sf" data-sf="action"></div></div>
 
   <!-- OBS Route Overlay -->
   <div id="routeOverlay">
@@ -52,10 +47,9 @@
     </div>
   </div>
 
-  <!-- メニュー（折り畳み、Redoなし） -->
+  
   <div id="ui">
-    <div id="uiDragHandle" title="ドラッグで移動">⋮⋮</div>
-    <button id="langBtn">日本語</button>
+<button id="langBtn">日本語</button>
     <button id="streamBtn">配信モード</button>
 
     <details class="ui-group"><summary class="ui-title">現在の状態</summary>
@@ -65,30 +59,6 @@
     </details>
 
     <!-- ルート（検索を最上段へ） -->
-    <details class="ui-group"><summary class="ui-title">ルート</summary>
-      <!-- 検索を最上段へ配置 -->
-      <div class="searchWrap" style="margin-bottom:8px;">
-        <input id="citySearch" placeholder="都市名・国名で検索">
-        <div id="cityResults" class="city-results"></div>
-      </div>
-
-      <!-- 地域／国セレクト -->
-      <select id="regionSelect"><option value="">地域</option></select>
-      <select id="countrySelect"><option value="">国</option></select>
-<div class="stateWrap" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-  <select id="stateSelect"><option value="">州</option></select>
-</div>
-
-      <!-- 都市セレクト／操作 -->
-      <select id="citySelect"><option value="">都市</option></select>
-      <button id="addBtn">追加</button>
-      <button id="undoBtn">ひとつ戻す</button>
-      <button id="cancelInsertBtn">挿入解除</button>
-      <div>挿入モード: <span id="insertModeLabel">OFF</span></div>
-      <ol id="routeList" class="route-list"></ol>
-      <button id="resetHistoryBtn" class="danger">ルート履歴をリセット</button>
-    </details>
-
     <details class="ui-group"><summary class="ui-title">地図</summary>
       <select id="mapStyleSelect">
         <option value="osm">標準</option>
@@ -99,10 +69,39 @@
       <button id="toggleBorders">国境色分け ON/OFF</button>
     </details>
 
+<details class="ui-group"><summary class="ui-title">ルート</summary>
+      <!-- 検索を最上段へ配置 -->
+      <div class="searchWrap" style="margin-bottom:8px;">
+        <input id="citySearch" placeholder="都市名・国名で検索">
+        <div id="cityResults" class="city-results"></div>
+      </div>
+
+
+      <!-- 地域／国／州（ATS） -->
+      <select id="regionSelect"><option value="">モード</option></select>
+      <select id="countrySelect"><option value="">国</option></select>
+      <div class="stateWrap" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <select id="stateSelect"><option value="">州</option></select>
+      </div>
+
+
+      <!-- 地域／国セレクト -->
+<!-- 都市セレクト／操作 -->
+      <select id="citySelect"><option value="">都市</option></select>
+      <button id="addBtn">追加</button>
+      <button id="undoBtn">ひとつ戻す</button>
+      <button id="cancelInsertBtn">挿入解除</button>
+      <div>挿入モード: <span id="insertModeLabel">OFF</span></div>
+      <ol id="routeList" class="route-list"></ol>
+      <button id="resetHistoryBtn" class="danger">ルート履歴をリセット</button>
+    </details>
+
+    
+
     <details class="ui-group"><summary class="ui-title">現在地</summary>
       <label><input id="showLocation" type="checkbox" checked> 現在地表示</label>
       <button id="lockLocationBtn">位置ロック: OFF</button>
-      <label class="col"><span>現在地サイズ</span><input id="currentMarkerSize" type="range" min="8" max="60" value="20"></label>
+      <label class="col"><span>現在地マーカーサイズ</span><input id="currentMarkerSize" type="range" min="8" max="60" value="20"></label>
       <label class="col"><span>現在地テキストサイズ</span><input id="locFontSize" type="range" min="12" max="40" value="18"></label>
       <label class="col"><span>旗サイズ</span><input id="locFlagSize" type="range" min="12" max="96" value="24"></label>
       <label class="col"><span>パディング</span><input id="locPadding" type="range" min="4" max="40" value="10"></label>
@@ -110,6 +109,16 @@
       <label class="col"><span>ルート線の太さ</span><input id="lineWeight" type="range" min="1" max="12" value="4"></label>
       <label class="col"><span>現在地マーカー色</span><input id="currentMarkerColor" type="color" value="#00ffff"></label>
       <label class="col"><span>過去マーカー色</span><input id="pastMarkerColor" type="color" value="#ff3333"></label>
+      <label class="col"><span>現在地マーカー明滅</span><input id="blinkCurrentMarker" type="checkbox" checked></label>
+      <label class="col"><span>現在地 不透明度</span>
+        <input id="locOpacity" type="range" min="0.60" max="1.00" step="0.01" value="1.00">
+      </label>
+      <label class="col"><span>現在地 背景の透過度</span>
+        <input id="locBgAlpha" type="range" min="0.30" max="0.90" step="0.01" value="0.55">
+      </label>
+      <label class="col"><span>現在地 行間（ラインハイト）</span>
+        <input id="locLineHeight" type="range" min="1.00" max="1.50" step="0.01" value="1.10">
+      </label>
     </details>
 
     <details class="ui-group"><summary class="ui-title">ルートオーバーレイ</summary>
@@ -117,7 +126,6 @@
       <label class="col"><span>オーバーレイ文字サイズ</span><input id="overlayFontSize" type="range" min="12" max="40" value="18"></label>
       <label class="col"><span>国旗サイズ</span><input id="overlayFlagSize" type="range" min="12" max="96" value="22"></label>
       <label><input id="overlayOnlyInStream" type="checkbox"> 配信モード中のみ表示</label>
-      <label><input id="obsSafeFrame" type="checkbox"> セーフフレーム表示（見切れ確認）</label>
       <!-- 見やすさ（不透明度／背景透過／行間） -->
       <label class="col"><span>オーバーレイ不透明度</span>
         <input id="overlayOpacity" type="range" min="0.60" max="1.00" step="0.01" value="1.00">
@@ -135,15 +143,15 @@
   <script src="./vendor/leaflet/leaflet.js"></script>
   <script src="./app.js"></script>
   <script src="./js/fix-currentlocation-drag.js"></script>
-  <script src="./js/error-banner.js"></script>
-  <script src="./js/draggable-ui.js"></script>
-  <script src="./js/extensions.js"></script>
+  <script src="./js/ui-drawer.js"></script>
+<script src="./js/extensions.js"
+  <script src="./js/selfcheck.js"></script>></script>
   <!-- Safe add-ons (app.jsは不変のまま機能追加) -->
   <script src="./js/fix-lineweight.js"></script>
   <script src="./js/draggable-routeoverlay.js"></script>
   <script src="./js/overlay-fontsize.all.js"></script>
   <script src="./js/overlay-readability.js"></script>
-  <script src="./js/mobile-compact.js"></script>
-  <script src="./js/mobile-icons.js"></script>
+  <script src="./js/location-readability.js"></script>
+  <script src="./js/custom-blink.js"></script>
 </body>
 </html>
