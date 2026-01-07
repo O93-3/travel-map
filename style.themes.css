@@ -1,0 +1,51 @@
+/* Theme variables (Neon / Graphite / Sunset)
+:root{
+  --accent: #00e5ff;
+  --accent2:#4dffff;
+  --danger:#ff3b3b;
+  --panel-bg: rgba(10,12,18,.78);
+  --panel-border: rgba(255,255,255,.14);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.70);
+  --map-filter: none;
+  /* Map existing tm-* variables to this theme system */
+  --tm-bg: #0b0f14;
+  --tm-text: #ffffff;
+  --tm-panel-bg: var(--panel-bg);
+  --tm-panel-border: var(--panel-border);
+  --tm-accent: var(--accent);
+  --tm-link: color-mix(in srgb, var(--accent) 75%, #ffffff);
+  --tm-btn-bg: rgba(255,255,255,0.08);
+  --tm-btn-border: rgba(255,255,255,0.16);
+  --tm-input-bg: rgba(8,10,14,0.72);
+
+
+body[data-theme="neon"]{
+  --tm-bg: #0b0f14;
+  --tm-accent: var(--accent);
+  --accent:#00e5ff;
+  --accent2:#4dffff;
+  --panel-bg: rgba(10,12,18,.76);
+  --panel-border: rgba(0,229,255,.22);
+  --map-filter: saturate(1.05);
+}
+
+body[data-theme="graphite"]{
+  --tm-bg: #0f1115;
+  --tm-accent: var(--accent);
+  --accent:#b7c0cc;
+  --accent2:#e6edf6;
+  --panel-bg: rgba(16,18,22,.80);
+  --panel-border: rgba(255,255,255,.12);
+  --map-filter: grayscale(.85) contrast(1.05) brightness(0.98);
+}
+
+body[data-theme="sunset"]{
+  --tm-bg: #120b0b;
+  --tm-accent: var(--accent);
+  --accent:#ffb020;
+  --accent2:#ff6bd6;
+  --panel-bg: rgba(18,12,12,.78);
+  --panel-border: rgba(255,176,32,.22);
+  --map-filter: sepia(.25) saturate(1.1) hue-rotate(-10deg);
+}

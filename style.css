@@ -220,6 +220,16 @@ body.streaming .ui-toggle{ display:none !important; }
   --tm-btn-border: rgba(255,255,255,0.16);
   --tm-input-bg: rgba(8,10,14,0.72);
   --tm-shadow: 0 16px 40px rgba(0,0,0,0.38);
+
+  /* fallback: theme vars used by style.themes.css */
+  --accent: var(--tm-accent);
+  --accent2: #4dffff;
+  --danger: #ff3b3b;
+  --panel-bg: var(--tm-panel-bg);
+  --panel-border: var(--tm-panel-border);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.70);
+  --map-filter: none;
 }
 body{ background: var(--tm-bg) !important; color: var(--tm-text) !important; }
 #ui button{ background: var(--tm-btn-bg) !important; border-color: var(--tm-btn-border) !important; }
@@ -242,3 +252,12 @@ a{ color: var(--tm-link) !important; }
 
 /* ===== Blink label row ===== */
 #ui label.blink-row{ display:flex; align-items:center; gap:8px; }
+
+
+/* ===== Theme variable bindings (safe overrides) ===== */
+#ui{ background: var(--panel-bg) !important; border-color: var(--panel-border) !important; }
+#ui .ui-title{ color: var(--text) !important; }
+#ui button{ border-color: var(--panel-border) !important; }
+#ui button:hover{ border-color: var(--accent) !important; }
+#streamIndicator{ border-color: var(--panel-border) !important; }
+#routeOverlay{ border-color: var(--panel-border) !important; }

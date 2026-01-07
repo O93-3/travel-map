@@ -1,9 +1,12 @@
 // TravelMap Service Worker (stable)
-const CACHE_NAME = 'travel-map-v49-20260107';
+const CACHE_NAME = 'travel-map-v53-20260107';
 const FILES = [
   './',
   './index.html',
+  './overlay.html',
   './style.css',
+  './style.themes.css',
+  './style.overlay.obs.css',
   './app.js',
   './cities.json',
   './cities-ATS.json',
@@ -12,6 +15,8 @@ const FILES = [
   './countries.geojson',
   './countries.geo.json',
   './js/extensions.js',
+  './js/theme-picker.js',
+  './js/overlay-obs.js',
   './js/selfcheck.js',
   './js/custom-blink.js',
   './js/draggable-ui.js',
@@ -21,6 +26,9 @@ const FILES = [
   './js/overlay-readability.js',
   './js/location-readability.js',
   './js/ui-drawer.js',
+  './js/map-hook.js',
+  './js/city-labels.js',
+  './style.citylabels.css',
   './js/fix-currentlocation-drag.js',
   './sw.js'
 ];

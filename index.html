@@ -9,14 +9,16 @@
   <link rel="stylesheet" href="./vendor/leaflet/leaflet.css">
   <!-- Base styles -->
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.themes.css">
   <!-- Overrides / add-ons (load AFTER style.css) -->
   <link rel="stylesheet" href="./style.cityresults.fix.css">
   <link rel="stylesheet" href="./style.overlay.fontsize.all.css">
   <link rel="stylesheet" href="./style.routeoverlay.drag.css">
   <link rel="stylesheet" href="./style.overlay.readability.css">
   <link rel="stylesheet" href="./style.routeoverlay.modern.css">
+  <link rel="stylesheet" href="./style.citylabels.css">
 </head>
-<body>
+<body data-theme="neon">
   <div id="map"></div>
   <button id="uiToggle" class="ui-toggle" type="button" aria-label="メニュー" aria-expanded="false">☰</button>
   <!-- 現在地表示（ドラッグ可） -->
@@ -51,6 +53,29 @@
   <div id="ui">
 <button id="langBtn">日本語</button>
     <button id="streamBtn">配信モード</button>
+    <details class="ui-group"><summary class="ui-title">デザイン</summary>
+      <label class="col"><span>テーマ</span>
+        <select id="themeSelect">
+          <option value="neon">NEON</option>
+          <option value="graphite">GRAPHITE</option>
+          <option value="sunset">SUNSET</option>
+        </select>
+      </label>
+
+      <label class="col"><span>都市名ラベル（地図上）</span>
+        <select id="cityLabelMode">
+          <option value="off">OFF</option>
+          <option value="route">ルート（FROM/TOのみ）</option>
+          <option value="all">履歴すべて</option>
+        </select>
+      </label>
+      <label class="col"><span>都市名ラベルサイズ</span>
+        <input id="cityLabelSize" type="range" min="8" max="24" step="1" value="12">
+      </label>
+      <div class="hint" style="opacity:.75;font-size:12px;margin-top:6px;">※配色のみ切替（保存されます）</div>
+      <div class="hint" style="opacity:.75;font-size:12px;margin-top:6px;">OBS用: <code>overlay.html</code>（1200×320 / 透明）</div>
+    </details>
+
 
     <details class="ui-group"><summary class="ui-title">現在の状態</summary>
       <button id="exportBtn">現在の状態を保存</button>
@@ -141,11 +166,12 @@
 
   <!-- Scripts -->
   <script src="./vendor/leaflet/leaflet.js"></script>
+  <script src="./js/map-hook.js"></script>
   <script src="./app.js"></script>
   <script src="./js/fix-currentlocation-drag.js"></script>
   <script src="./js/ui-drawer.js"></script>
-<script src="./js/extensions.js"
-  <script src="./js/selfcheck.js"></script>></script>
+<script src="./js/extensions.js"></script>
+  <script src="./js/selfcheck.js"></script>
   <!-- Safe add-ons (app.jsは不変のまま機能追加) -->
   <script src="./js/fix-lineweight.js"></script>
   <script src="./js/draggable-routeoverlay.js"></script>
@@ -153,5 +179,7 @@
   <script src="./js/overlay-readability.js"></script>
   <script src="./js/location-readability.js"></script>
   <script src="./js/custom-blink.js"></script>
+  <script src="./js/theme-picker.js"></script>
+  <script src="./js/city-labels.js"></script>
 </body>
 </html>

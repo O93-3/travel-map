@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Travel Map Overlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="./style.themes.css">
+  <link rel="stylesheet" href="./style.overlay.obs.css">
+</head>
+<body data-theme="neon">
+  <div id="obsWrap">
+    <div class="card">
+      <h1>ROUTE</h1>
+
+      <div id="emptyHint" class="empty">※ ルートがまだありません（2地点を追加してください）</div>
+
+      <div class="row">
+        <div class="tag from">FROM</div>
+        <img id="fromFlag" class="flag" alt="flag">
+        <div class="place">
+          <div id="fromCountry" class="country">-</div>
+          <div id="fromCity" class="city">-</div>
+        </div>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <div class="row">
+        <div class="tag to">TO</div>
+        <img id="toFlag" class="flag" alt="flag">
+        <div class="place">
+          <div id="toCountry" class="country">-</div>
+          <div id="toCity" class="city">-</div>
+        </div>
+      </div>
+
+      <div class="meta">
+        <div id="distance" class="distance"></div>
+        <div class="note">※直線距離の概算</div>
+      </div>
+    </div>
+
+    <div id="miniMap"></div>
+  </div>
+
+  <script src="./vendor/leaflet/leaflet.js"></script>
+  <script src="./js/overlay-obs.js"></script>
+</body>
+</html>
