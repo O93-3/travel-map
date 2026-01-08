@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Overlay Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./style.themes.css">
+  <style>
+    html,body{width:320px;height:192px;margin:0;padding:0;overflow:hidden;background:#00ff00;}
+    body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans JP',sans-serif;color:rgba(248,250,255,.98);}
+
+    #cardWrap{width:320px;height:192px;box-sizing:border-box;padding:4px;position:relative;}
+
+    .card{
+      height:100%; box-sizing:border-box;
+      border-radius:18px;
+      background:#0a0c12;
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 18px 44px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.08) inset;
+      backdrop-filter:none;
+      padding:6px 8px;
+      display:flex; flex-direction:column;
+      min-height:0;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before{
+      content:'';
+      position:absolute;
+      inset:-2px;
+      border-radius:18px;
+      padding:2px;
+      background:#0a0c12;
+      -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      pointer-events:none;
+      opacity:.68;
+    }
+
+    .row{display:flex;align-items:flex-start;gap:8px;margin:2px 0;min-width:0;}
+    .row + .row{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(255,255,255,.18);}
+
+    .tag{
+      min-width:0;
+      padding:4px 9px;
+      border-radius:999px;
+      font-size:18px;
+      font-weight:1100;
+      letter-spacing:.04em;
+      white-space:nowrap;
+      color:rgba(255,255,255,.98);
+      border:1px solid rgba(255,255,255,.22);
+      background:rgba(255,255,255,.10);
+      box-shadow:0 10px 22px rgba(0,0,0,.28);
+      text-shadow:0 2px 10px rgba(0,0,0,.75);
+      flex:0 0 auto;
+    }
+    .tag.to{background:rgba(255,176,32,.24);border-color:rgba(255,176,32,.44);box-shadow:0 12px 26px rgba(255,176,32,.12);}
+    .tag.from{background:rgba(0,229,255,.18);border-color:rgba(0,229,255,.36);box-shadow:0 12px 26px rgba(0,229,255,.10);}
+
+    .flag{width:50px;height:auto;border-radius:10px;box-shadow:0 12px 26px rgba(0,0,0,.48);flex:0 0 auto;}
+    .fromRow .flag{width:42px;}
+
+    .place{min-width:0;flex:1 1 auto;}
+    .country,.city{margin:0;white-space:normal;overflow-wrap:anywhere;word-break:keep-all;color:inherit;}
+
+    .country{font-size:17px;font-weight:950;opacity:.94;line-height:1.06;}
+    .city{font-size:28px;font-weight:1150;line-height:1.06;text-shadow:0 2px 16px rgba(0,0,0,.82);margin-top:6px;}
+    .country.isLong{font-size:15px;}
+    .city.isLong{font-size:24px;}
+
+    .fromRow .country{font-size:15px;opacity:.86;}
+    .fromRow .city{font-size:24px; margin-top:6px;}
+    .fromRow .country.isLong{font-size:14px;}
+    .fromRow .city.isLong{font-size:21px;}
+
+    .foot{margin-top:auto;display:flex;align-items:center;gap:8px;justify-content:flex-start;padding-top:4px;}
+    .distance{
+      display:inline-flex;
+      align-items:baseline;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.20);
+      background:#0a0c12;
+      box-shadow:0 12px 26px rgba(0,0,0,.38);
+      color:rgba(255,255,255,.98);
+      text-shadow:0 2px 12px rgba(0,0,0,.70);
+      white-space:nowrap;
+      max-width:100%;
+      overflow:hidden;
+    }
+    .distance .dIcon{opacity:.95; filter:drop-shadow(0 0 8px rgba(255,176,32,.20));}
+    .distance .dLabel{opacity:.94; font-weight:1000; font-size:14px;}
+    .distance .dValue{font-weight:1200; font-size:20px; letter-spacing:.02em; color:rgba(255,236,200,.98);}
+    .distance .dUnit{opacity:.95; font-weight:1000; font-size:14px;}
+
+    .empty{margin:auto 0 0 0;font-size:13px;opacity:.80;text-shadow:0 2px 10px rgba(0,0,0,.65);}
+
+    #cardError{
+      position:absolute;
+      inset:8px;
+      border-radius:14px;
+      background:#000;
+      border:1px solid rgba(255,255,255,.18);
+      color:rgba(255,255,255,.95);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:14px;
+      font-size:13px;
+      font-weight:900;
+      letter-spacing:.02em;
+      z-index:50;
+      backdrop-filter:none;
+    }
+  </style>
+</head>
+<body data-theme="neon">
+  <div id="cardWrap">
+    <div class="card">
+      <div id="emptyHint" class="empty">※ ルートがまだありません（2地点を追加してください）</div>
+
+      <div class="row toRow">
+        <div class="tag to">目的地</div>
+        <img id="toFlag" class="flag" alt="flag">
+        <div class="place">
+          <div id="toCountry" class="country">-</div>
+          <div id="toCity" class="city">-</div>
+        </div>
+      </div>
+
+      <div class="row fromRow">
+        <div class="tag from">出発地</div>
+        <img id="fromFlag" class="flag" alt="flag">
+        <div class="place">
+          <div id="fromCountry" class="country">-</div>
+          <div id="fromCity" class="city">-</div>
+        </div>
+      </div>
+
+      <div class="foot">
+        <div id="distance" class="distance"></div>
+      </div>
+    </div>
+    <div id="cardError">カードの初期化に失敗しました。<br>（OBSのブラウザ/consoleを確認）</div>
+  </div>
+
+  <script src="./js/overlay-card.js"></script>
+</body>
+</html>
