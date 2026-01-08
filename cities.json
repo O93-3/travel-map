@@ -2348,5 +2348,1215 @@
     "name_jp": "プリシュティナ",
     "lat": 42.6629,
     "lon": 21.1655
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Tokyo",
+    "name_jp": "東京",
+    "lat": 35.6762,
+    "lon": 139.6503
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Yokohama",
+    "name_jp": "横浜",
+    "lat": 35.4437,
+    "lon": 139.638
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Nagoya",
+    "name_jp": "名古屋",
+    "lat": 35.1815,
+    "lon": 136.9066
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Osaka",
+    "name_jp": "大阪",
+    "lat": 34.6937,
+    "lon": 135.5023
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Kobe",
+    "name_jp": "神戸",
+    "lat": 34.6901,
+    "lon": 135.1955
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Kyoto",
+    "name_jp": "京都",
+    "lat": 35.0116,
+    "lon": 135.7681
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Hiroshima",
+    "name_jp": "広島",
+    "lat": 34.3853,
+    "lon": 132.4553
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Fukuoka",
+    "name_jp": "福岡",
+    "lat": 33.5904,
+    "lon": 130.4017
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Kitakyushu",
+    "name_jp": "北九州",
+    "lat": 33.8833,
+    "lon": 130.8753
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Sendai",
+    "name_jp": "仙台",
+    "lat": 38.2682,
+    "lon": 140.8694
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Niigata",
+    "name_jp": "新潟",
+    "lat": 37.9162,
+    "lon": 139.0364
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Kanazawa",
+    "name_jp": "金沢",
+    "lat": 36.5613,
+    "lon": 136.6562
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Toyama",
+    "name_jp": "富山",
+    "lat": 36.6953,
+    "lon": 137.2113
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Nagano",
+    "name_jp": "長野",
+    "lat": 36.6486,
+    "lon": 138.1948
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Shizuoka",
+    "name_jp": "静岡",
+    "lat": 34.9756,
+    "lon": 138.3828
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Hamamatsu",
+    "name_jp": "浜松",
+    "lat": 34.7108,
+    "lon": 137.7261
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Okayama",
+    "name_jp": "岡山",
+    "lat": 34.6551,
+    "lon": 133.9195
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Takamatsu",
+    "name_jp": "高松",
+    "lat": 34.3428,
+    "lon": 134.0466
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Matsuyama",
+    "name_jp": "松山",
+    "lat": 33.8392,
+    "lon": 132.7657
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Kochi",
+    "name_jp": "高知",
+    "lat": 33.5597,
+    "lon": 133.5311
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Kagoshima",
+    "name_jp": "鹿児島",
+    "lat": 31.5966,
+    "lon": 130.5571
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Kumamoto",
+    "name_jp": "熊本",
+    "lat": 32.8031,
+    "lon": 130.7079
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Naha",
+    "name_jp": "那覇",
+    "lat": 26.2124,
+    "lon": 127.6809
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Sapporo",
+    "name_jp": "札幌",
+    "lat": 43.0618,
+    "lon": 141.3545
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Asahikawa",
+    "name_jp": "旭川",
+    "lat": 43.7706,
+    "lon": 142.3649
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Hakodate",
+    "name_jp": "函館",
+    "lat": 41.7688,
+    "lon": 140.7288
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Aomori",
+    "name_jp": "青森",
+    "lat": 40.8222,
+    "lon": 140.7475
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Akita",
+    "name_jp": "秋田",
+    "lat": 39.72,
+    "lon": 140.1024
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Yamagata",
+    "name_jp": "山形",
+    "lat": 38.2404,
+    "lon": 140.3633
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Fukushima",
+    "name_jp": "福島",
+    "lat": 37.7608,
+    "lon": 140.4747
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Mito",
+    "name_jp": "水戸",
+    "lat": 36.3659,
+    "lon": 140.471
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Utsunomiya",
+    "name_jp": "宇都宮",
+    "lat": 36.5551,
+    "lon": 139.8828
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Maebashi",
+    "name_jp": "前橋",
+    "lat": 36.3895,
+    "lon": 139.0604
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Kofu",
+    "name_jp": "甲府",
+    "lat": 35.6639,
+    "lon": 138.5683
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Otsu",
+    "name_jp": "大津",
+    "lat": 35.017,
+    "lon": 135.8546
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Nara",
+    "name_jp": "奈良",
+    "lat": 34.6851,
+    "lon": 135.8049
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Wakayama",
+    "name_jp": "和歌山",
+    "lat": 34.226,
+    "lon": 135.1675
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Tottori",
+    "name_jp": "鳥取",
+    "lat": 35.5011,
+    "lon": 134.2351
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Matsue",
+    "name_jp": "松江",
+    "lat": 35.4681,
+    "lon": 133.0484
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Yamaguchi",
+    "name_jp": "山口",
+    "lat": 34.1785,
+    "lon": 131.4737
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Oita",
+    "name_jp": "大分",
+    "lat": 33.2396,
+    "lon": 131.6093
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Miyazaki",
+    "name_jp": "宮崎",
+    "lat": 31.9077,
+    "lon": 131.4202
+  },
+  {
+    "region": "Europe",
+    "country": "Iceland",
+    "country_jp": "アイスランド",
+    "countryCode": "IS",
+    "name": "Reykjavik",
+    "name_jp": "レイキャビク",
+    "lat": 64.1466,
+    "lon": -21.9426
+  },
+  {
+    "region": "Europe",
+    "country": "Iceland",
+    "country_jp": "アイスランド",
+    "countryCode": "IS",
+    "name": "Akureyri",
+    "name_jp": "アークレイリ",
+    "lat": 65.6885,
+    "lon": -18.1262
+  },
+  {
+    "region": "Europe",
+    "country": "Iceland",
+    "country_jp": "アイスランド",
+    "countryCode": "IS",
+    "name": "Egilsstadir",
+    "name_jp": "エイイルススタジル",
+    "lat": 65.2669,
+    "lon": -14.3948
+  },
+  {
+    "region": "Europe",
+    "country": "Norway",
+    "country_jp": "ノルウェー",
+    "countryCode": "NO",
+    "name": "Tromso",
+    "name_jp": "トロムソ",
+    "lat": 69.6492,
+    "lon": 18.9553
+  },
+  {
+    "region": "Europe",
+    "country": "Norway",
+    "country_jp": "ノルウェー",
+    "countryCode": "NO",
+    "name": "Alta",
+    "name_jp": "アルタ",
+    "lat": 69.9689,
+    "lon": 23.2716
+  },
+  {
+    "region": "Europe",
+    "country": "Norway",
+    "country_jp": "ノルウェー",
+    "countryCode": "NO",
+    "name": "Bodo",
+    "name_jp": "ボードー",
+    "lat": 67.2804,
+    "lon": 14.4049
+  },
+  {
+    "region": "Europe",
+    "country": "Finland",
+    "country_jp": "フィンランド",
+    "countryCode": "FI",
+    "name": "Rovaniemi",
+    "name_jp": "ロヴァニエミ",
+    "lat": 66.5039,
+    "lon": 25.7294
+  },
+  {
+    "region": "Europe",
+    "country": "Finland",
+    "country_jp": "フィンランド",
+    "countryCode": "FI",
+    "name": "Oulu",
+    "name_jp": "オウル",
+    "lat": 65.0121,
+    "lon": 25.4651
+  },
+  {
+    "region": "Europe",
+    "country": "Ukraine",
+    "country_jp": "ウクライナ",
+    "countryCode": "UA",
+    "name": "Lviv",
+    "name_jp": "リヴィウ",
+    "lat": 49.8397,
+    "lon": 24.0297
+  },
+  {
+    "region": "Europe",
+    "country": "Ukraine",
+    "country_jp": "ウクライナ",
+    "countryCode": "UA",
+    "name": "Kyiv",
+    "name_jp": "キーウ",
+    "lat": 50.4501,
+    "lon": 30.5234
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Morioka",
+    "name_jp": "盛岡",
+    "lat": 39.7036,
+    "lon": 141.1527
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Koriyama",
+    "name_jp": "郡山",
+    "lat": 37.4004,
+    "lon": 140.3597
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Takasaki",
+    "name_jp": "高崎",
+    "lat": 36.3219,
+    "lon": 139.0033
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Kawagoe",
+    "name_jp": "川越",
+    "lat": 35.9251,
+    "lon": 139.4858
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Hachioji",
+    "name_jp": "八王子",
+    "lat": 35.6663,
+    "lon": 139.316
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Numazu",
+    "name_jp": "沼津",
+    "lat": 35.0956,
+    "lon": 138.8634
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Ise",
+    "name_jp": "伊勢",
+    "lat": 34.4875,
+    "lon": 136.7096
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Maizuru",
+    "name_jp": "舞鶴",
+    "lat": 35.4748,
+    "lon": 135.3867
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Yonago",
+    "name_jp": "米子",
+    "lat": 35.4281,
+    "lon": 133.3309
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Kurashiki",
+    "name_jp": "倉敷",
+    "lat": 34.585,
+    "lon": 133.7719
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Imabari",
+    "name_jp": "今治",
+    "lat": 34.0661,
+    "lon": 132.9973
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Uwajima",
+    "name_jp": "宇和島",
+    "lat": 33.2234,
+    "lon": 132.5608
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Sasebo",
+    "name_jp": "佐世保",
+    "lat": 33.1799,
+    "lon": 129.7154
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Beppu",
+    "name_jp": "別府",
+    "lat": 33.2796,
+    "lon": 131.497
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Nobeoka",
+    "name_jp": "延岡",
+    "lat": 32.5826,
+    "lon": 131.665
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "country_jp": "日本",
+    "countryCode": "JP",
+    "name": "Amami",
+    "name_jp": "奄美",
+    "lat": 28.3772,
+    "lon": 129.4938
+  },
+  {
+    "region": "Europe",
+    "country": "Russia",
+    "country_jp": "ロシア",
+    "countryCode": "RU",
+    "name": "Moscow",
+    "name_jp": "モスクワ",
+    "lat": 55.7558,
+    "lon": 37.6173
+  },
+  {
+    "region": "Europe",
+    "country": "Russia",
+    "country_jp": "ロシア",
+    "countryCode": "RU",
+    "name": "Kazan",
+    "name_jp": "カザン",
+    "lat": 55.7961,
+    "lon": 49.1064
+  },
+  {
+    "region": "Europe",
+    "country": "Russia",
+    "country_jp": "ロシア",
+    "countryCode": "RU",
+    "name": "Yekaterinburg",
+    "name_jp": "エカテリンブルク",
+    "lat": 56.8389,
+    "lon": 60.6057
+  },
+  {
+    "region": "Europe",
+    "country": "Russia",
+    "country_jp": "ロシア",
+    "countryCode": "RU",
+    "name": "Novosibirsk",
+    "name_jp": "ノヴォシビルスク",
+    "lat": 55.0084,
+    "lon": 82.9357
+  },
+  {
+    "region": "Europe",
+    "country": "Russia",
+    "country_jp": "ロシア",
+    "countryCode": "RU",
+    "name": "Irkutsk",
+    "name_jp": "イルクーツク",
+    "lat": 52.2871,
+    "lon": 104.305
+  },
+  {
+    "region": "Europe",
+    "country": "Russia",
+    "country_jp": "ロシア",
+    "countryCode": "RU",
+    "name": "Vladivostok",
+    "name_jp": "ウラジオストク",
+    "lat": 43.1155,
+    "lon": 131.8855
+  },
+  {
+    "region": "Europe",
+    "country": "Russia",
+    "country_jp": "ロシア",
+    "countryCode": "RU",
+    "name": "Khabarovsk",
+    "name_jp": "ハバロフスク",
+    "lat": 48.4808,
+    "lon": 135.092
+  },
+  {
+    "region": "Africa",
+    "country": "Egypt",
+    "country_jp": "エジプト",
+    "countryCode": "EG",
+    "name": "Cairo",
+    "name_jp": "カイロ",
+    "lat": 30.0444,
+    "lon": 31.2357
+  },
+  {
+    "region": "Africa",
+    "country": "Egypt",
+    "country_jp": "エジプト",
+    "countryCode": "EG",
+    "name": "Alexandria",
+    "name_jp": "アレクサンドリア",
+    "lat": 31.2001,
+    "lon": 29.9187
+  },
+  {
+    "region": "Africa",
+    "country": "South Africa",
+    "country_jp": "南アフリカ",
+    "countryCode": "ZA",
+    "name": "Johannesburg",
+    "name_jp": "ヨハネスブルグ",
+    "lat": -26.2041,
+    "lon": 28.0473
+  },
+  {
+    "region": "Africa",
+    "country": "South Africa",
+    "country_jp": "南アフリカ",
+    "countryCode": "ZA",
+    "name": "Cape Town",
+    "name_jp": "ケープタウン",
+    "lat": -33.9249,
+    "lon": 18.4241
+  },
+  {
+    "region": "Africa",
+    "country": "Kenya",
+    "country_jp": "ケニア",
+    "countryCode": "KE",
+    "name": "Nairobi",
+    "name_jp": "ナイロビ",
+    "lat": -1.2921,
+    "lon": 36.8219
+  },
+  {
+    "region": "Africa",
+    "country": "Ethiopia",
+    "country_jp": "エチオピア",
+    "countryCode": "ET",
+    "name": "Addis Ababa",
+    "name_jp": "アディスアベバ",
+    "lat": 8.9806,
+    "lon": 38.7578
+  },
+  {
+    "region": "Africa",
+    "country": "Morocco",
+    "country_jp": "モロッコ",
+    "countryCode": "MA",
+    "name": "Casablanca",
+    "name_jp": "カサブランカ",
+    "lat": 33.5731,
+    "lon": -7.5898
+  },
+  {
+    "region": "Africa",
+    "country": "Nigeria",
+    "country_jp": "ナイジェリア",
+    "countryCode": "NG",
+    "name": "Lagos",
+    "name_jp": "ラゴス",
+    "lat": 6.5244,
+    "lon": 3.3792
+  },
+  {
+    "region": "Asia",
+    "country": "China",
+    "country_jp": "中国",
+    "countryCode": "CN",
+    "name": "Beijing",
+    "name_jp": "北京",
+    "lat": 39.9042,
+    "lon": 116.4074
+  },
+  {
+    "region": "Asia",
+    "country": "China",
+    "country_jp": "中国",
+    "countryCode": "CN",
+    "name": "Shanghai",
+    "name_jp": "上海",
+    "lat": 31.2304,
+    "lon": 121.4737
+  },
+  {
+    "region": "Asia",
+    "country": "China",
+    "country_jp": "中国",
+    "countryCode": "CN",
+    "name": "Guangzhou",
+    "name_jp": "広州",
+    "lat": 23.1291,
+    "lon": 113.2644
+  },
+  {
+    "region": "Asia",
+    "country": "China",
+    "country_jp": "中国",
+    "countryCode": "CN",
+    "name": "Shenzhen",
+    "name_jp": "深圳",
+    "lat": 22.5431,
+    "lon": 114.0579
+  },
+  {
+    "region": "Asia",
+    "country": "South Korea",
+    "country_jp": "韓国",
+    "countryCode": "KR",
+    "name": "Seoul",
+    "name_jp": "ソウル",
+    "lat": 37.5665,
+    "lon": 126.978
+  },
+  {
+    "region": "Asia",
+    "country": "South Korea",
+    "country_jp": "韓国",
+    "countryCode": "KR",
+    "name": "Busan",
+    "name_jp": "釜山",
+    "lat": 35.1796,
+    "lon": 129.0756
+  },
+  {
+    "region": "Asia",
+    "country": "Thailand",
+    "country_jp": "タイ",
+    "countryCode": "TH",
+    "name": "Bangkok",
+    "name_jp": "バンコク",
+    "lat": 13.7563,
+    "lon": 100.5018
+  },
+  {
+    "region": "Asia",
+    "country": "Vietnam",
+    "country_jp": "ベトナム",
+    "countryCode": "VN",
+    "name": "Hanoi",
+    "name_jp": "ハノイ",
+    "lat": 21.0278,
+    "lon": 105.8342
+  },
+  {
+    "region": "Asia",
+    "country": "Vietnam",
+    "country_jp": "ベトナム",
+    "countryCode": "VN",
+    "name": "Ho Chi Minh City",
+    "name_jp": "ホーチミン",
+    "lat": 10.8231,
+    "lon": 106.6297
+  },
+  {
+    "region": "Asia",
+    "country": "Indonesia",
+    "country_jp": "インドネシア",
+    "countryCode": "ID",
+    "name": "Jakarta",
+    "name_jp": "ジャカルタ",
+    "lat": -6.2088,
+    "lon": 106.8456
+  },
+  {
+    "region": "Asia",
+    "country": "Malaysia",
+    "country_jp": "マレーシア",
+    "countryCode": "MY",
+    "name": "Kuala Lumpur",
+    "name_jp": "クアラルンプール",
+    "lat": 3.139,
+    "lon": 101.6869
+  },
+  {
+    "region": "Asia",
+    "country": "Philippines",
+    "country_jp": "フィリピン",
+    "countryCode": "PH",
+    "name": "Manila",
+    "name_jp": "マニラ",
+    "lat": 14.5995,
+    "lon": 120.9842
+  },
+  {
+    "region": "Asia",
+    "country": "India",
+    "country_jp": "インド",
+    "countryCode": "IN",
+    "name": "Delhi",
+    "name_jp": "デリー",
+    "lat": 28.6139,
+    "lon": 77.209
+  },
+  {
+    "region": "Asia",
+    "country": "India",
+    "country_jp": "インド",
+    "countryCode": "IN",
+    "name": "Mumbai",
+    "name_jp": "ムンバイ",
+    "lat": 19.076,
+    "lon": 72.8777
+  },
+  {
+    "region": "Asia",
+    "country": "Taiwan",
+    "country_jp": "台湾",
+    "countryCode": "TW",
+    "name": "Taipei",
+    "name_jp": "台北",
+    "lat": 25.033,
+    "lon": 121.5654
+  },
+  {
+    "region": "Asia",
+    "country": "Taiwan",
+    "country_jp": "台湾",
+    "countryCode": "TW",
+    "name": "Kaohsiung",
+    "name_jp": "高雄",
+    "lat": 22.6273,
+    "lon": 120.3014
+  },
+  {
+    "region": "Asia",
+    "country": "Singapore",
+    "country_jp": "シンガポール",
+    "countryCode": "SG",
+    "name": "Singapore",
+    "name_jp": "シンガポール",
+    "lat": 1.3521,
+    "lon": 103.8198
+  },
+  {
+    "region": "Asia",
+    "country": "Mongolia",
+    "country_jp": "モンゴル",
+    "countryCode": "MN",
+    "name": "Ulaanbaatar",
+    "name_jp": "ウランバートル",
+    "lat": 47.8864,
+    "lon": 106.9057
+  },
+  {
+    "region": "Asia",
+    "country": "Pakistan",
+    "country_jp": "パキスタン",
+    "countryCode": "PK",
+    "name": "Karachi",
+    "name_jp": "カラチ",
+    "lat": 24.8607,
+    "lon": 67.0011
+  },
+  {
+    "region": "Asia",
+    "country": "Bangladesh",
+    "country_jp": "バングラデシュ",
+    "countryCode": "BD",
+    "name": "Dhaka",
+    "name_jp": "ダッカ",
+    "lat": 23.8103,
+    "lon": 90.4125
+  },
+  {
+    "region": "Asia",
+    "country": "Sri Lanka",
+    "country_jp": "スリランカ",
+    "countryCode": "LK",
+    "name": "Colombo",
+    "name_jp": "コロンボ",
+    "lat": 6.9271,
+    "lon": 79.8612
+  },
+  {
+    "region": "Asia",
+    "country": "Nepal",
+    "country_jp": "ネパール",
+    "countryCode": "NP",
+    "name": "Kathmandu",
+    "name_jp": "カトマンズ",
+    "lat": 27.7172,
+    "lon": 85.324
+  },
+  {
+    "region": "Asia",
+    "country": "Cambodia",
+    "country_jp": "カンボジア",
+    "countryCode": "KH",
+    "name": "Phnom Penh",
+    "name_jp": "プノンペン",
+    "lat": 11.5564,
+    "lon": 104.9282
+  },
+  {
+    "region": "Asia",
+    "country": "Laos",
+    "country_jp": "ラオス",
+    "countryCode": "LA",
+    "name": "Vientiane",
+    "name_jp": "ビエンチャン",
+    "lat": 17.9757,
+    "lon": 102.6331
+  },
+  {
+    "region": "Asia",
+    "country": "Myanmar",
+    "country_jp": "ミャンマー",
+    "countryCode": "MM",
+    "name": "Yangon",
+    "name_jp": "ヤンゴン",
+    "lat": 16.8409,
+    "lon": 96.1735
+  },
+  {
+    "region": "Asia",
+    "country": "Kazakhstan",
+    "country_jp": "カザフスタン",
+    "countryCode": "KZ",
+    "name": "Almaty",
+    "name_jp": "アルマトイ",
+    "lat": 43.222,
+    "lon": 76.8512
+  },
+  {
+    "region": "Asia",
+    "country": "Uzbekistan",
+    "country_jp": "ウズベキスタン",
+    "countryCode": "UZ",
+    "name": "Tashkent",
+    "name_jp": "タシュケント",
+    "lat": 41.2995,
+    "lon": 69.2401
+  },
+  {
+    "region": "Africa",
+    "country": "Tunisia",
+    "country_jp": "チュニジア",
+    "countryCode": "TN",
+    "name": "Tunis",
+    "name_jp": "チュニス",
+    "lat": 36.8065,
+    "lon": 10.1815
+  },
+  {
+    "region": "Africa",
+    "country": "Algeria",
+    "country_jp": "アルジェリア",
+    "countryCode": "DZ",
+    "name": "Algiers",
+    "name_jp": "アルジェ",
+    "lat": 36.7538,
+    "lon": 3.0588
+  },
+  {
+    "region": "Africa",
+    "country": "Ghana",
+    "country_jp": "ガーナ",
+    "countryCode": "GH",
+    "name": "Accra",
+    "name_jp": "アクラ",
+    "lat": 5.6037,
+    "lon": -0.187
+  },
+  {
+    "region": "Africa",
+    "country": "Tanzania",
+    "country_jp": "タンザニア",
+    "countryCode": "TZ",
+    "name": "Dar es Salaam",
+    "name_jp": "ダルエスサラーム",
+    "lat": -6.7924,
+    "lon": 39.2083
+  },
+  {
+    "region": "Africa",
+    "country": "Uganda",
+    "country_jp": "ウガンダ",
+    "countryCode": "UG",
+    "name": "Kampala",
+    "name_jp": "カンパラ",
+    "lat": 0.3476,
+    "lon": 32.5825
+  },
+  {
+    "region": "Africa",
+    "country": "Senegal",
+    "country_jp": "セネガル",
+    "countryCode": "SN",
+    "name": "Dakar",
+    "name_jp": "ダカール",
+    "lat": 14.7167,
+    "lon": -17.4677
+  },
+  {
+    "region": "Europe",
+    "country": "Russia",
+    "country_jp": "ロシア",
+    "countryCode": "RU",
+    "name": "Sochi",
+    "name_jp": "ソチ",
+    "lat": 43.6028,
+    "lon": 39.7342
+  },
+  {
+    "region": "Europe",
+    "country": "Russia",
+    "country_jp": "ロシア",
+    "countryCode": "RU",
+    "name": "Volgograd",
+    "name_jp": "ヴォルゴグラード",
+    "lat": 48.708,
+    "lon": 44.5133
+  },
+  {
+    "region": "Europe",
+    "country": "Russia",
+    "country_jp": "ロシア",
+    "countryCode": "RU",
+    "name": "Samara",
+    "name_jp": "サマーラ",
+    "lat": 53.2415,
+    "lon": 50.2212
+  },
+  {
+    "region": "Europe",
+    "country": "Russia",
+    "country_jp": "ロシア",
+    "countryCode": "RU",
+    "name": "Omsk",
+    "name_jp": "オムスク",
+    "lat": 54.9885,
+    "lon": 73.3242
+  },
+  {
+    "region": "Europe",
+    "country": "Russia",
+    "country_jp": "ロシア",
+    "countryCode": "RU",
+    "name": "Yakutsk",
+    "name_jp": "ヤクーツク",
+    "lat": 62.0355,
+    "lon": 129.6755
   }
 ]

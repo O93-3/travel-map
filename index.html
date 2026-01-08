@@ -168,6 +168,7 @@
   <script src="./vendor/leaflet/leaflet.js"></script>
   <script src="./js/map-hook.js"></script>
   <script src="./app.js"></script>
+  <script src=\"./js/overlay-settings.js\"></script>
   <script src="./js/fix-currentlocation-drag.js"></script>
   <script src="./js/ui-drawer.js"></script>
 <script src="./js/extensions.js"></script>
@@ -181,5 +182,26 @@
   <script src="./js/custom-blink.js"></script>
   <script src="./js/theme-picker.js"></script>
   <script src="./js/city-labels.js"></script>
+
+
+    <details class="ui-group" id="obsOverlaySettings">
+      <summary>OBS Overlay</summary>
+      <div class="ui-row"><label>カード背景</label><input type="color" id="ovCardBg" value="#0a0c12"></div>
+      <div class="ui-row"><label>カード枠色</label><input type="color" id="ovCardBorder" value="#ffffff"></div>
+      <div class="ui-row"><label>枠太さ</label><input type="range" id="ovCardBorderW" min="1" max="4" step="1" value="2"></div>
+      <div class="ui-row"><label>文字色</label><input type="color" id="ovText" value="#ffffff"></div>
+      <div class="ui-row"><label>補助文字色</label><input type="color" id="ovMuted" value="#cfd3dd"></div>
+      <div class="ui-row"><label>FROM色</label><input type="color" id="ovFrom" value="#00e5ff"></div>
+      <div class="ui-row"><label>TO色（オレンジ）</label><input type="color" id="ovTo" value="#ffb020"></div>
+      <div class="ui-row"><label>旗サイズ</label><input type="range" id="ovFlagW" min="32" max="64" step="1" value="42"></div>
+      <div class="ui-row"><label>国名サイズ</label><input type="range" id="ovCountrySize" min="14" max="26" step="1" value="18"></div>
+      <div class="ui-row"><label>都市サイズ</label><input type="range" id="ovCitySize" min="22" max="44" step="1" value="32"></div>
+      <div class="ui-row"><label>行間（都市）</label><input type="range" id="ovCityLH" min="1.00" max="1.25" step="0.01" value="1.08"></div>
+      <div class="ui-row"><label>距離サイズ</label><input type="range" id="ovDistanceSize" min="16" max="28" step="1" value="20"></div>
+      <div class="ui-row"><label>行の間隔</label><input type="range" id="ovRowGap" min="8" max="16" step="1" value="10"></div>
+      <div class="ui-row"><label>上下マージン</label><input type="range" id="ovRowMY" min="8" max="16" step="1" value="10"></div>
+      <div class="ui-hint">※ レイアウト崩れ防止のため、過度に小さい値は自動で下限に丸めます。</div>
+    </details>
+
 </body>
 </html>

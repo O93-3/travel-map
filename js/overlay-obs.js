@@ -104,6 +104,7 @@
     const map=L.map('miniMap', {zoomControl:false, attributionControl:false, dragging:false, scrollWheelZoom:false, doubleClickZoom:false, boxZoom:false, keyboard:false, tap:false});
     // simple OSM tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 8}).addTo(map);
+    setTimeout(function(){ try{ map.invalidateSize(true); }catch(_){ } }, 60);
     return map;
   }
 
@@ -150,7 +151,31 @@
     updateMiniMap(map, from, to);
   }
 
-  function init(){
+  
+  const OV_KEYS = {cardBg:'tmOv_cardBg',cardBorder:'tmOv_cardBorder',cardBorderW:'tmOv_cardBorderW',text:'tmOv_text',muted:'tmOv_muted',from:'tmOv_from',to:'tmOv_to',flagW:'tmOv_flagW',countrySize:'tmOv_countrySize',citySize:'tmOv_citySize',cityLH:'tmOv_cityLH',distanceSize:'tmOv_distanceSize',rowGap:'tmOv_rowGap',rowMY:'tmOv_rowMY'};
+  function getLS(k,f){ try{const v=localStorage.getItem(k); return (v===null||v==='')?f:v;}catch(_){return f;} }
+  function clampNum(v,min,max,f){ const n=Number(v); if(!isFinite(n)) return f; return Math.max(min, Math.min(max,n)); }
+  function applyOverlayStyle(){
+    const r=document.documentElement;
+    r.style.setProperty('--ov-card-bg', getLS(OV_KEYS.cardBg,'rgba(10,12,18,.72)'));
+    r.style.setProperty('--ov-card-border', getLS(OV_KEYS.cardBorder,'rgba(255,255,255,.18)'));
+    r.style.setProperty('--ov-text', getLS(OV_KEYS.text,'rgba(255,255,255,.96)'));
+    r.style.setProperty('--ov-muted', getLS(OV_KEYS.muted,'rgba(255,255,255,.72)'));
+    r.style.setProperty('--ov-from', getLS(OV_KEYS.from,'#00e5ff'));
+    r.style.setProperty('--ov-to', getLS(OV_KEYS.to,'#ffb020'));
+    r.style.setProperty('--accent2', 'var(--ov-to)');
+    r.style.setProperty('--ov-card-border-w', clampNum(getLS(OV_KEYS.cardBorderW,'2'),1,4,2)+'px');
+    r.style.setProperty('--ov-flag-w', clampNum(getLS(OV_KEYS.flagW,'42'),32,64,42)+'px');
+    r.style.setProperty('--ov-country-size', clampNum(getLS(OV_KEYS.countrySize,'18'),14,26,18)+'px');
+    r.style.setProperty('--ov-city-size', clampNum(getLS(OV_KEYS.citySize,'32'),22,44,32)+'px');
+    r.style.setProperty('--ov-city-lh', String(clampNum(getLS(OV_KEYS.cityLH,'1.08'),1.00,1.25,1.08)));
+    r.style.setProperty('--ov-distance-size', clampNum(getLS(OV_KEYS.distanceSize,'20'),16,28,20)+'px');
+    r.style.setProperty('--ov-row-gap', clampNum(getLS(OV_KEYS.rowGap,'10'),8,16,10)+'px');
+    r.style.setProperty('--ov-row-my', clampNum(getLS(OV_KEYS.rowMY,'10'),8,16,10)+'px');
+  }
+  window.addEventListener('storage', function(){ applyOverlayStyle(); });
+function init(){
+    applyOverlayStyle();
     applyTheme();
     const map=initMap();
     // initial render

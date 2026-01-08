@@ -17,3 +17,5 @@
   -webkit-backdrop-filter: blur(6px);
 }
 body[data-theme] .tm-citylabel > span{ box-shadow: 0 0 16px color-mix(in srgb, var(--accent, #00e5ff) 35%, transparent); }
+
+.tm-citylabel > span{ writing-mode: horizontal-tb !important; text-orientation: mixed !important; white-space: nowrap; }

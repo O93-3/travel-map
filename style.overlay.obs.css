@@ -1,8 +1,8 @@
 /* OBS Overlay: 1200x320, transparent page, card-first */
-html,body{ width:1200px; height:320px; margin:0; padding:0; overflow:hidden; background:transparent; }
+html,body{ width:1920px; height:1080px; margin:0; padding:0; overflow:hidden; background:transparent; }
 body{ font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans JP', sans-serif; color: var(--text); }
 
-#obsWrap{ width:1200px; height:320px; display:grid; grid-template-columns: 62% 38%; gap:14px; padding:14px; box-sizing:border-box; }
+#obsWrap{ width:960px; height:320px; position:absolute; left:40px; bottom:40px; display:grid; grid-template-columns: 62% 38%; gap:16px; padding:16px; box-sizing:border-box; align-items:stretch; }
 
 .card{ background: var(--panel-bg); border:1px solid var(--panel-border); border-radius:16px; padding:14px 16px; box-sizing:border-box; }
 
@@ -25,7 +25,7 @@ body{ font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans JP',
 .distance{ font-size:20px; font-weight:900; color: var(--accent2); }
 .note{ font-size:12px; color: var(--muted); }
 
-#miniMap{ background: var(--panel-bg); border:1px solid var(--panel-border); border-radius:16px; overflow:hidden; position:relative; }
+#miniMap{ background: var(--panel-bg); border:1px solid var(--panel-border); border-radius:16px; overflow:hidden; position:relative; height:100%; min-height:0; }
 #miniMap .leaflet-container{ background: transparent; }
 #miniMap .leaflet-tile{ filter: var(--map-filter); }
 
@@ -34,3 +34,22 @@ body{ font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans JP',
 
 /* hide leaflet attribution in overlay */
 .leaflet-control-attribution{ display:none !important; }
+
+/* === OBS 1080p: configurable overlay style (v62) === */
+:root{--ov-card-bg:rgba(10,12,18,.72);--ov-card-border:rgba(255,255,255,.18);--ov-card-border-w:2px;--ov-card-radius:18px;--ov-card-pad-y:14px;--ov-card-pad-x:16px;--ov-text:rgba(255,255,255,.96);--ov-muted:rgba(255,255,255,.72);--ov-title-size:19px;--ov-title-ls:.16em;--ov-tag-size:15px;--ov-tag-minw:74px;--ov-flag-w:42px;--ov-country-size:18px;--ov-city-size:32px;--ov-city-lh:1.08;--ov-distance-size:20px;--ov-row-gap:10px;--ov-row-my:10px;--ov-sep:rgba(255,255,255,.16);--ov-from:#00e5ff;--ov-to:#ffb020;--accent2:var(--ov-to);}
+#obsWrap,#obsWrap *{color:var(--ov-text)!important;}
+#obsWrap .note{color:var(--ov-muted)!important;}
+.card{position:relative;background:var(--ov-card-bg);border:var(--ov-card-border-w) solid var(--ov-card-border);border-radius:var(--ov-card-radius);padding:var(--ov-card-pad-y) var(--ov-card-pad-x);box-shadow:0 18px 52px rgba(0,0,0,.55);height:100%;}
+body[data-theme="neon"] .card{border:max(2px,var(--ov-card-border-w)) solid rgba(0,0,0,.92);}
+.head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 6px 0;}
+.card h1{margin:0;font-size:var(--ov-title-size);letter-spacing:var(--ov-title-ls);opacity:.96;}
+.distance{font-size:var(--ov-distance-size);font-weight:1100;color:var(--ov-to)!important;text-shadow:0 2px 10px rgba(0,0,0,.65);white-space:nowrap;}
+.note.distnote{position:absolute;right:14px;bottom:10px;font-size:12px;opacity:.85;}
+.row{display:flex;align-items:center;gap:var(--ov-row-gap);margin:var(--ov-row-my) 0;}
+.row + .row{margin-top:12px;padding-top:12px;border-top:1px dashed var(--ov-sep);}
+.tag{font-size:var(--ov-tag-size);letter-spacing:.18em;font-weight:1200;padding:6px 12px;border-radius:999px;min-width:var(--ov-tag-minw);text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);}
+.flag{width:var(--ov-flag-w);height:auto;border-radius:10px;box-shadow:0 10px 22px rgba(0,0,0,.45);}
+.place{min-width:0;}
+.place .country{font-size:var(--ov-country-size);font-weight:1100;opacity:.95;}
+.place .city{font-size:var(--ov-city-size);font-weight:1200;line-height:var(--ov-city-lh);text-shadow:0 2px 14px rgba(0,0,0,.78);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#miniMap{background:rgba(0,0,0,.10);border:1px solid var(--ov-card-border);border-radius:var(--ov-card-radius);overflow:hidden;position:relative;height:100%;min-height:0;}
