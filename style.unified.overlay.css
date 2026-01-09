@@ -1,0 +1,117 @@
+/* === Unified Overlay (index.html only) === */
+:root{
+  --tm-ov-green:#00ff00;
+  --tm-ov-bg:#0a0c12;
+  --tm-ov-text:rgba(255,255,255,.96);
+  --tm-ov-muted:rgba(255,255,255,.72);
+  --tm-ov-from:#00e5ff;
+  --tm-ov-to:#ffb020;
+  --tm-ov-border:rgba(255,255,255,.16);
+  --tm-ov-pill-bg:rgba(255,255,255,.08);
+  --tm-ov-pill-text:rgba(255,255,255,.92);
+  --tm-ov-label-bg:rgba(10,12,18,.82);
+  --tm-ov-label-text:rgba(255,255,255,.95);
+  --tm-ov-font:"Yu Gothic UI","Yu Gothic",Meiryo,system-ui,-apple-system,"Noto Sans JP",sans-serif;
+}
+
+body[data-ovfont="yugothic"]{ --tm-ov-font:"Yu Gothic UI","Yu Gothic",Meiryo,system-ui,-apple-system,"Noto Sans JP",sans-serif; }
+body[data-ovfont="meiryo"]{ --tm-ov-font:Meiryo,"Meiryo UI","Yu Gothic UI",system-ui,-apple-system,"Noto Sans JP",sans-serif; }
+body[data-ovfont="bizud"]{ --tm-ov-font:"BIZ UDPGothic","BIZ UDGothic","Yu Gothic UI",Meiryo,system-ui,-apple-system,"Noto Sans JP",sans-serif; }
+body[data-ovfont="msgothic"]{ --tm-ov-font:"MS PGothic","MS Gothic",Meiryo,"Yu Gothic UI",system-ui,-apple-system,sans-serif; }
+body[data-ovfont="noto"]{ --tm-ov-font:"Noto Sans JP","Yu Gothic UI",Meiryo,system-ui,-apple-system,sans-serif; }
+
+body[data-ovtheme="neon"]{ --tm-ov-bg:#0a0c12; --tm-ov-from:#00e5ff; --tm-ov-to:#ffb020; --tm-ov-border:rgba(255,255,255,.16); --tm-ov-pill-bg:rgba(255,255,255,.08); --tm-ov-label-bg:rgba(10,12,18,.82); }
+body[data-ovtheme="amber"]{ --tm-ov-bg:#0b0f14; --tm-ov-from:#4dffff; --tm-ov-to:#ff7a18; --tm-ov-border:rgba(255,176,32,.22); --tm-ov-pill-bg:rgba(255,176,32,.10); --tm-ov-label-bg:rgba(20,12,8,.84); }
+body[data-ovtheme="lime"]{ --tm-ov-bg:#07110c; --tm-ov-from:#00ff9d; --tm-ov-to:#c8ff2e; --tm-ov-border:rgba(0,255,157,.20); --tm-ov-pill-bg:rgba(0,255,157,.12); --tm-ov-label-bg:rgba(7,17,12,.86); }
+body[data-ovtheme="violet"]{ --tm-ov-bg:#0a0714; --tm-ov-from:#7c5cff; --tm-ov-to:#ff4fd8; --tm-ov-border:rgba(124,92,255,.22); --tm-ov-pill-bg:rgba(124,92,255,.12); --tm-ov-label-bg:rgba(10,7,20,.86); }
+body[data-ovtheme="mono"]{ --tm-ov-bg:#0b0b0b; --tm-ov-from:#e6e6e6; --tm-ov-to:#ffffff; --tm-ov-border:rgba(255,255,255,.18); --tm-ov-pill-bg:rgba(255,255,255,.08); --tm-ov-label-bg:rgba(0,0,0,.78); }
+
+body.streaming #currentLocation,body.streaming #routeOverlay,body.streaming #obsOverlaySettings,body.streaming #currentLocationSettings,
+body.tm-ov-adjust #currentLocation,body.tm-ov-adjust #routeOverlay,body.tm-ov-adjust #obsOverlaySettings,body.tm-ov-adjust #currentLocationSettings{ display:none !important; }
+#tmOverlayStage{ position:fixed; inset:0; z-index:2000; display:none; pointer-events:none; }
+
+/* apply chosen font to overlay content only */
+#tmOverlayCard, #tmOverlayMap, #tmOverlayCard *, #tmOverlayMap *, #tmOvMiniMap .leaflet-tooltip.tm-ov-map-tooltip{ font-family: var(--tm-ov-font); }
+
+body.streaming{ background:var(--tm-ov-green) !important; }
+body.streaming #tmOverlayStage{ display:block; pointer-events:auto; }
+body.streaming #map{ opacity:0; pointer-events:none; }
+body.streaming .tm-ov-box{ pointer-events:auto; cursor:move; }
+body.streaming #uiToggle, body.streaming #streamIndicator{ display:none !important; }
+
+body.tm-ov-adjust #tmOverlayStage{ display:block; pointer-events:auto; }
+body.tm-ov-adjust #map{ opacity:0; pointer-events:none; }
+body.tm-ov-adjust #ui, body.tm-ov-adjust #uiToggle, body.tm-ov-adjust #streamIndicator{ display:none !important; }
+
+#tmOverlayCard{ display: var(--tm-ov-show-card, block); }
+#tmOverlayMap{ display: var(--tm-ov-show-map, block); }
+
+.tm-ov-box{ position:absolute; left: var(--tm-ov-x, 70vw); top: var(--tm-ov-y, 10vh);
+  transform: translate3d(0,0,0) scale(var(--tm-ov-scale,1)); transform-origin: top left; pointer-events:none; }
+#tmOverlayCard{ --tm-ov-x: var(--tm-ov-card-x, 70vw); --tm-ov-y: var(--tm-ov-card-y, 10vh); --tm-ov-scale: var(--tm-ov-card-scale, 1); }
+#tmOverlayMap{  --tm-ov-x: var(--tm-ov-map-x, 70vw); --tm-ov-y: var(--tm-ov-map-y, 46vh); --tm-ov-scale: var(--tm-ov-map-scale, 1); }
+
+body.tm-ov-adjust .tm-ov-box{ pointer-events:auto; cursor:move; }
+body.tm-ov-adjust .tm-ov-box::after{ content:''; position:absolute; inset:-6px; border:2px dashed rgba(255,255,255,.55); border-radius:18px; pointer-events:none; }
+
+#tmOverlayCard .tm-ov-card{ width: var(--tm-ov-card-w, 320px); min-height: var(--tm-ov-card-h, 0px);
+  box-sizing:border-box; border-radius:18px; background:var(--tm-ov-bg);
+  border: var(--tm-ov-border-w-effective, 2px) solid var(--tm-ov-border);
+  box-shadow: var(--tm-ov-shadow, 0 18px 44px rgba(0,0,0,.55)); padding:10px 12px; color:var(--tm-ov-text); }
+.tm-ov-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:6px; }
+.tm-ov-title{ font-weight:1000; letter-spacing:.16em; font-size: calc(16px * var(--tm-ov-head-scale, 1)); }
+.tm-ov-distance{ font-weight:1100; font-size: calc(22px * var(--tm-ov-head-scale, 1)); white-space:nowrap;
+  background: linear-gradient(90deg, var(--tm-ov-to), var(--tm-ov-from)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.tm-ov-row{ display:flex; align-items:center; gap:10px; padding:10px 0; }
+.tm-ov-row + .tm-ov-row{ border-top:1px dashed rgba(255,255,255,.18); }
+.tm-ov-tagwrap{ width:64px; display:flex; justify-content:center; }
+.tm-ov-tag{ font-size:13px; font-weight:1300; letter-spacing:.14em; padding:6px 10px; border-radius:999px; background:var(--tm-ov-pill-bg);
+  border:1px solid rgba(255,255,255,.18); color:var(--tm-ov-pill-text); }
+.tm-ov-tag.from{ border-color: rgba(0,0,0,0); }
+.tm-ov-tag.to{ border-color: rgba(0,0,0,0); }
+.tm-ov-flag{ width:42px; height:auto; border-radius:10px; box-shadow:0 10px 22px rgba(0,0,0,.45); display:none; }
+.tm-ov-country{ font-size: var(--tm-ov-country-size, 16px); font-weight:1100; opacity:.92; }
+.tm-ov-city{ font-size: var(--tm-ov-city-size, 32px); font-weight:1200; line-height:1.08; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tm-ov-empty{ margin-top:8px; font-size:12px; opacity:.70; }
+
+#tmOverlayMap .tm-ov-mapframe{ width: var(--tm-ov-map-w, 480px); height: var(--tm-ov-map-h, 255px);
+  border-radius:18px; overflow:hidden; background:var(--tm-ov-bg);
+  border: var(--tm-ov-border-w-effective, 2px) solid var(--tm-ov-border);
+  box-shadow: var(--tm-ov-shadow, 0 18px 44px rgba(0,0,0,.52)); position:relative; }
+#tmOvMiniMap{ width:100%; height:100%; }
+#tmOvMiniMap .leaflet-control-attribution{ display:none !important; }
+
+/* TO star */
+.tm-ov-to-icon.leaflet-div-icon{ background:transparent !important; border:none !important; }
+.tm-ov-to-wrap{ position:relative; width:100%; height:100%; color: var(--tm-ov-to); }
+.tm-ov-to-bg{ position:absolute; inset:12%; border-radius:999px; background: rgba(0,0,0,.35); border:2px solid rgba(255,255,255,.18); }
+.tm-ov-to-ring{ position:absolute; inset:0; border-radius:999px; border:2px solid rgba(255,255,255,.0); }
+.tm-ov-to-star{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.tm-ov-to-star path{ fill: currentColor; stroke: rgba(0,0,0,.60); stroke-width: 1.8; paint-order: stroke fill; }
+
+/* FROM car */
+.tm-ov-car-icon.leaflet-div-icon{ background:transparent !important; border:none !important; }
+.tm-ov-car-wrap{ position:relative; width:100%; height:100%; color: var(--tm-ov-from); }
+.tm-ov-car-bg{ position:absolute; inset:12%; border-radius:999px; background: rgba(0,0,0,.35); border:2px solid rgba(255,255,255,.18); }
+.tm-ov-car{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.tm-ov-car svg{ width:86%; height:86%; display:block; }
+.tm-ov-car path.car-body{ fill: currentColor; stroke: rgba(0,0,0,.60); stroke-width: 2.2; stroke-linejoin: round; paint-order: stroke fill; }
+
+.leaflet-tooltip.tm-ov-map-tooltip{ background: var(--tm-ov-label-bg); border:2px solid rgba(255,255,255,.16); color: var(--tm-ov-label-text);
+  border-radius:999px; padding:4px 10px; font-weight:1100; font-size: var(--tm-ov-maplabel-size, 12px); box-shadow: 0 12px 26px rgba(0,0,0,.55); }
+.leaflet-tooltip.tm-ov-map-tooltip::before{ display:none !important; }
+
+/* adjust panel scroll */
+#tmOverlayAdjustPanel{ position:fixed; left:12px; top:12px; width:min(440px, 92vw); max-height: calc(100vh - 24px);
+  z-index:2100; display:none; pointer-events:auto; border-radius:16px; overflow:hidden;
+  background:rgba(10,12,18,.88); border:1px solid rgba(255,255,255,.14); box-shadow:0 18px 48px rgba(0,0,0,.55); color:rgba(255,255,255,.95);
+  font-family: system-ui, -apple-system, "Segoe UI", Meiryo, sans-serif; }
+body.tm-ov-adjust #tmOverlayAdjustPanel{ display:flex; flex-direction:column; }
+.tm-ovp-head{ flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; border-bottom:1px solid rgba(255,255,255,.10); }
+.tm-ovp-body{ flex:1 1 auto; overflow:auto; padding:10px 12px 12px 12px; display:flex; flex-direction:column; gap:14px; }
+.tm-ovp-sec{ border:1px solid rgba(255,255,255,.10); border-radius:14px; padding:10px 10px 12px 10px; background:rgba(255,255,255,.04); }
+.tm-ovp-row{ display:flex; align-items:center; gap:10px; margin:6px 0; }
+.tm-ovp-row span{ width:120px; font-size:12px; opacity:.85; }
+.tm-ovp-row input[type=range], .tm-ovp-row select{ flex:1; }
+.tm-ovp-row input[type=checkbox]{ transform: scale(1.1); }
+#overlayAdjustBtn.sub{ font-size:12px; padding:6px 10px; border-radius:12px; }

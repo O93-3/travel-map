@@ -17,9 +17,113 @@
   <link rel="stylesheet" href="./style.overlay.readability.css">
   <link rel="stylesheet" href="./style.routeoverlay.modern.css">
   <link rel="stylesheet" href="./style.citylabels.css">
+  <link rel="stylesheet" href="./style.unified.overlay.css">
 </head>
 <body data-theme="neon">
   <div id="map"></div>
+  <div id="tmOverlayStage" aria-hidden="true">
+    <div id="tmOverlayCard" class="tm-ov-box" role="group" aria-label="Overlay card">
+      <div class="tm-ov-card">
+        <div class="tm-ov-head">
+          <div class="tm-ov-title">TRAVEL</div>
+          <div id="tmOvDistance" class="tm-ov-distance">- km</div>
+        </div>
+
+        <div class="tm-ov-row">
+          <div class="tm-ov-tagwrap"><div class="tm-ov-tag to">TO</div></div>
+          <img id="tmOvToFlag" class="tm-ov-flag" alt="flag">
+          <div class="tm-ov-place">
+            <div id="tmOvToCountry" class="tm-ov-country">-</div>
+            <div id="tmOvToCity" class="tm-ov-city">-</div>
+          </div>
+        </div>
+
+        <div class="tm-ov-row">
+          <div class="tm-ov-tagwrap"><div class="tm-ov-tag from">FROM</div></div>
+          <img id="tmOvFromFlag" class="tm-ov-flag" alt="flag">
+          <div class="tm-ov-place">
+            <div id="tmOvFromCountry" class="tm-ov-country">-</div>
+            <div id="tmOvFromCity" class="tm-ov-city">-</div>
+          </div>
+        </div>
+
+        <div id="tmOvEmpty" class="tm-ov-empty">※ ルートがまだありません（2地点を追加してください）</div>
+      </div>
+    </div>
+
+    <div id="tmOverlayMap" class="tm-ov-box" role="group" aria-label="Overlay map">
+      <div class="tm-ov-mapframe">
+        <div id="tmOvMiniMap"></div>
+        <div id="tmOvMapError" class="tm-ov-maperror">ミニマップの初期化に失敗しました。<br>（Consoleを確認）</div>
+      </div>
+    </div>
+
+    <div id="tmOverlayAdjustPanel" aria-hidden="true">
+      <div class="tm-ovp-head">
+        <div class="tm-ovp-title">オーバーレイ調整</div>
+        <button id="tmOvClose" type="button" class="tm-ovp-close">閉じる（ESC）</button>
+      </div>
+
+      <div class="tm-ovp-body">
+        <div class="tm-ovp-sec">
+          <div class="tm-ovp-sec-title">共通</div>
+          <label class="tm-ovp-row"><span>テーマ</span>
+            <select id="tmOvThemeSel">
+              <option value="neon">NEON</option>
+              <option value="amber">AMBER</option>
+              <option value="lime">LIME</option>
+              <option value="violet">VIOLET</option>
+              <option value="mono">MONO</option>
+            </select>
+          </label>
+          <label class="tm-ovp-row"><span>フォント</span>
+            <select id="tmOvFontSel">
+              <option value="yugothic">游ゴシック</option>
+              <option value="meiryo">メイリオ</option>
+              <option value="bizud">BIZ UD</option>
+              <option value="msgothic">MSゴシック</option>
+              <option value="noto">Noto Sans JP</option>
+            </select>
+          </label>
+          <label class="tm-ovp-row"><span>カード表示</span><input id="tmOvShowCard" type="checkbox" checked></label>
+          <label class="tm-ovp-row"><span>ミニマップ表示</span><input id="tmOvShowMap" type="checkbox" checked></label>
+          <label class="tm-ovp-row"><span>枠表示</span><input id="tmOvShowFrame" type="checkbox" checked></label>
+          <label class="tm-ovp-row"><span>枠の太さ</span><input id="tmOvBorderW" type="range" min="0" max="6" step="1" value="2"></label>
+        </div>
+
+        <div class="tm-ovp-sec">
+          <div class="tm-ovp-sec-title">カード</div>
+          <label class="tm-ovp-row"><span>横幅</span><input id="tmOvCardW" type="range" min="260" max="560" step="1" value="320"></label>
+          <label class="tm-ovp-row"><span>縦幅</span><input id="tmOvCardH" type="range" min="0" max="460" step="1" value="0"></label>
+          <label class="tm-ovp-row"><span>TRAVEL/距離サイズ</span><input id="tmOvHeadScale" type="range" min="0.80" max="1.60" step="0.01" value="1.00"></label>
+          <label class="tm-ovp-row"><span>全体</span><input id="tmOvCardScale" type="range" min="0.60" max="1.40" step="0.01" value="1.00"></label>
+          <label class="tm-ovp-row"><span>都市名</span><input id="tmOvCitySize" type="range" min="14" max="44" step="1" value="32"></label>
+          <label class="tm-ovp-row"><span>国名</span><input id="tmOvCountrySize" type="range" min="12" max="28" step="1" value="16"></label>
+          <label class="tm-ovp-row"><span>旗</span><input id="tmOvFlagH" type="range" min="16" max="64" step="1" value="42"></label>
+        </div>
+
+        <div class="tm-ovp-sec">
+          <div class="tm-ovp-sec-title">ミニマップ</div>
+          <label class="tm-ovp-row"><span>地図種類</span>
+            <select id="tmOvMapStyleSel">
+              <option value="bw">白黒</option>
+              <option value="osm">標準</option>
+              <option value="topo">Topo</option>
+              <option value="sat">衛星</option>
+            </select>
+          </label>
+          <label class="tm-ovp-row"><span>横幅</span><input id="tmOvMapW" type="range" min="360" max="820" step="1" value="480"></label>
+          <label class="tm-ovp-row"><span>縦幅</span><input id="tmOvMapH" type="range" min="180" max="520" step="1" value="255"></label>
+          <label class="tm-ovp-row"><span>全体</span><input id="tmOvMapScale" type="range" min="0.60" max="1.60" step="0.01" value="1.00"></label>
+          <label class="tm-ovp-row"><span>地名サイズ</span><input id="tmOvMapLabelSize" type="range" min="10" max="20" step="1" value="12"></label>
+          <label class="tm-ovp-row"><span>ピンサイズ</span><input id="tmOvPin" type="range" min="4" max="20" step="1" value="12"></label>
+        </div>
+
+        <div class="tm-ovp-hint">※ 調整モード中はカード/ミニマップをドラッグして位置を決められます（自動保存）。</div>
+      </div>
+    </div>
+  </div>
+
   <button id="uiToggle" class="ui-toggle" type="button" aria-label="メニュー" aria-expanded="false">☰</button>
   <!-- 現在地表示（ドラッグ可） -->
   <div id="currentLocation">
@@ -53,6 +157,7 @@
   <div id="ui">
 <button id="langBtn">日本語</button>
     <button id="streamBtn">配信モード</button>
+    <button id="overlayAdjustBtn" class="sub">オーバーレイ調整</button>
     <details class="ui-group"><summary class="ui-title">デザイン</summary>
       <label class="col"><span>テーマ</span>
         <select id="themeSelect">
@@ -168,6 +273,7 @@
   <script src="./vendor/leaflet/leaflet.js"></script>
   <script src="./js/map-hook.js"></script>
   <script src="./app.js"></script>
+  <script src="./js/overlay-unified.js"></script>
   <script src=\"./js/overlay-settings.js\"></script>
   <script src="./js/fix-currentlocation-drag.js"></script>
   <script src="./js/ui-drawer.js"></script>
