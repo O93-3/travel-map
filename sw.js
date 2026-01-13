@@ -1,5 +1,5 @@
 // TravelMap Service Worker (stable)
-const CACHE_NAME = 'travel-map-v66-20260108';
+const CACHE_NAME = 'travel-map-v67-20260113';
 const FILES = [
   './',
   './index.html',

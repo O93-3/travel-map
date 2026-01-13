@@ -260,18 +260,19 @@ try{ if(!map.getPane('bordersPane')) map.createPane('bordersPane'); if(map.getPa
       li.dataset.index=String(i);
       li.draggable=true;
       li.innerHTML=`
-        <div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap">
-          <span style="font-weight:700">${i+1}.</span>
-          <span style="font-weight:650">${cityLabel(c)}</span>
-          <span style="opacity:.75;font-size:12px">${countryLabel(c)}${c.countryCode?` (${String(c.countryCode).toUpperCase()})`:''}</span>
-        </div>
-        <div class="route-actions" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
-          <button type="button" data-act="goto">移動</button>
-          <button type="button" data-act="insert">挿入</button>
-          <button type="button" data-act="up">↑</button>
-          <button type="button" data-act="down">↓</button>
-          <button type="button" data-act="del">削除</button>
-        </div>`;
+ <div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap">
+   <span style="font-weight:700">${i+1}.</span>
+   <span style="opacity:.85;font-size:12px">${regionLabel(c && c.region)}</span>
+   <span style="opacity:.75;font-size:12px">${countryLabel(c)}${c.countryCode?` (${String(c.countryCode).toUpperCase()})`:''}</span>
+   <span style="font-weight:650">${cityLabel(c)}</span>
+ </div>
+ <div class="route-actions" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+   <button type="button" data-act="goto">移動</button>
+   <button type="button" data-act="insert">挿入</button>
+   <button type="button" data-act="up">↑</button>
+   <button type="button" data-act="down">↓</button>
+   <button type="button" data-act="del">削除</button>
+ </div>`;
       routeList.appendChild(li);
     }
   }
@@ -592,39 +593,51 @@ function updateRouteOverlay(){
   
   
   /* ===== 都市 ===== */
-  let cities=[]
+  // ===== City datasets (cities.json + cities-ATS.json) =====
+  // 「地域」セレクトは都市データの region（Europe / Asia / ...）で分類する
+  const REGION_KEY = 'cityRegion';
 
-  // ===== City datasets (ETS2 / ATS) =====
-  const GROUP_KEY = 'cityGroup';
-  const GROUPS = [
-    { key: 'EURO', labelJP: 'EURO (ETS2)', labelEN: 'EURO (ETS2)' },
-    { key: 'AMERICA', labelJP: 'AMERICA (ATS)', labelEN: 'AMERICA (ATS)' }
-  ];
+  // 表示ラベル（必要最低限）
+  const REGION_LABELS = {
+    'Europe':        { jp: 'ヨーロッパ',     en: 'Europe' },
+    'Asia':          { jp: 'アジア',         en: 'Asia' },
+    'Africa':        { jp: 'アフリカ',       en: 'Africa' },
+    'North America': { jp: '北米',           en: 'North America' },
+    'South America': { jp: '南米',           en: 'South America' },
+    'Oceania':       { jp: 'オセアニア',     en: 'Oceania' },
+    'Other':         { jp: 'その他',         en: 'Other' },
+  };
+  const REGION_ORDER = ['Europe','Asia','North America','South America','Africa','Oceania','Other'];
+
+  function regionLabel(r){
+    const key = String(r || '').trim();
+    const o = REGION_LABELS[key];
+    if(o) return (lang==='jp') ? o.jp : o.en;
+    return key || ((lang==='jp') ? '未分類' : 'Unknown');
+  }
+
+  let cities=[];
   let allCities = [];
-  const citiesByGroup = { EURO: [], AMERICA: [] };
-  let currentGroup = (localStorage.getItem(GROUP_KEY) || 'EURO');
+  let currentRegion = (function(){
+    try{ return localStorage.getItem(REGION_KEY) || 'Europe'; }catch(_){ return 'Europe'; }
+  })();
 
-  function groupOfCity(c){
-    const r = c && c.region ? String(c.region) : '';
-    if (r === 'Europe') return 'EURO';
-    if (r === 'North America') return 'AMERICA';
-    return 'EURO';
+  // ATS用：州のキー（value）を統一
+  function stateKey(c){
+    if(!c) return '';
+    return String(c.stateCode || c.provinceCode || c.state || c.state_jp || '').trim();
   }
-  function groupLabel(key){
-    const g = GROUPS.find(x => x.key === key);
-    if (!g) return key;
-    return (lang === 'jp') ? g.labelJP : g.labelEN;
-  }
+
   function stateLabel(c){
     if (!c) return '';
     return (lang === 'jp') ? (c.state_jp || c.state || '') : (c.state || c.state_jp || '');
   }
+
   function cityOptionLabel(c){
-    // ATS(AMERICA)では都市ドロップダウンに州名を付けない
-    if(currentGroup==='AMERICA') return cityLabel(c);
     const s = stateLabel(c);
     return s ? `${cityLabel(c)} / ${s}` : cityLabel(c);
   }
+
   function ensureCityId(c){
     if (!c) return c;
     if (!c.id){
@@ -633,20 +646,33 @@ function updateRouteOverlay(){
       const safe = String(c.name || '').replace(/[^A-Za-z0-9]/g, '');
       c.id = sc ? `${cc}-${sc}-${safe}` : `${cc}-${safe}`;
     }
-    c.group = c.group || groupOfCity(c);
     return c;
   }
-  async function loadCityDatasets(){
-    const euroP = fetch('cities.json').then(r => r.json()).catch(() => []);
-    const atsP  = fetch('cities-ATS.json').then(r => r.json()).catch(() => []);
-    const [euro, ats] = await Promise.all([euroP, atsP]);
-    allCities = ([]).concat(euro || [], ats || []).map(ensureCityId);
-    citiesByGroup.EURO = allCities.filter(c => c.group === 'EURO');
-    citiesByGroup.AMERICA = allCities.filter(c => c.group === 'AMERICA');
-    if (!citiesByGroup[currentGroup]) currentGroup = 'EURO';
-    cities = citiesByGroup[currentGroup] || [];
+
+  function filterCitiesByRegion(){
+    const r = String(currentRegion || '').trim();
+    if(!r){ cities = allCities.slice(); return; }
+    const list = allCities.filter(c => String(c && c.region || '').trim() === r);
+    cities = list.length ? list : allCities.slice();
   }
 
+  async function loadCityDatasets(){
+    const baseP = fetch('cities.json').then(r => r.json()).catch(() => []);
+    const atsP  = fetch('cities-ATS.json').then(r => r.json()).catch(() => []);
+    const [base, ats] = await Promise.all([baseP, atsP]);
+    allCities = ([]).concat(base || [], ats || []).map(ensureCityId);
+
+    // currentRegion が存在しない場合は Europe を優先
+    const set = new Set();
+    for(const c of allCities){
+      const rr = String(c && c.region || '').trim();
+      if(rr) set.add(rr);
+    }
+    if(!set.has(String(currentRegion||'').trim())){
+      currentRegion = set.has('Europe') ? 'Europe' : (set.values().next().value || '');
+    }
+    filterCitiesByRegion();
+  }
 
   // ===== 最近使った都市（直近10件） =====
   const RECENT_CITY_KEY = 'recentCityIds';
@@ -673,8 +699,8 @@ function updateRouteOverlay(){
   function recentOptionLabel(c){
     if(!c) return '';
     const st = stateLabel(c);
-    const g = groupLabel(c.group || groupOfCity(c));
-    return st ? `${cityLabel(c)} / ${st} / ${g}` : `${cityLabel(c)} / ${g}`;
+    const rg = regionLabel(c && c.region);
+    return st ? `${cityLabel(c)} / ${st} / ${rg}` : `${cityLabel(c)} / ${rg}`;
   }
   function renderRecentSelect(){
     if(!recentSelect) return;
@@ -689,25 +715,22 @@ function updateRouteOverlay(){
   }
   function applyCityObject(c){
     if(!c) return;
-    const g = c.group || groupOfCity(c);
-    regionSelect.value = g;
-    regionSelect.onchange?.();
-
-    if(g==='AMERICA'){
-      if(stateSelect && stateSelect.style.display !== 'none'){
-        const sk = stateKey(c);
-        if(sk){ stateSelect.value = sk; stateSelect.onchange?.(); }
-      }
-      citySelect.value = c.id;
-    }else{
-      countrySelect.value = c.country;
-      countrySelect.onchange?.();
-      citySelect.value = c.id;
+    const r = String(c.region || '').trim();
+    if(r){
+      regionSelect.value = r;
+      regionSelect.onchange?.();
     }
-
+    countrySelect.value = c.country || '';
+    countrySelect.onchange?.();
+    if(stateSelect && stateSelect.style.display !== 'none'){
+      const sk = stateKey(c);
+      if(sk){ stateSelect.value = sk; stateSelect.onchange?.(); }
+    }
+    citySelect.value = c.id;
     if(citySearch) citySearch.value = cityLabel(c);
     pushRecentCityId(c.id);
   }
+
   let history=JSON.parse(localStorage.getItem("travelHistory"))||[]
   let markers=[],points=[]
 
@@ -865,26 +888,22 @@ function setupStateSearch(){
   function applyCitySelection(idx){
   const c=cities[idx];
   if(!c) return;
-  regionSelect.value=(c.group||groupOfCity(c));
-  regionSelect.onchange?.();
-
-  if(currentGroup==='AMERICA'){
-    if(stateSelect && stateSelect.style.display!=='none'){
-      const sk = stateKey(c);
-      if(sk){ stateSelect.value=sk; stateSelect.onchange?.(); }
-    }
-    citySelect.value=c.id;
-    if(citySearch) citySearch.value=cityLabel(c);
-    try{ pushRecentCityId(c.id); }catch(_){ }
-    return;
+  const r = String(c.region || '').trim();
+  if(r){
+    regionSelect.value = r;
+    regionSelect.onchange?.();
   }
-
-  countrySelect.value=c.country;
+  countrySelect.value = c.country || '';
   countrySelect.onchange?.();
+  if(stateSelect && stateSelect.style.display!=='none'){
+    const sk = stateKey(c);
+    if(sk){ stateSelect.value=sk; stateSelect.onchange?.(); }
+  }
   citySelect.value=c.id;
   if(citySearch) citySearch.value=cityLabel(c);
   try{ pushRecentCityId(c.id); }catch(_){ }
 }
+
 
 function renderResults(indices, activePos = -1){
     if(!cityResults) return;
@@ -907,7 +926,7 @@ function renderResults(indices, activePos = -1){
 
       const sub=document.createElement('div');
       sub.className='sub';
-      sub.textContent=`${countryLabel(c)}${stateLabel(c)?(' / '+stateLabel(c)) : ''} / ${groupLabel(c.group||groupOfCity(c))}${c.countryCode?(' / '+c.countryCode):''}${c.stateCode?(' / '+c.stateCode):''}`;
+      sub.textContent=`${countryLabel(c)}${stateLabel(c)?(' / '+stateLabel(c)) : ''} / ${regionLabel(c && c.region)}${c.countryCode?(' / '+c.countryCode):''}${c.stateCode?(' / '+c.stateCode):''}`;
 
       item.appendChild(main);
       item.appendChild(sub);
@@ -1031,10 +1050,25 @@ function renderResults(indices, activePos = -1){
   window.setupCitySearch = setupCitySearch;
 
 function buildRegion(){
-  // 地域セレクト = モード（EURO/AMERICA）
-  regionSelect.innerHTML = `<option value="">${lang==='jp'?'モード':'Mode'}</option>`;
-  GROUPS.forEach(g => regionSelect.add(new Option(groupLabel(g.key), g.key)));
-  regionSelect.value = currentGroup;
+  // 地域セレクト = citiesデータの region（大陸/分類）
+  regionSelect.innerHTML = `<option value="">${lang==='jp'?'地域':'Region'}</option>`;
+
+  // allCities から region 一覧を作成
+  const set = new Set();
+  for(const c of (Array.isArray(allCities)?allCities:[])){
+    const r = String(c && c.region || '').trim();
+    if(r) set.add(r);
+  }
+  const regions = Array.from(set);
+  regions.sort((a,b)=>{
+    const ia = REGION_ORDER.indexOf(a);
+    const ib = REGION_ORDER.indexOf(b);
+    if(ia!==-1 || ib!==-1){
+      return (ia===-1?999:ia) - (ib===-1?999:ib);
+    }
+    return regionLabel(a).localeCompare(regionLabel(b),'ja');
+  });
+  regions.forEach(r => regionSelect.add(new Option(regionLabel(r), r)));
 
   // 初期化
   countrySelect.innerHTML = `<option value="">${lang==='jp'?'国':'Country'}</option>`;
@@ -1044,8 +1078,14 @@ function buildRegion(){
   }
   citySelect.innerHTML = `<option value="">${lang==='jp'?'都市':'City'}</option>`;
 
-  if(currentGroup) regionSelect.onchange?.();
+  // 保存値を復元
+  try{ currentRegion = localStorage.getItem(REGION_KEY) || currentRegion || ''; }catch(_){ }
+  if(currentRegion){
+    regionSelect.value = currentRegion;
+  }
+  if(regionSelect.value) regionSelect.onchange?.();
 }
+
 
 function uniqueCountriesByName(list){
   const m=new Map();
@@ -1066,39 +1106,40 @@ function rebuildStateOptions(){
   if(!stateSelect) return;
   stateSelect.innerHTML = `<option value="">${lang==='jp'?'州':'State'}</option>`;
 
-  // AMERICA(ATS): 国を使わず州リストを作る（US運用前提）
+  const r = String(regionSelect.value || '').trim();
+  const cc = String(countrySelect.value || '').trim();
+  if(!r || !cc){ stateSelect.style.display='none'; return; }
+
+  const base = cities.filter(c => String(c && c.region || '').trim()===r && c && c.country===cc);
   const map = new Map();
-  for(const c of cities){
+  for(const c of base){
     const key = stateKey(c);
     if(!key) continue;
     if(!map.has(key)) map.set(key, c);
   }
-
   const entries = Array.from(map.entries()).map(([key,c])=>({
     key,
     label: (lang==='jp') ? String(c.state_jp||c.state||key).trim() : String(c.state||c.state_jp||key).trim(),
   }));
   entries.sort((a,b)=>String(a.label).localeCompare(String(b.label),'ja'));
-
   entries.forEach(e=>stateSelect.add(new Option(e.label, e.key)));
   stateSelect.style.display = entries.length ? '' : 'none';
 }
 
+
 function rebuildCityOptions(){
   citySelect.innerHTML = `<option value="">${lang==='jp'?'都市':'City'}</option>`;
 
-  let list;
-  if(currentGroup==='AMERICA'){
-    list = cities.slice();
-  }else{
-    const cc = countrySelect.value;
-    if(!cc) return;
-    list = cities.filter(c=>c.country===cc);
-  }
+  const r = String(regionSelect.value || '').trim();
+  const cc = String(countrySelect.value || '').trim();
+  if(!r || !cc) return;
 
-  if(currentGroup==='AMERICA' && stateSelect && stateSelect.style.display!=='none'){
-    const sk = stateSelect.value;
-    if(sk) list = list.filter(c => stateKey(c)===sk);
+  let list = cities.filter(c => String(c && c.region || '').trim()===r && c && c.country===cc);
+
+  // 州フィルタ（州データがある国のみ）
+  if(stateSelect && stateSelect.style.display!=='none'){
+    const sk = String(stateSelect.value || '').trim();
+    if(sk){ list = list.filter(c => stateKey(c)===sk); }
   }
 
   list.sort((a,b)=>{
@@ -1111,6 +1152,7 @@ function rebuildCityOptions(){
   list.forEach(c => citySelect.add(new Option(cityOptionLabel(c), c.id)));
 }
 
+
 regionSelect.onchange = ()=>{
   countrySelect.innerHTML = `<option value="">${lang==='jp'?'国':'Country'}</option>`;
   if(stateSelect){
@@ -1119,61 +1161,56 @@ regionSelect.onchange = ()=>{
   }
   citySelect.innerHTML = `<option value="">${lang==='jp'?'都市':'City'}</option>`;
 
-  const v = regionSelect.value;
-  if(!v) return;
-  currentGroup = v;
-  localStorage.setItem(GROUP_KEY, currentGroup);
-  cities = citiesByGroup[currentGroup] || [];
+  const r = String(regionSelect.value || '').trim();
+  if(!r) return;
+  currentRegion = r;
+  try{ localStorage.setItem(REGION_KEY, currentRegion); }catch(_){ }
 
-  if(currentGroup==='EURO'){
-    if(stateSelect) stateSelect.style.display='none';
-    countrySelect.style.display='';
+  filterCitiesByRegion();
 
-    const countries = uniqueCountriesByName(cities);
-    countries.sort((a,b)=>{
-      const la=(lang==='jp'?(a.country_jp||a.country):(a.country||a.country_jp))||'';
-      const lb=(lang==='jp'?(b.country_jp||b.country):(b.country||b.country_jp))||'';
-      return la.localeCompare(lb,'ja');
-    });
-    countries.forEach(c=>{
-      const label=(lang==='jp')?(c.country_jp||c.country):(c.country||c.country_jp);
-      countrySelect.add(new Option(label, c.country));
-    });
-    return;
-  }
+  const regionCities = cities.filter(c => String(c && c.region || '').trim() === r);
+  const countries = uniqueCountriesByName(regionCities);
+  countries.sort((a,b)=>{
+    const la = (lang==='jp'?(a.country_jp||a.country):(a.country||a.country_jp)) || '';
+    const lb = (lang==='jp'?(b.country_jp||b.country):(b.country||b.country_jp)) || '';
+    return la.localeCompare(lb,'ja');
+  });
+  countries.forEach(c=>{
+    const label = (lang==='jp') ? (c.country_jp||c.country) : (c.country||c.country_jp);
+    countrySelect.add(new Option(label, c.country));
+  });
+};
+;
 
-  // AMERICA(ATS)
-  countrySelect.style.display='none';
+countrySelect.onchange = ()=>{
   if(stateSelect){
     rebuildStateOptions();
   }
   rebuildCityOptions();
-};
-
-countrySelect.onchange = ()=>{
-  if(currentGroup!=='EURO') return;
-  rebuildCityOptions();
-  // EURO: 国の中心へズーム
   try{
     const cc = countrySelect.value;
     if(!cc) return;
-    const arr = cities.filter(c => c && c.country===cc && Number.isFinite(c.lat) && Number.isFinite(c.lon));
+    const r = String(regionSelect.value || '').trim();
+    if(!r) return;
+    const arr = cities.filter(c => String(c && c.region || '').trim()===r && c && c.country===cc && Number.isFinite(c.lat) && Number.isFinite(c.lon));
     if(!arr.length) return;
     const lat = arr.reduce((s,c)=>s+c.lat,0)/arr.length;
     const lon = arr.reduce((s,c)=>s+c.lon,0)/arr.length;
     map.setView([lat, lon], 5);
   }catch(_){ }
 };
+;
 
 if(stateSelect){
   stateSelect.onchange = ()=>{
-    if(currentGroup!=='AMERICA') return;
     rebuildCityOptions();
-    // ATS: 州の中心へズーム
     try{
       const sk = stateSelect.value;
       if(!sk) return;
-      const arr = cities.filter(c => stateKey(c)===sk && Number.isFinite(c.lat) && Number.isFinite(c.lon));
+      const r = String(regionSelect.value || '').trim();
+      const cc = countrySelect.value;
+      if(!r || !cc) return;
+      const arr = cities.filter(c => String(c && c.region || '').trim()===r && c && c.country===cc && stateKey(c)===sk && Number.isFinite(c.lat) && Number.isFinite(c.lon));
       if(!arr.length) return;
       const lat = arr.reduce((s,c)=>s+c.lat,0)/arr.length;
       const lon = arr.reduce((s,c)=>s+c.lon,0)/arr.length;
@@ -1181,6 +1218,7 @@ if(stateSelect){
     }catch(_){ }
   };
 }
+
 
 
 // 都市選択（手動）も最近に記録
